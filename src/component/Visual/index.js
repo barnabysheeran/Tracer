@@ -1,5 +1,7 @@
 import React from "react";
 
+import Tracer from "./Tracer";
+
 import style from "./../../index.css";
 
 export default class Visual extends React.Component {
@@ -14,28 +16,36 @@ export default class Visual extends React.Component {
 
   storeCanvasReference(canvasElement) {
     this.CANVAS = canvasElement;
-
-    // DEV
-    this.CANVAS.width = 200;
-    this.CANVAS.height = 200;
-
-    this.CANVAS.style.width = 200 + "px";
-    this.CANVAS.style.height = 200 + "px";
-
-    this.CANVAS.style.marginLeft = -100 + "px";
-    this.CANVAS.style.marginTop = -100 + "px";
   }
 
   // _____________________________________________________________________ Mount
 
   componentDidMount() {
-    console.log("componentDidMount " + this.CANVAS);
-
     // Context
     this.CONTEXT = this.CANVAS.getContext("2d");
 
-    // DEV
-    this.CONTEXT.fillRect(0, 0, 200, 200);
+    // Tracer
+    this.TRACER = new Tracer(this.CONTEXT);
+    this.shape(400, 200);
+  }
+
+  // _____________________________________________________________________ Shape
+
+  shape(w, h) {
+    const CANVAS = this.CANVAS;
+
+    // Canvas
+    CANVAS.width = w;
+    CANVAS.height = h;
+
+    CANVAS.style.width = w + "px";
+    CANVAS.style.height = h + "px";
+
+    CANVAS.style.marginLeft = -w / 2 + "px";
+    CANVAS.style.marginTop = -h / 2 + "px";
+
+    // Tracer
+    this.TRACER.shape(w, h);
   }
 
   // ____________________________________________________________________ Render
