@@ -1,12 +1,11 @@
 import React from "react";
 
-import Gui from "./../Gui";
-
-import "./../../favicon.ico";
+import GuiPageTitle from "../GuiPageTitle";
+import GuiMenu from "./../GuiMenu";
 
 import style from "./../../index.css";
 
-export default class Application extends React.Component {
+export default class Gui extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -15,8 +14,9 @@ export default class Application extends React.Component {
 
   render() {
     return (
-      <div className={style.fullscreen}>
-        <Gui />
+      <div className={style.gui}>
+        <GuiPageTitle />
+        <GuiMenu />
       </div>
     );
   }

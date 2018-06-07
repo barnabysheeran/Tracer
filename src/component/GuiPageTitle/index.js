@@ -1,12 +1,8 @@
 import React from "react";
 
-import Gui from "./../Gui";
-
-import "./../../favicon.ico";
-
 import style from "./../../index.css";
 
-export default class Application extends React.Component {
+export default class GuiPageTitle extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -14,10 +10,6 @@ export default class Application extends React.Component {
   // ____________________________________________________________________ Render
 
   render() {
-    return (
-      <div className={style.fullscreen}>
-        <Gui />
-      </div>
-    );
+    return <div className={style.guipagetitle}>Exercise Two</div>;
   }
 }
