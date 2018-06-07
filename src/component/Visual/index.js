@@ -26,7 +26,7 @@ export default class Visual extends React.Component {
 
     // Tracer
     this.TRACER = new Tracer(this.CONTEXT);
-    this.shape(400, 200);
+    this.shape(800, 400);
     this.TRACER.clear();
     this.TRACER.start();
   }
