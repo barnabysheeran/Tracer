@@ -1,0 +1,23 @@
+
+box: node
+
+build:
+
+  steps:
+    - npm-install
+
+    - script:
+      name: Eslint JS
+      code: yarn run lint:js
+
+    - script:
+      name: Stylelint CSS
+      code: yarn run lint:js
+
+    # - npm-test
+
+    - script:
+        name: echo nodejs information
+        code: |
+          echo "node version $(node -v) running"
+          echo "npm version $(npm -v) running"
