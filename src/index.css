@@ -56,7 +56,9 @@ body {
   line-height: 20px;
   padding-left: 4px;
 
-  background: green;
+  color: #000000;
+  background: #666666;
+
   text-decoration: none;
   cursor: pointer;
 }
@@ -70,5 +72,5 @@ body {
 .guimenubutton:hover {
   text-decoration: none;
   cursor: pointer;
-  background: red;
+  background: #ffffff;
 }
