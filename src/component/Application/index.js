@@ -1,6 +1,7 @@
 import React from "react";
 
 import Gui from "./../Gui";
+import Visual from "./../Visual";
 
 import "./../../favicon.ico";
 
@@ -17,6 +18,7 @@ export default class Application extends React.Component {
     return (
       <div className={style.fullscreen}>
         <Gui />
+        <Visual />
       </div>
     );
   }
