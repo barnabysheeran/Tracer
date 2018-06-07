@@ -23,6 +23,16 @@ body {
   overflow: hidden;
 }
 
+.canvasHolder {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
+
+.canvas {
+  position: absolute;
+}
+
 .guipagetitle {
   font-family: "Arial", sans-serif;
   font-size: 20px;
