@@ -2,20 +2,17 @@ import { vec3 } from "gl-matrix";
 
 export default class Ray {
   constructor() {
-    this.ORIGIN = vec3.fromValues(0, 0, 0);
+    this.POSITION_ORIGIN = vec3.fromValues(0, 0, 0);
     this.DIRECTION = vec3.fromValues(0, 0, 0);
-
-    // Reuseable
-    this.POINT = vec3.fromvalues(0, 0, 0);
   }
 
   // _______________________________________________________________________ Set
 
-  setOrigin(x, y, z) {
-    const ORIGIN = this.ORIGIN;
-    ORIGIN[0] = x;
-    ORIGIN[1] = y;
-    ORIGIN[2] = z;
+  setPositionOrigin(x, y, z) {
+    const POSITION_ORIGIN = this.POSITION_ORIGIN;
+    POSITION_ORIGIN[0] = x;
+    POSITION_ORIGIN[1] = y;
+    POSITION_ORIGIN[2] = z;
   }
 
   setDirection(x, y, z) {
@@ -23,6 +20,24 @@ export default class Ray {
     DIRECTION[0] = x;
     DIRECTION[1] = y;
     DIRECTION[2] = z;
+  }
+
+  // _______________________________________________________________________ Get
+
+  getPositionOrigin() {
+    return this.POSITION_ORIGIN;
+  }
+
+  getDirection() {
+    return this.DIRECTION;
+  }
+
+  getDirectionNormalized() {
+    let normalized = vec3.fromValues(0, 0, 0);
+
+    vec3.normalizd = vec3.normalize(normalized, this.DIRECTION);
+
+    return normalized;
   }
 
   // _______________________________________________________________________ Set

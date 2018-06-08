@@ -1,4 +1,5 @@
 import { vec3 } from "gl-matrix";
+import Ray from "./Ray";
 
 export default class Tracer {
   constructor(context) {
@@ -13,8 +14,14 @@ export default class Tracer {
     this.IMAGEDATA_DATA = this.IMAGEDATA.data;
     this.IMAGEDATA_DATA[3] = 255; // Full alpha
 
-    // Reuseable vec3
-    this.COLOUR = vec3.fromValues(0, 0, 0);
+    // Const
+    this.LOWER_LEFT_CORNER = vec3.fromValues(-2.0, -1.0, -1.0);
+    this.HORIZONTAL = vec3.fromValues(4.0, 0.0, 0.0); // TODO Set with shape
+    this.VERTICAL = vec3.fromValues(0.0, 2.0, 0.0); // TODO Set with shape
+    this.POSITION_ORIGIN = vec3.fromValues(0.0, 0.0, 0.0);
+
+    // Reuseable ray
+    this.RAY = new Ray();
 
     // Row
     this.row = 0;
@@ -46,36 +53,77 @@ export default class Tracer {
       return;
     }
 
+    //  Scope
     const CONTEXT = this.CONTEXT;
-
     const PIXEL_WIDTH = this.PIXEL_WIDTH;
     const PIXEL_HEIGHT = this.PIXEL_HEIGHT;
-
     const IMAGEDATA_DATA = this.IMAGEDATA_DATA;
-    const COLOUR = this.COLOUR;
 
+    const LOWER_LEFT_CORNER = this.LOWER_LEFT_CORNER;
+    const HORIZONTAL = this.HORIZONTAL;
+    const VERTICAL = this.VERTICAL;
+    const POSITION_ORIGIN = this.POSITION_ORIGIN;
+
+    const RAY = this.RAY;
+
+    RAY.setPositionOrigin(
+      POSITION_ORIGIN[0],
+      POSITION_ORIGIN[1],
+      POSITION_ORIGIN[2]
+    ); // TODO Out of loop
+
+    // Var
+    let colour;
     let row = this.row;
 
     // Render row
+    let u;
+    let v;
     let i;
 
     for (i = 0; i < this.PIXEL_WIDTH; i++) {
-      COLOUR[0] = i / PIXEL_WIDTH;
-      COLOUR[1] = (PIXEL_HEIGHT - row) / PIXEL_HEIGHT;
-      COLOUR[2] = 0.2;
+      u = i / PIXEL_WIDTH;
+      v = row / PIXEL_HEIGHT;
 
-      IMAGEDATA_DATA[0] = COLOUR[0] * 255;
-      IMAGEDATA_DATA[1] = COLOUR[1] * 255;
-      IMAGEDATA_DATA[2] = COLOUR[2] * 255;
+      RAY.setDirection(
+        LOWER_LEFT_CORNER[0] + u * HORIZONTAL[0] + v * VERTICAL[0],
+        LOWER_LEFT_CORNER[1] + u * HORIZONTAL[1] + v * VERTICAL[1],
+        LOWER_LEFT_CORNER[2] + u * HORIZONTAL[2] + v * VERTICAL[2]
+      );
+
+      colour = this.getColour(RAY);
+
+      IMAGEDATA_DATA[0] = colour[0] * 255;
+      IMAGEDATA_DATA[1] = colour[1] * 255;
+      IMAGEDATA_DATA[2] = colour[2] * 255;
 
       CONTEXT.putImageData(this.IMAGEDATA, i, row);
     }
 
     // Next row
     this.row++;
+
     if (this.row >= this.PIXEL_HEIGHT) {
       this.isRendering = false;
     }
+  }
+
+  // ____________________________________________________________________ Colour
+
+  getColour(ray) {
+    let directionNormalized = ray.getDirectionNormalized();
+    let t = 0.5 * (directionNormalized[1] + 1.0);
+
+    let white = vec3.fromValues(1.0, 1.0, 1.0);
+    vec3.scale(white, white, 1.0 - t);
+
+    let blue = vec3.fromValues(0.5, 0.7, 1.0);
+    vec3.scale(blue, blue, t);
+
+    let colour = vec3.fromValues(0.0, 0.0, 0.0);
+    vec3.add(colour, white, blue);
+
+    return colour;
   }
 
   // _____________________________________________________________________ Shape
