@@ -10,6 +10,6 @@ export default class GuiPageTitle extends React.Component {
   // ____________________________________________________________________ Render
 
   render() {
-    return <div className={style.guipagetitle}>Exercise Two</div>;
+    return <div className={style.guipagetitle}>Tracer</div>;
   }
 }
