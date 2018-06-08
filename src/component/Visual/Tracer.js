@@ -87,7 +87,7 @@ export default class Tracer {
 
     for (i = 0; i < this.PIXEL_WIDTH; i++) {
       u = i / PIXEL_WIDTH;
-      v = row / PIXEL_HEIGHT;
+      v = (PIXEL_HEIGHT - row) / PIXEL_HEIGHT;
 
       RAY.setDirection(
         LOWER_LEFT_CORNER[0] + u * HORIZONTAL[0] + v * VERTICAL[0],
@@ -116,9 +116,20 @@ export default class Tracer {
 
   getColour(ray) {
     // Hit Sphere ?
-    const SPHERE = this.SPHERE;
-    if (SPHERE.didHit(ray)) {
-      return vec3.fromValues(1.0, 0.0, 0.0);
+    const T = this.SPHERE.didHit(ray);
+
+    if (T > 0.0) {
+      // Tangent
+      const POINT = ray.getPointAtParameter(T);
+      const N = vec3.fromValues(POINT[0], POINT[1], POINT[2] - -1);
+
+      vec3.normalize(N, N);
+
+      return vec3.fromValues(
+        (N[0] + 1.0) * 0.5,
+        (N[1] + 1.0) * 0.5,
+        (N[2] + 1.0) * 0.5
+      );
     }
 
     // Background

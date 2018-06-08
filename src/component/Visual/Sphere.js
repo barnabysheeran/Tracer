@@ -42,6 +42,10 @@ export default class Sphere {
 
     const DISCRIMINANT = B * B - 4 * A * C;
 
-    return DISCRIMINANT > 0;
+    if (DISCRIMINANT < 0) {
+      return -1.0;
+    } else {
+      return (-B - Math.sqrt(DISCRIMINANT)) / (2.0 + A);
+    }
   }
 }
