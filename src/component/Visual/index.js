@@ -26,7 +26,9 @@ export default class Visual extends React.Component {
 
     // Tracer
     this.TRACER = new Tracer(this.CONTEXT);
-    this.shape(400, 200);
+    this.shape(800, 400);
+    this.TRACER.clear();
+    this.TRACER.start();
   }
 
   // _____________________________________________________________________ Shape
@@ -41,8 +43,8 @@ export default class Visual extends React.Component {
     CANVAS.style.width = w + "px";
     CANVAS.style.height = h + "px";
 
-    CANVAS.style.marginLeft = -w / 2 + "px";
-    CANVAS.style.marginTop = -h / 2 + "px";
+    CANVAS.style.marginLeft = w * -0.5 + "px";
+    CANVAS.style.marginTop = h * -0.5 + "px";
 
     // Tracer
     this.TRACER.shape(w, h);
