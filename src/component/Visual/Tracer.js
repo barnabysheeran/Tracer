@@ -1,5 +1,6 @@
 import { vec3 } from "gl-matrix";
 import Ray from "./Ray";
+import Sphere from "./Sphere";
 
 export default class Tracer {
   constructor(context) {
@@ -22,6 +23,9 @@ export default class Tracer {
 
     // Reuseable ray
     this.RAY = new Ray();
+
+    // Test Sphere
+    this.SPHERE = new Sphere(vec3.fromValues(0.0, 0.0, -1.0), 0.5);
 
     // Row
     this.row = 0;
@@ -111,6 +115,13 @@ export default class Tracer {
   // ____________________________________________________________________ Colour
 
   getColour(ray) {
+    // Hit Sphere ?
+    const SPHERE = this.SPHERE;
+    if (SPHERE.didHit(ray)) {
+      return vec3.fromValues(1.0, 0.0, 0.0);
+    }
+
+    // Background
     let directionNormalized = ray.getDirectionNormalized();
     let t = 0.5 * (directionNormalized[1] + 1.0);
 

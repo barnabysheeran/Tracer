@@ -40,7 +40,7 @@ export default class Ray {
     return normalized;
   }
 
-  // _______________________________________________________________________ Set
+  // ______________________________________________________________ Point on Ray
 
   getPointAtParameter(t) {
     const ORIGIN = this.ORIGIN;
