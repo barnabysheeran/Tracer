@@ -43,13 +43,13 @@ export default class Ray {
   // ______________________________________________________________ Point on Ray
 
   getPointAtParameter(t) {
-    const ORIGIN = this.ORIGIN;
+    const POSITION_ORIGIN = this.POSITION_ORIGIN;
     const DIRECTION = this.DIRECTION;
-    const POINT = this.POINT;
 
-    vec3.multiply(DIRECTION, DIRECTION, t);
-    vec3.add(POINT, POINT, ORIGIN);
-
-    return POINT;
+    return vec3.fromValues(
+      POSITION_ORIGIN[0] + t * DIRECTION[0],
+      POSITION_ORIGIN[1] + t * DIRECTION[1],
+      POSITION_ORIGIN[2] + t * DIRECTION[2]
+    );
   }
 }
