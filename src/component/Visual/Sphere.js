@@ -43,9 +43,9 @@ export default class Sphere extends Hitable {
     );
 
     const A = vec3.dot(RAY_DIRECTION, RAY_DIRECTION);
-    const B = 2.0 * vec3.dot(OC, RAY_DIRECTION);
+    const B = vec3.dot(OC, RAY_DIRECTION);
     const C = vec3.dot(OC, OC) - RADIUS * RADIUS;
-    const DISCRIMINANT = B * B - 4 * A * C;
+    const DISCRIMINANT = B * B - A * C;
 
     if (DISCRIMINANT > 0.0) {
       let temp = (-B - Math.sqrt(B * B - A * C)) / A;
