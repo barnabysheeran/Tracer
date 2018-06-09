@@ -31,6 +31,20 @@ export default class Visual extends React.Component {
     this.TRACER.start();
   }
 
+  // _______________________________________________________________ Interaction
+
+  clear() {
+    this.TRACER.clear();
+  }
+
+  start() {
+    this.TRACER.start();
+  }
+
+  setAASamples(samples) {
+    this.TRACER.setAASamples(samples);
+  }
+
   // _____________________________________________________________________ Shape
 
   shape(w, h) {

@@ -1,7 +1,8 @@
 import React from "react";
 
 import GuiPageTitle from "../GuiPageTitle";
-import GuiMenu from "./../GuiMenu";
+import GuiMenuButton from "./../GuiMenuButton";
+import GuiMenuTitle from "./../GuiMenuTitle";
 
 import style from "./../../index.css";
 
@@ -16,7 +17,26 @@ export default class Gui extends React.Component {
     return (
       <div className={style.gui}>
         <GuiPageTitle />
-        <GuiMenu />
+        <div className={style.guimenu}>
+          <GuiMenuButton text="Clear" onClick={this.props.onClickClear} />
+          <GuiMenuButton text="Start" onClick={this.props.onClickStart} />
+          <GuiMenuTitle text="AA Samples" />
+          <GuiMenuButton
+            text="1"
+            value={1}
+            onClick={this.props.onClickAASamples}
+          />
+          <GuiMenuButton
+            text="10"
+            value={10}
+            onClick={this.props.onClickAASamples}
+          />
+          <GuiMenuButton
+            text="100"
+            value={100}
+            onClick={this.props.onClickAASamples}
+          />
+        </div>
       </div>
     );
   }

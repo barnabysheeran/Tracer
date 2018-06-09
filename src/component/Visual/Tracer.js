@@ -2,17 +2,18 @@ import { vec3 } from "gl-matrix";
 
 import World from "./World";
 import Camera from "./Camera";
+import Ray from "./Ray";
 
 export default class Tracer {
   constructor(context) {
     this.CONTEXT = context;
 
     // Dimensions
-    this.PIXEL_WIDTH = 100;
+    this.PIXEL_WIDTH = 10;
     this.PIXEL_HEIGHT = 100;
 
     // Samples
-    this.SAMPLES_AA = 100; // 100
+    this.SAMPLES_AA = 10; // 100
 
     // Reuseable imagedata
     this.IMAGEDATA = this.CONTEXT.createImageData(1, 1);
@@ -38,8 +39,6 @@ export default class Tracer {
   // _____________________________________________________________________ Start
 
   start() {
-    this.clear();
-
     this.row = 0;
     this.isRendering = true;
   }
@@ -118,9 +117,37 @@ export default class Tracer {
     const WORLD = this.WORLD;
 
     // Hit anything ?
-    if (WORLD.didHitAnything(ray, 0.0, Infinity) == true) {
-      let hitRecord = WORLD.hitRecord;
+    if (WORLD.didHitAnything(ray, 0.001, Infinity) == true) {
+      let hitRecord = WORLD.hitRecord; // TODO Get hitRecord properly
+      let randomUnitySphere = this.getRandominUnitSphere();
 
+      let target = vec3.fromValues(
+        hitRecord.position[0] + hitRecord.normal[0] + randomUnitySphere[0],
+        hitRecord.position[1] + hitRecord.normal[1] + randomUnitySphere[1],
+        hitRecord.position[2] + hitRecord.normal[2] + randomUnitySphere[2]
+      );
+
+      let ray = new Ray();
+
+      ray.setPositionOrigin(
+        hitRecord.position[0],
+        hitRecord.position[1],
+        hitRecord.position[2]
+      );
+
+      ray.setDirection(
+        vec3.fromValues(
+          target[0] - hitRecord.position[0],
+          target[1] - hitRecord.position[1],
+          target[2] - hitRecord.position[2]
+        )
+      );
+
+      // let colour = this.getColour(ray);
+
+      // return vec3.fromValues(colour[0] * 0.5, colour[1] * 0.5, colour[2] * 0.5);
+
+      // Colour from normals xyz to rgb
       return vec3.fromValues(
         (hitRecord.normal[0] + 1.0) * 0.5,
         (hitRecord.normal[1] + 1.0) * 0.5,
@@ -144,6 +171,19 @@ export default class Tracer {
     return colour;
   }
 
+  // TODO Optimise
+  getRandominUnitSphere() {
+    let p = vec3.fromValues(Infinity, Infinity, Infinity);
+
+    while (vec3.squaredLength(p) >= 1.0) {
+      p[0] = Math.random() * 2.0 - 1.0;
+      p[1] = Math.random() * 2.0 - 1.0;
+      p[2] = Math.random() * 2.0 - 1.0;
+    }
+
+    return p;
+  }
+
   // _____________________________________________________________________ Shape
 
   shape(w, h) {
@@ -151,10 +191,20 @@ export default class Tracer {
     this.PIXEL_HEIGHT = h;
   }
 
+  // _____________________________________________________________________ Clear
+
   clear() {
     const CONTEXT = this.CONTEXT;
 
     CONTEXT.fillStyle = "#000000";
     CONTEXT.fillRect(0, 0, this.PIXEL_WIDTH, this.PIXEL_HEIGHT);
+
+    this.isRendering = false;
+  }
+
+  // ________________________________________________________________________ AA
+
+  setAASamples(samples) {
+    this.SAMPLES_AA = samples;
   }
 }
