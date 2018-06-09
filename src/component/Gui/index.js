@@ -20,7 +20,7 @@ export default class Gui extends React.Component {
         <div className={style.guimenu}>
           <GuiMenuButton text="Clear" onClick={this.props.onClickClear} />
           <GuiMenuButton text="Start" onClick={this.props.onClickStart} />
-          <GuiMenuTitle text="AA Samples" />
+          <GuiMenuTitle text="AA Sample" />
           <GuiMenuButton
             text="1"
             value={1}
