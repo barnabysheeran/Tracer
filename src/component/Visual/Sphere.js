@@ -1,9 +1,16 @@
 import { vec3 } from "gl-matrix";
 
-export default class Sphere {
+import Hitable from "./Hitable";
+import HitRecord from "./HitRecord";
+
+export default class Sphere extends Hitable {
   constructor(positionCenter, radius) {
+    super();
+
     this.POSITION_CENTER = positionCenter;
     this.RADIUS = radius;
+
+    this.hitRecord = new HitRecord();
   }
 
   // _______________________________________________________________________ Set
@@ -19,14 +26,15 @@ export default class Sphere {
     this.RADIUS = radius;
   }
 
-  // _______________________________________________________________________ Hit
+  // ____________________________________________________________________ didHit
 
-  didHit(ray) {
+  didHit(ray, tMin, tMax) {
     const POSITION_CENTER = this.POSITION_CENTER;
     const RADIUS = this.RADIUS;
-
     const RAY_ORIGIN = ray.getPositionOrigin();
     const RAY_DIRECTION = ray.getDirection();
+
+    let hitRecord = this.hitRecord;
 
     const OC = vec3.fromValues(
       RAY_ORIGIN[0] - POSITION_CENTER[0],
@@ -35,17 +43,38 @@ export default class Sphere {
     );
 
     const A = vec3.dot(RAY_DIRECTION, RAY_DIRECTION);
-
-    const B = 2.0 * vec3.dot(OC, RAY_DIRECTION);
-
+    const B = vec3.dot(OC, RAY_DIRECTION);
     const C = vec3.dot(OC, OC) - RADIUS * RADIUS;
+    const DISCRIMINANT = B * B - A * C;
 
-    const DISCRIMINANT = B * B - 4 * A * C;
+    if (DISCRIMINANT > 0.0) {
+      let temp = (-B - Math.sqrt(B * B - A * C)) / A;
 
-    if (DISCRIMINANT < 0) {
-      return -1.0;
-    } else {
-      return (-B - Math.sqrt(DISCRIMINANT)) / (2.0 + A);
+      if (temp < tMax && temp > tMin) {
+        hitRecord.t = temp;
+        hitRecord.position = ray.getPointAtParameter(hitRecord.t);
+        hitRecord.normal = vec3.fromValues(
+          (hitRecord.position[0] - POSITION_CENTER[0]) / RADIUS,
+          (hitRecord.position[1] - POSITION_CENTER[1]) / RADIUS,
+          (hitRecord.position[2] - POSITION_CENTER[2]) / RADIUS
+        );
+        return true;
+      }
+
+      temp = (-B + Math.sqrt(B * B - A * C)) / A;
+
+      if (temp < tMax && temp > tMin) {
+        hitRecord.t = temp;
+        hitRecord.position = ray.getPointAtParameter(hitRecord.t);
+        hitRecord.normal = vec3.fromValues(
+          (hitRecord.position[0] - POSITION_CENTER[0]) / RADIUS,
+          (hitRecord.position[1] - POSITION_CENTER[1]) / RADIUS,
+          (hitRecord.position[2] - POSITION_CENTER[2]) / RADIUS
+        );
+        return true;
+      }
     }
+
+    return false;
   }
 }
