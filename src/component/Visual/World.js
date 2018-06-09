@@ -1,10 +1,10 @@
 import Sphere from "./Sphere";
-import HitRecord from "./HitRecord";
+//import HitRecord from "./HitRecord";
 
 export default class World {
   constructor() {
     this.HITABLES = [];
-    this.hitRecord = new HitRecord();
+    this.hitRecord; // = new HitRecord();
   }
 
   addSphere(position, radius) {
@@ -13,8 +13,6 @@ export default class World {
 
   didHitAnything(ray, tMin, tMax) {
     const HITABLES = this.HITABLES;
-
-    let temp_rec = new HitRecord();
 
     let hit = false;
     let closest = tMax;

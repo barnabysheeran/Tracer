@@ -1,7 +1,6 @@
 import { vec3 } from "gl-matrix";
 import Ray from "./Ray";
 import World from "./World";
-import HitRecord from "./HitRecord";
 
 export default class Tracer {
   constructor(context) {
