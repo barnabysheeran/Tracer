@@ -30,9 +30,6 @@ export default class Tracer {
 
     // World
     this.WORLD = new World();
-    this.WORLD.addSphere(vec3.fromValues(-1.0, 0.0, -1.0), 0.2);
-    this.WORLD.addSphere(vec3.fromValues(1.0, 0.0, -1.0), 0.2);
-
     this.WORLD.addSphere(vec3.fromValues(0.0, 0.0, -1.0), 0.5);
     this.WORLD.addSphere(vec3.fromValues(0.0, -100.5, -1.0), 100);
 
