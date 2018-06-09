@@ -1,6 +1,7 @@
 import { vec3 } from "gl-matrix";
 import Ray from "./Ray";
-import Sphere from "./Sphere";
+import World from "./World";
+import HitRecord from "./HitRecord";
 
 export default class Tracer {
   constructor(context) {
@@ -21,17 +22,17 @@ export default class Tracer {
     this.VERTICAL = vec3.fromValues(0.0, 2.0, 0.0); // TODO Set with shape
     this.POSITION_ORIGIN = vec3.fromValues(0.0, 0.0, 0.0);
 
+    // Var
+    this.row = 0;
+    this.isRendering = false;
+
     // Reuseable ray
     this.RAY = new Ray();
 
-    // Test Sphere
-    this.SPHERE = new Sphere(vec3.fromValues(0.0, 0.0, -1.0), 0.5);
-
-    // Row
-    this.row = 0;
-
-    // Rendering
-    this.isRendering = false;
+    // World
+    this.WORLD = new World();
+    this.WORLD.addSphere(vec3.fromValues(0.0, 0.0, -1.0), 0.5);
+    this.WORLD.addSphere(vec3.fromValues(0.0, -100.5, -1.0), 100);
 
     // Loop
     requestAnimationFrame(this.render.bind(this));
@@ -97,9 +98,9 @@ export default class Tracer {
 
       colour = this.getColour(RAY);
 
-      IMAGEDATA_DATA[0] = colour[0] * 255;
-      IMAGEDATA_DATA[1] = colour[1] * 255;
-      IMAGEDATA_DATA[2] = colour[2] * 255;
+      IMAGEDATA_DATA[0] = colour[0] * 255.99;
+      IMAGEDATA_DATA[1] = colour[1] * 255.99;
+      IMAGEDATA_DATA[2] = colour[2] * 255.99;
 
       CONTEXT.putImageData(this.IMAGEDATA, i, row);
     }
@@ -115,20 +116,16 @@ export default class Tracer {
   // ____________________________________________________________________ Colour
 
   getColour(ray) {
-    // Hit Sphere ?
-    const T = this.SPHERE.didHit(ray);
+    const WORLD = this.WORLD;
 
-    if (T > 0.0) {
-      // Tangent
-      const POINT = ray.getPointAtParameter(T);
-      const N = vec3.fromValues(POINT[0], POINT[1], POINT[2] - -1);
-
-      vec3.normalize(N, N);
+    // Hit anything ?
+    if (WORLD.didHitAnything(ray, 0.0, Infinity) == true) {
+      let hitRecord = WORLD.hitRecord;
 
       return vec3.fromValues(
-        (N[0] + 1.0) * 0.5,
-        (N[1] + 1.0) * 0.5,
-        (N[2] + 1.0) * 0.5
+        (hitRecord.normal[0] + 1.0) * 0.5,
+        (hitRecord.normal[1] + 1.0) * 0.5,
+        (hitRecord.normal[2] + 1.0) * 0.5
       );
     }
 
