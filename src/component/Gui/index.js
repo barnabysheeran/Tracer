@@ -19,7 +19,6 @@ export default class Gui extends React.Component {
         <GuiPageTitle />
         <div className={style.guimenu}>
           <GuiMenuButton text="Clear" onClick={this.props.onClickClear} />
-          <GuiMenuButton text="Start" onClick={this.props.onClickStart} />
           <GuiMenuTitle text="AA Sample" />
           <GuiMenuButton
             text="1"
@@ -36,6 +35,8 @@ export default class Gui extends React.Component {
             value={100}
             onClick={this.props.onClickAASamples}
           />
+          <GuiMenuTitle text=" " />
+          <GuiMenuButton text="Start" onClick={this.props.onClickStart} />
         </div>
       </div>
     );
