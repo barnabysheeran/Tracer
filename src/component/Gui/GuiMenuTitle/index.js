@@ -1,6 +1,6 @@
 import React from "react";
 
-import style from "./../../index.css";
+import style from "./../../../index.css";
 
 export default class GuiMenuTitle extends React.Component {
   constructor(props) {

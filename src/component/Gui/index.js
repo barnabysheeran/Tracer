@@ -1,8 +1,8 @@
 import React from "react";
 
-import GuiPageTitle from "../GuiPageTitle";
-import GuiMenuButton from "./../GuiMenuButton";
-import GuiMenuTitle from "./../GuiMenuTitle";
+import GuiPageTitle from "./GuiPageTitle";
+import GuiMenuButton from "./GuiMenuButton";
+import GuiMenuTitle from "./GuiMenuTitle";
 
 import style from "./../../index.css";
 

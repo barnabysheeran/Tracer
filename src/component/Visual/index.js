@@ -1,6 +1,6 @@
 import React from "react";
 
-import Tracer from "./Tracer";
+import Tracer from "./Tracer/Tracer";
 
 import style from "./../../index.css";
 
