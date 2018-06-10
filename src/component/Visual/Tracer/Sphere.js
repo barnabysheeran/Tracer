@@ -1,7 +1,6 @@
 import { vec3 } from "gl-matrix";
 
 import Hitable from "./Hitable";
-import HitRecord from "./HitRecord";
 
 export default class Sphere extends Hitable {
   constructor(positionCenter, radius) {
@@ -9,8 +8,6 @@ export default class Sphere extends Hitable {
 
     this.POSITION_CENTER = positionCenter;
     this.RADIUS = radius;
-
-    this.hitRecord = new HitRecord();
   }
 
   // _______________________________________________________________________ Set
@@ -28,13 +25,11 @@ export default class Sphere extends Hitable {
 
   // ____________________________________________________________________ didHit
 
-  didHit(ray, tMin, tMax) {
+  didHit(ray, tMin, tMax, hitRecord) {
     const POSITION_CENTER = this.POSITION_CENTER;
     const RADIUS = this.RADIUS;
     const RAY_ORIGIN = ray.getPositionOrigin();
     const RAY_DIRECTION = ray.getDirection();
-
-    let hitRecord = this.hitRecord;
 
     const OC = vec3.fromValues(
       RAY_ORIGIN[0] - POSITION_CENTER[0],

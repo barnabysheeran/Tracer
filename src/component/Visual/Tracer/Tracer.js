@@ -3,6 +3,7 @@ import { vec3 } from "gl-matrix";
 import World from "./World";
 import Camera from "./Camera";
 import Ray from "./Ray";
+import HitRecord from "./HitRecord";
 
 export default class Tracer {
   constructor(context) {
@@ -13,7 +14,7 @@ export default class Tracer {
     this.PIXEL_HEIGHT = 100;
 
     // Samples
-    this.SAMPLES_AA = 10; // 100
+    this.SAMPLES_AA = 10;
 
     // Reuseable imagedata
     this.IMAGEDATA = this.CONTEXT.createImageData(1, 1);
@@ -96,6 +97,10 @@ export default class Tracer {
       colour[1] /= SAMPLES_AA;
       colour[2] /= SAMPLES_AA;
 
+      colour[0] = Math.sqrt(colour[0]);
+      colour[1] = Math.sqrt(colour[1]);
+      colour[2] = Math.sqrt(colour[2]);
+
       IMAGEDATA_DATA[0] = colour[0] * 255.99;
       IMAGEDATA_DATA[1] = colour[1] * 255.99;
       IMAGEDATA_DATA[2] = colour[2] * 255.99;
@@ -117,42 +122,36 @@ export default class Tracer {
     const WORLD = this.WORLD;
 
     // Hit anything ?
-    if (WORLD.didHitAnything(ray, 0.001, Infinity) == true) {
-      let hitRecord = WORLD.hitRecord; // TODO Get hitRecord properly
-      let randomUnitySphere = this.getRandominUnitSphere();
+    let hitRecord = new HitRecord();
+
+    if (WORLD.didHitAnything(ray, 0.001, Infinity, hitRecord) == true) {
+      let randomUnitSphere = this.getRandominUnitSphere();
 
       let target = vec3.fromValues(
-        hitRecord.position[0] + hitRecord.normal[0] + randomUnitySphere[0],
-        hitRecord.position[1] + hitRecord.normal[1] + randomUnitySphere[1],
-        hitRecord.position[2] + hitRecord.normal[2] + randomUnitySphere[2]
+        hitRecord.position[0] + hitRecord.normal[0] + randomUnitSphere[0],
+        hitRecord.position[1] + hitRecord.normal[1] + randomUnitSphere[1],
+        hitRecord.position[2] + hitRecord.normal[2] + randomUnitSphere[2]
       );
 
-      let ray = new Ray();
+      //console.log(target);
 
-      ray.setPositionOrigin(
+      let newRay = new Ray();
+
+      newRay.setPositionOrigin(
         hitRecord.position[0],
         hitRecord.position[1],
         hitRecord.position[2]
       );
 
-      ray.setDirection(
-        vec3.fromValues(
-          target[0] - hitRecord.position[0],
-          target[1] - hitRecord.position[1],
-          target[2] - hitRecord.position[2]
-        )
+      newRay.setDirection(
+        target[0] - hitRecord.position[0],
+        target[1] - hitRecord.position[1],
+        target[2] - hitRecord.position[2]
       );
 
-      // let colour = this.getColour(ray);
+      let colour = this.getColour(newRay);
 
-      // return vec3.fromValues(colour[0] * 0.5, colour[1] * 0.5, colour[2] * 0.5);
-
-      // Colour from normals xyz to rgb
-      return vec3.fromValues(
-        (hitRecord.normal[0] + 1.0) * 0.5,
-        (hitRecord.normal[1] + 1.0) * 0.5,
-        (hitRecord.normal[2] + 1.0) * 0.5
-      );
+      return vec3.fromValues(colour[0] * 0.5, colour[1] * 0.5, colour[2] * 0.5);
     }
 
     // Background
@@ -171,8 +170,10 @@ export default class Tracer {
     return colour;
   }
 
-  // TODO Optimise
+  // _____________________________________________________________________ Shape
+
   getRandominUnitSphere() {
+    // TODO Optimise
     let p = vec3.fromValues(Infinity, Infinity, Infinity);
 
     while (vec3.squaredLength(p) >= 1.0) {

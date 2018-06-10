@@ -1,28 +1,29 @@
 import Sphere from "./Sphere";
-//import HitRecord from "./HitRecord";
+import HitRecord from "./HitRecord";
 
 export default class World {
   constructor() {
     this.HITABLES = [];
-    this.hitRecord; // = new HitRecord();
   }
 
   addSphere(position, radius) {
     this.HITABLES.push(new Sphere(position, radius));
   }
 
-  didHitAnything(ray, tMin, tMax) {
+  didHitAnything(ray, tMin, tMax, hitRecord) {
     const HITABLES = this.HITABLES;
+
+    let hitRecordTemp = new HitRecord();
 
     let hit = false;
     let closest = tMax;
     let i;
 
     for (i = 0; i < HITABLES.length; i++) {
-      if (HITABLES[i].didHit(ray, tMin, closest) == true) {
+      if (HITABLES[i].didHit(ray, tMin, closest, hitRecordTemp) == true) {
         hit = true;
-        closest = HITABLES[i].hitRecord.r;
-        this.hitRecord = HITABLES[i].hitRecord;
+        closest = hitRecordTemp.t;
+        hitRecordTemp.cloneThisInto(hitRecord);
       }
     }
 

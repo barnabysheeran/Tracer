@@ -35,7 +35,7 @@ body {
 
 .guipagetitle {
   font-family: "Arial", sans-serif;
-  font-size: 20px;
+  font-size: 18px;
   padding-left: 4px;
   padding-bottom: 10px;
   display: block;
@@ -50,22 +50,22 @@ body {
 
 .guimenu {
   font-family: "Arial", sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   width: 100px;
 }
 
 .guimenutitle {
   display: block;
-  height: 20px;
-  line-height: 20px;
+  height: 18px;
+  line-height: 18px;
   padding-left: 4px;
   margin-top: 1px;
 }
 
 .guimenubutton {
   display: block;
-  height: 20px;
-  line-height: 20px;
+  height: 18px;
+  line-height: 18px;
   padding-left: 4px;
   margin-top: 1px;
 

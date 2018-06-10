@@ -7,7 +7,7 @@ export default class HitRecord {
     this.normal = vec3.fromValues(-1, -1, -1);
   }
 
-  cloneInto(hitRecord) {
+  cloneThisInto(hitRecord) {
     const POSITION = this.position;
     const NORMAL = this.normal;
 
