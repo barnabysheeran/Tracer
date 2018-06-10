@@ -10,6 +10,24 @@ import "./../../favicon.ico";
 export default class Application extends React.Component {
   constructor(props) {
     super(props);
+
+    this.onClickClear = this.onClickClear.bind(this);
+    this.onClickStart = this.onClickStart.bind(this);
+    this.onClickAASamples = this.onClickAASamples.bind(this);
+  }
+
+  // _______________________________________________________________ Interaction
+
+  onClickClear() {
+    this.VISUAL.clear();
+  }
+
+  onClickStart() {
+    this.VISUAL.start();
+  }
+
+  onClickAASamples(samples) {
+    this.VISUAL.setAASamples(samples);
   }
 
   // ____________________________________________________________________ Render
@@ -17,8 +35,12 @@ export default class Application extends React.Component {
   render() {
     return (
       <div className={style.fullscreen}>
-        <Gui />
-        <Visual />
+        <Gui
+          onClickClear={this.onClickClear}
+          onClickStart={this.onClickStart}
+          onClickAASamples={this.onClickAASamples}
+        />
+        <Visual ref={ref => (this.VISUAL = ref)} />
       </div>
     );
   }

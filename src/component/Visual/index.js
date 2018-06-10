@@ -1,6 +1,6 @@
 import React from "react";
 
-import Tracer from "./Tracer";
+import Tracer from "./Tracer/Tracer";
 
 import style from "./../../index.css";
 
@@ -29,6 +29,20 @@ export default class Visual extends React.Component {
     this.shape(800, 400);
     this.TRACER.clear();
     this.TRACER.start();
+  }
+
+  // _______________________________________________________________ Interaction
+
+  clear() {
+    this.TRACER.clear();
+  }
+
+  start() {
+    this.TRACER.start();
+  }
+
+  setAASamples(samples) {
+    this.TRACER.setAASamples(samples);
   }
 
   // _____________________________________________________________________ Shape

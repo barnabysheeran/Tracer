@@ -1,6 +1,6 @@
 import React from "react";
 
-import style from "./../../index.css";
+import style from "./../../../index.css";
 
 export default class GuiMenuTitle extends React.Component {
   constructor(props) {
@@ -11,7 +11,9 @@ export default class GuiMenuTitle extends React.Component {
 
   render() {
     return (
-      <div className={style.guimenu + " " + style.guimenutitle}>GuiTitle</div>
+      <div className={style.guimenu + " " + style.guimenutitle}>
+        {this.props.text}
+      </div>
     );
   }
 }
