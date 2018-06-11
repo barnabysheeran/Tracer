@@ -2,7 +2,7 @@ import { vec3 } from "gl-matrix";
 
 import Hitable from "./Hitable";
 
-export default class Sphere extends Hitable {
+export default class HitableSphere extends Hitable {
   constructor(positionCenter, radius) {
     super();
 

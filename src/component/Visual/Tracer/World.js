@@ -1,4 +1,4 @@
-import Sphere from "./Sphere";
+import HitableSphere from "./HitableSphere";
 import HitRecord from "./HitRecord";
 
 export default class World {
@@ -7,7 +7,7 @@ export default class World {
   }
 
   addSphere(position, radius) {
-    this.HITABLES.push(new Sphere(position, radius));
+    this.HITABLES.push(new HitableSphere(position, radius));
   }
 
   didHitAnything(ray, tMin, tMax, hitRecord) {
