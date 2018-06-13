@@ -10,8 +10,15 @@ export default class Tracer {
     this.CONTEXT = context;
 
     // Dimensions
-    this.PIXEL_WIDTH = 10;
-    this.PIXEL_HEIGHT = 100;
+    this.PIXEL_WIDTH = -1;
+    this.PIXEL_HEIGHT = -1;
+
+    // Time
+    this.FRAME_TIME_STANDARD = 1000 / 60;
+    this.timeLastFrame = 0;
+
+    // Speed
+    this.pixelsPerFrame = 100;
 
     // Samples
     this.SAMPLES_AA = 10;
@@ -23,6 +30,7 @@ export default class Tracer {
 
     // Var
     this.row = 0;
+    this.column = 0;
     this.isRendering = false;
 
     // Camera
@@ -41,12 +49,14 @@ export default class Tracer {
 
   start() {
     this.row = 0;
+    this.column = 0;
+
     this.isRendering = true;
   }
 
   // ____________________________________________________________________ Render
 
-  render() {
+  render(time) {
     // Loop
     requestAnimationFrame(this.render.bind(this));
 
@@ -55,10 +65,24 @@ export default class Tracer {
       return;
     }
 
+    // Frame duration
+    let frameDuration = time - this.timeLastFrame;
+    this.timeLastFrame = time;
+
+    if (frameDuration > this.FRAME_TIME_STANDARD * 1.1) {
+      this.pixelsPerFrame -= Math.floor(this.pixelsPerFrame * 0.5);
+      if (this.pixelsPerFrame < 1) {
+        this.pixelsPerFrame = 1;
+      }
+    } else {
+      this.pixelsPerFrame = Math.floor(this.pixelsPerFrame * 2);
+    }
+
     //  Scope
     const CONTEXT = this.CONTEXT;
     const PIXEL_WIDTH = this.PIXEL_WIDTH;
     const PIXEL_HEIGHT = this.PIXEL_HEIGHT;
+    const PIXELS_PER_FRAME = this.pixelsPerFrame;
     const IMAGEDATA_DATA = this.IMAGEDATA_DATA;
     const CAMERA = this.CAMERA;
     const SAMPLES_AA = this.SAMPLES_AA;
@@ -66,7 +90,10 @@ export default class Tracer {
     // Var
     let colour = vec3.fromValues(0.0, 0.0, 0.0);
     let colourSample;
+
+    // Out
     let row = this.row;
+    let column = this.column;
 
     // Render row
     let ray;
@@ -75,13 +102,15 @@ export default class Tracer {
     let i;
     let s;
 
-    for (i = 0; i < this.PIXEL_WIDTH; i++) {
+    for (i = 0; i < PIXELS_PER_FRAME; i++) {
+      // Reset colour
       colour[0] = 0.0;
       colour[1] = 0.0;
       colour[2] = 0.0;
 
+      // Samples
       for (s = 0; s < SAMPLES_AA; s++) {
-        u = (i + Math.random()) / PIXEL_WIDTH;
+        u = (column + Math.random()) / PIXEL_WIDTH;
         v = (PIXEL_HEIGHT - row + Math.random()) / PIXEL_HEIGHT;
 
         ray = CAMERA.getRay(u, v);
@@ -105,15 +134,25 @@ export default class Tracer {
       IMAGEDATA_DATA[1] = colour[1] * 255.99;
       IMAGEDATA_DATA[2] = colour[2] * 255.99;
 
-      CONTEXT.putImageData(this.IMAGEDATA, i, row);
+      CONTEXT.putImageData(this.IMAGEDATA, column, row);
+
+      // Next column
+      column++;
+
+      if (column >= PIXEL_WIDTH) {
+        // Next row
+        column = 0;
+        row++;
+
+        if (row >= PIXEL_HEIGHT) {
+          this.isRendering = false;
+        }
+      }
     }
 
-    // Next row
-    this.row++;
-
-    if (this.row >= this.PIXEL_HEIGHT) {
-      this.isRendering = false;
-    }
+    // Back
+    this.row = row;
+    this.column = column;
   }
 
   // ____________________________________________________________________ Colour
