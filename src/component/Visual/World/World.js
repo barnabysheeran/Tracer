@@ -1,5 +1,5 @@
-import HitableSphere from "./HitableSphere";
-import HitRecord from "./HitRecord";
+import HitableSphere from "./../Hit/HitableSphere";
+import HitRecord from "./../Hit/HitRecord";
 
 export default class World {
   constructor() {

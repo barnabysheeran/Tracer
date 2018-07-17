@@ -1,9 +1,9 @@
 import { vec3 } from "gl-matrix";
 
-import World from "./World";
-import Camera from "./Camera";
-import Ray from "./Ray";
-import HitRecord from "./HitRecord";
+import World from "./World/World";
+import Camera from "./Camera/Camera";
+import Ray from "./Ray/Ray";
+import HitRecord from "./Hit/HitRecord";
 
 export default class Tracer {
   constructor(context) {

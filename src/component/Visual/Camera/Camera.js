@@ -1,6 +1,6 @@
 import { vec3 } from "gl-matrix";
 
-import Ray from "./Ray";
+import Ray from "../Ray/Ray";
 
 export default class Camera {
   constructor() {
