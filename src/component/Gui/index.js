@@ -1,8 +1,8 @@
 import React from "react";
 
-import GuiPageTitle from "./GuiPageTitle";
-import GuiMenuButton from "./GuiMenuButton";
-import GuiMenuTitle from "./GuiMenuTitle";
+import MenuTitle from "./MenuTitle";
+import MenuButton from "./MenuButton";
+import StatusBar from "./StatusBar";
 
 import style from "./../../index.css";
 
@@ -16,32 +16,35 @@ export default class Gui extends React.Component {
   render() {
     return (
       <div className={style.gui}>
-        <GuiPageTitle />
         <div className={style.guimenu}>
-          <GuiMenuTitle text="AA Sample" />
-          <GuiMenuButton
+          <MenuTitle text=" " />
+          <MenuButton text="Clear" onClick={this.props.onClickClear} />
+          <MenuTitle text="AA Sample" />
+          <MenuButton
             text="1"
             value={1}
             onClick={this.props.onClickAASamples}
           />
-          <GuiMenuButton
+          <MenuButton
             text="10"
             value={10}
             onClick={this.props.onClickAASamples}
           />
-          <GuiMenuButton
+          <MenuButton
             text="100"
             value={100}
             onClick={this.props.onClickAASamples}
           />
-          <GuiMenuButton
+          <MenuButton
             text="500"
             value={500}
             onClick={this.props.onClickAASamples}
           />
-          <GuiMenuTitle text=" " />
-          <GuiMenuButton text="Clear" onClick={this.props.onClickClear} />
-          <GuiMenuButton text="Start" onClick={this.props.onClickStart} />
+          <MenuTitle text=" " />
+          <MenuButton text="Start" onClick={this.props.onClickStart} />
+        </div>
+        <div>
+          <StatusBar status={this.props.status} />
         </div>
       </div>
     );

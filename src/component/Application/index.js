@@ -11,9 +11,17 @@ export default class Application extends React.Component {
   constructor(props) {
     super(props);
 
+    // State
+    this.state = {
+      status: "Initialised"
+    };
+
+    // Scope
     this.onClickClear = this.onClickClear.bind(this);
     this.onClickStart = this.onClickStart.bind(this);
     this.onClickAASamples = this.onClickAASamples.bind(this);
+
+    this.setStatus = this.setStatus.bind(this);
   }
 
   // _______________________________________________________________ Interaction
@@ -30,6 +38,12 @@ export default class Application extends React.Component {
     this.VISUAL.setAASamples(samples);
   }
 
+  // ____________________________________________________________________ Status
+
+  setStatus(status) {
+    this.setState({ status: status });
+  }
+
   // ____________________________________________________________________ Render
 
   render() {
@@ -39,8 +53,9 @@ export default class Application extends React.Component {
           onClickClear={this.onClickClear}
           onClickStart={this.onClickStart}
           onClickAASamples={this.onClickAASamples}
+          status={this.state.status}
         />
-        <Visual ref={ref => (this.VISUAL = ref)} />
+        <Visual ref={ref => (this.VISUAL = ref)} setStatus={this.setStatus} />
       </div>
     );
   }

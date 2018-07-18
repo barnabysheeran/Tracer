@@ -2,7 +2,7 @@ import React from "react";
 
 import style from "./../../../index.css";
 
-export default class GuiPageTitle extends React.Component {
+export default class StatusBar extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -10,6 +10,10 @@ export default class GuiPageTitle extends React.Component {
   // ____________________________________________________________________ Render
 
   render() {
-    return <div className={style.guipagetitle}>Tracer</div>;
+    return (
+      <div className={style.guimenu + " " + style.guistatusbar}>
+        {this.props.status}
+      </div>
+    );
   }
 }

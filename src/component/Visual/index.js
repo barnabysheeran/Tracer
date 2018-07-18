@@ -10,6 +10,9 @@ export default class Visual extends React.Component {
 
     // Canvas Reference
     this.storeCanvasReference = this.storeCanvasReference.bind(this);
+
+    // Scope
+    this.setStatus = this.setStatus.bind(this);
   }
 
   // _________________________________________________________________ Reference
@@ -25,7 +28,7 @@ export default class Visual extends React.Component {
     this.CONTEXT = this.CANVAS.getContext("2d");
 
     // Tracer
-    this.TRACER = new Tracer(this.CONTEXT);
+    this.TRACER = new Tracer(this.CONTEXT, this.setStatus);
     this.shape(800, 400);
     this.TRACER.clear();
     this.TRACER.start();
@@ -43,6 +46,10 @@ export default class Visual extends React.Component {
 
   setAASamples(samples) {
     this.TRACER.setAASamples(samples);
+  }
+
+  setStatus(status) {
+    this.props.setStatus(status);
   }
 
   // _____________________________________________________________________ Shape

@@ -6,8 +6,9 @@ import Ray from "./Ray/Ray";
 import HitRecord from "./Hit/HitRecord";
 
 export default class Tracer {
-  constructor(context) {
+  constructor(context, setStatus) {
     this.CONTEXT = context;
+    this.setStatus = setStatus;
 
     // Dimensions
     this.PIXEL_WIDTH = -1;
@@ -16,6 +17,7 @@ export default class Tracer {
     // Time
     this.FRAME_TIME_STANDARD = 1000 / 60;
     this.timeLastFrame = 0;
+    this.timeRenderStart = 0;
 
     // Speed
     this.pixelsPerFrame = 100;
@@ -36,12 +38,14 @@ export default class Tracer {
     // Camera
     this.CAMERA = new Camera();
 
-    // World
+    // Create World
     this.WORLD = new World();
+
+    // Populate World
     this.WORLD.addSphere(vec3.fromValues(0.0, 0.0, -1.0), 0.5);
     this.WORLD.addSphere(vec3.fromValues(0.0, -100.5, -1.0), 100);
 
-    // Loop
+    // Start Loop
     requestAnimationFrame(this.render.bind(this));
   }
 
@@ -51,7 +55,19 @@ export default class Tracer {
     this.row = 0;
     this.column = 0;
 
+    let d = new Date();
+    this.timeRenderStart = d.getTime();
+
+    this.setStatus("Render ...");
     this.isRendering = true;
+  }
+
+  onRenderComplete() {
+    let d = new Date();
+    let timeTaken = d.getTime() - this.timeRenderStart;
+
+    this.setStatus("Complete in " + (timeTaken / 1000).toFixed(2) + "s");
+    this.isRendering = false;
   }
 
   // ____________________________________________________________________ Render
@@ -145,12 +161,12 @@ export default class Tracer {
         row++;
 
         if (row >= PIXEL_HEIGHT) {
-          this.isRendering = false;
+          this.onRenderComplete();
         }
       }
     }
 
-    // Back
+    // Copy back
     this.row = row;
     this.column = column;
   }
@@ -239,6 +255,7 @@ export default class Tracer {
     CONTEXT.fillStyle = "#000000";
     CONTEXT.fillRect(0, 0, this.PIXEL_WIDTH, this.PIXEL_HEIGHT);
 
+    this.setStatus("Cleared");
     this.isRendering = false;
   }
 
