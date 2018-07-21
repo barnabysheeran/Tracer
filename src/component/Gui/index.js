@@ -18,7 +18,21 @@ export default class Gui extends React.Component {
       <div className={style.gui}>
         <div className={style.guimenu}>
           <MenuTitle text=" " />
+
           <MenuButton text="Clear" onClick={this.props.onClickClear} />
+
+          <MenuTitle text="Scene" />
+          <MenuButton
+            text="Test Lambertian"
+            value={0}
+            onClick={this.props.onClickSetScene}
+          />
+          <MenuButton
+            text="Test Metal"
+            value={1}
+            onClick={this.props.onClickSetScene}
+          />
+
           <MenuTitle text="AA Sample" />
           <MenuButton
             text="1"

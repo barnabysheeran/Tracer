@@ -48,6 +48,10 @@ export default class Visual extends React.Component {
     this.RENDERER.setAASamples(samples);
   }
 
+  setScene(sceneId) {
+    this.RENDERER.setScene(sceneId);
+  }
+
   setStatus(status) {
     this.props.setStatus(status);
   }

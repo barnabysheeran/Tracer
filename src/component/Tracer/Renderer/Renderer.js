@@ -40,13 +40,16 @@ export default class Renderer {
 
     // Create World
     this.WORLD = new World();
-
-    // Populate World
-    this.WORLD.addSphere(vec3.fromValues(0.0, 0.0, -1.0), 0.5);
-    this.WORLD.addSphere(vec3.fromValues(0.0, -100.5, -1.0), 100);
+    this.setScene(0);
 
     // Start Loop
     requestAnimationFrame(this.render.bind(this));
+  }
+
+  // _____________________________________________________________________ Scene
+
+  setScene(sceneId) {
+    this.WORLD.setScene(sceneId);
   }
 
   // _____________________________________________________________________ Start

@@ -20,6 +20,7 @@ export default class Application extends React.Component {
     this.onClickClear = this.onClickClear.bind(this);
     this.onClickStart = this.onClickStart.bind(this);
     this.onClickAASamples = this.onClickAASamples.bind(this);
+    this.onClickSetScene = this.onClickSetScene.bind(this);
 
     this.setStatus = this.setStatus.bind(this);
   }
@@ -27,15 +28,19 @@ export default class Application extends React.Component {
   // _______________________________________________________________ Interaction
 
   onClickClear() {
-    this.VISUAL.clear();
+    this.TRACER.clear();
   }
 
   onClickStart() {
-    this.VISUAL.start();
+    this.TRACER.start();
   }
 
   onClickAASamples(samples) {
-    this.VISUAL.setAASamples(samples);
+    this.TRACER.setAASamples(samples);
+  }
+
+  onClickSetScene(sceneId) {
+    this.TRACER.setScene(sceneId);
   }
 
   // ____________________________________________________________________ Status
@@ -53,9 +58,10 @@ export default class Application extends React.Component {
           onClickClear={this.onClickClear}
           onClickStart={this.onClickStart}
           onClickAASamples={this.onClickAASamples}
+          onClickSetScene={this.onClickSetScene}
           status={this.state.status}
         />
-        <Tracer ref={ref => (this.VISUAL = ref)} setStatus={this.setStatus} />
+        <Tracer ref={ref => (this.TRACER = ref)} setStatus={this.setStatus} />
       </div>
     );
   }
