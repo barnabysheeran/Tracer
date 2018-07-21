@@ -1,7 +1,7 @@
 import React from "react";
 
 import Gui from "./../Gui";
-import Visual from "./../Visual";
+import Tracer from "./../Tracer";
 
 import style from "./../../index.css";
 
@@ -55,7 +55,7 @@ export default class Application extends React.Component {
           onClickAASamples={this.onClickAASamples}
           status={this.state.status}
         />
-        <Visual ref={ref => (this.VISUAL = ref)} setStatus={this.setStatus} />
+        <Tracer ref={ref => (this.VISUAL = ref)} setStatus={this.setStatus} />
       </div>
     );
   }

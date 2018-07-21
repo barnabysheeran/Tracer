@@ -1,11 +1,11 @@
 import { vec3 } from "gl-matrix";
 
-import World from "./World/World";
-import Camera from "./Camera/Camera";
-import Ray from "./Ray/Ray";
-import HitRecord from "./Hit/HitRecord";
+import World from "../World/World";
+import Camera from "../Camera/Camera";
+import Ray from "../Ray/Ray";
+import HitRecord from "../Hit/HitRecord";
 
-export default class Tracer {
+export default class Renderer {
   constructor(context, setStatus) {
     this.CONTEXT = context;
     this.setStatus = setStatus;
