@@ -5,7 +5,7 @@ import Ray from "../Ray/Ray";
 export default class Camera {
   constructor() {
     // Const
-    this.LOWER_LEFT_CORNER = vec3.fromValues(-2.0, -1.0, -1.0);
+    this.LOWER_LEFT_CORNER = vec3.fromValues(-2.0, -1.0, -1.0); // TODO Set with shape
     this.HORIZONTAL = vec3.fromValues(4.0, 0.0, 0.0); // TODO Set with shape
     this.VERTICAL = vec3.fromValues(0.0, 2.0, 0.0); // TODO Set with shape
     this.POSITION_ORIGIN = vec3.fromValues(0.0, 0.0, 0.0);

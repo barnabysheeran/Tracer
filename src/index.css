@@ -85,5 +85,6 @@ body {
 
 .guistatusbar {
   position: absolute;
+  width: 500px;
   bottom: 20px;
 }
