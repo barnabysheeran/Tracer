@@ -1,8 +1,7 @@
 export default class Material {
-  constructor(rayIn, hitRecord, attenuation, scattered) {
-    rayIn;
-    hitRecord;
-    attenuation;
-    scattered;
+  constructor(albedo) {
+    this.ALBEDO = albedo;
   }
+
+  scatter() {}
 }

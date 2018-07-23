@@ -40,8 +40,9 @@ export default class Visual extends React.Component {
     this.RENDERER.clear();
   }
 
-  start() {
-    this.RENDERER.start();
+  setDimensions(dimensions) {
+    this.shape(dimensions[0], dimensions[1]);
+    this.RENDERER.clear();
   }
 
   setAASamples(samples) {
@@ -50,6 +51,10 @@ export default class Visual extends React.Component {
 
   setScene(sceneId) {
     this.RENDERER.setScene(sceneId);
+  }
+
+  start() {
+    this.RENDERER.start();
   }
 
   setStatus(status) {

@@ -18,10 +18,10 @@ export default class Application extends React.Component {
 
     // Scope
     this.onClickClear = this.onClickClear.bind(this);
-    this.onClickStart = this.onClickStart.bind(this);
-    this.onClickAASamples = this.onClickAASamples.bind(this);
+    this.onClickSetDimensions = this.onClickSetDimensions.bind(this);
     this.onClickSetScene = this.onClickSetScene.bind(this);
-
+    this.onClickSetAASamples = this.onClickSetAASamples.bind(this);
+    this.onClickStart = this.onClickStart.bind(this);
     this.setStatus = this.setStatus.bind(this);
   }
 
@@ -31,16 +31,20 @@ export default class Application extends React.Component {
     this.TRACER.clear();
   }
 
-  onClickStart() {
-    this.TRACER.start();
-  }
-
-  onClickAASamples(samples) {
-    this.TRACER.setAASamples(samples);
+  onClickSetDimensions(dimensions) {
+    this.TRACER.setDimensions(dimensions);
   }
 
   onClickSetScene(sceneId) {
     this.TRACER.setScene(sceneId);
+  }
+
+  onClickSetAASamples(samples) {
+    this.TRACER.setAASamples(samples);
+  }
+
+  onClickStart() {
+    this.TRACER.start();
   }
 
   // ____________________________________________________________________ Status
@@ -56,9 +60,10 @@ export default class Application extends React.Component {
       <div className={style.fullscreen}>
         <Gui
           onClickClear={this.onClickClear}
-          onClickStart={this.onClickStart}
-          onClickAASamples={this.onClickAASamples}
+          onClickSetDimensions={this.onClickSetDimensions}
           onClickSetScene={this.onClickSetScene}
+          onClickSetAASamples={this.onClickSetAASamples}
+          onClickStart={this.onClickStart}
           status={this.state.status}
         />
         <Tracer ref={ref => (this.TRACER = ref)} setStatus={this.setStatus} />

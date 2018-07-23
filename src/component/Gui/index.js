@@ -21,14 +21,36 @@ export default class Gui extends React.Component {
 
           <MenuButton text="Clear" onClick={this.props.onClickClear} />
 
+          <MenuTitle text="Size" />
+          <MenuButton
+            text="800*400"
+            value={[800, 400]}
+            onClick={this.props.onClickSetDimensions}
+          />
+          <MenuButton
+            text="800*800"
+            value={[800, 800]}
+            onClick={this.props.onClickSetDimensions}
+          />
+          <MenuButton
+            text="1200*600"
+            value={[1200, 600]}
+            onClick={this.props.onClickSetDimensions}
+          />
+          <MenuButton
+            text="1800*600"
+            value={[1800, 600]}
+            onClick={this.props.onClickSetDimensions}
+          />
+
           <MenuTitle text="Scene" />
           <MenuButton
-            text="Test Lambertian"
+            text="Test Material"
             value={0}
             onClick={this.props.onClickSetScene}
           />
           <MenuButton
-            text="Test Metal"
+            text="Test Many"
             value={1}
             onClick={this.props.onClickSetScene}
           />
@@ -37,22 +59,22 @@ export default class Gui extends React.Component {
           <MenuButton
             text="1"
             value={1}
-            onClick={this.props.onClickAASamples}
+            onClick={this.props.onClickSetAASamples}
           />
           <MenuButton
             text="10"
             value={10}
-            onClick={this.props.onClickAASamples}
+            onClick={this.props.onClickSetAASamples}
           />
           <MenuButton
             text="100"
             value={100}
-            onClick={this.props.onClickAASamples}
+            onClick={this.props.onClickSetAASamples}
           />
           <MenuButton
             text="500"
             value={500}
-            onClick={this.props.onClickAASamples}
+            onClick={this.props.onClickSetAASamples}
           />
           <MenuTitle text=" " />
           <MenuButton text="Start" onClick={this.props.onClickStart} />

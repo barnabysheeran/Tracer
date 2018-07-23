@@ -8,7 +8,7 @@ export default class World {
     this.HITABLES = [];
   }
 
-  // __________________________________________________________________ Populate
+  // _____________________________________________________________________ Scene
 
   setScene(sceneId) {
     // Old
@@ -16,14 +16,41 @@ export default class World {
 
     // New
     switch (sceneId) {
-      case 0:
-        this.addSphere(vec3.fromValues(0.0, 0.0, -1.0), 0.5);
-        this.addSphere(vec3.fromValues(0.0, -100.5, -1.0), 100);
+      case 0: // Test Material
+        this.setSceneTestMaterial();
         break;
-      case 1:
-        this.addSphere(vec3.fromValues(0.0, 0.0, -1.0), 0.5);
+      case 1: // Test Many
+        this.setSceneTestMany();
         break;
     }
+  }
+
+  setSceneTestMaterial() {
+    this.addSphere(vec3.fromValues(-1.05, 0.0, -1.0), 0.5);
+    this.addSphere(vec3.fromValues(0.0, 0.0, -1.0), 0.5);
+    this.addSphere(vec3.fromValues(1.05, 0.0, -1.0), 0.5);
+    this.addSphere(vec3.fromValues(0.0, -100.5, -1.0), 100); // 'Floor'
+  }
+
+  setSceneTestMany() {
+    const RADIUS = 1;
+    const TOTAL = 50;
+    const PROGRESS_INTERVAL = (Math.PI * 2.0) / TOTAL;
+
+    let i;
+
+    for (i = 0; i < TOTAL; i++) {
+      this.addSphere(
+        vec3.fromValues(
+          Math.cos(PROGRESS_INTERVAL * i) * RADIUS,
+          0.0,
+          Math.sin(PROGRESS_INTERVAL * i) * RADIUS
+        ),
+        0.06
+      );
+    }
+
+    this.addSphere(vec3.fromValues(0.0, -100.5, -1.0), 100); // 'Floor'
   }
 
   // _____________________________________________________________________ Clear

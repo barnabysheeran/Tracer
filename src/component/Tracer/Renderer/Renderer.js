@@ -191,8 +191,6 @@ export default class Renderer {
         hitRecord.position[2] + hitRecord.normal[2] + randomUnitSphere[2]
       );
 
-      //console.log(target);
-
       let newRay = new Ray();
 
       newRay.setPositionOrigin(
@@ -248,6 +246,8 @@ export default class Renderer {
   shape(w, h) {
     this.PIXEL_WIDTH = w;
     this.PIXEL_HEIGHT = h;
+
+    this.CAMERA.shape(w, h);
   }
 
   // _____________________________________________________________________ Clear
