@@ -21,12 +21,10 @@ export default class World {
     );
 
     this.MATERIAL_LAMBERTIAN_A = new MaterialLambertian(
-      vec3.fromValues(0.8, 0.8, 0.8),
-      1.0
+      vec3.fromValues(0.8, 0.8, 0.8)
     );
     this.MATERIAL_LAMBERTIAN_B = new MaterialLambertian(
-      vec3.fromValues(1.0, 0.4, 0.4),
-      1.0
+      vec3.fromValues(1.0, 0.4, 0.4)
     );
   }
 
