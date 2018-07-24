@@ -9,11 +9,20 @@ export default class MaterialMetal extends Material {
 
   scatter(rayIn, hitRecord, attenuation, scattered) {
     const ALBEDO = this.ALBEDO;
+    const ROUGH = this.ROUGH;
 
+    // Reflected
     let reflected = this.reflect(
       rayIn.getDirectionNormalized(),
       hitRecord.normal
     );
+
+    // Rough
+    let roughness = this.getRandominUnitSphere();
+
+    roughness[0] *= ROUGH;
+    roughness[1] *= ROUGH;
+    roughness[2] *= ROUGH;
 
     // Scattered
     scattered.setPositionOrigin(
@@ -22,7 +31,11 @@ export default class MaterialMetal extends Material {
       hitRecord.position[2]
     );
 
-    scattered.setDirection(reflected[0], reflected[1], reflected[2]);
+    scattered.setDirection(
+      reflected[0] + roughness[0],
+      reflected[1] + roughness[1],
+      reflected[2] + roughness[2]
+    );
 
     // Attenuation
     attenuation[0] = ALBEDO[0];

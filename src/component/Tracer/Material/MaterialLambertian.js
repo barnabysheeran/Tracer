@@ -11,14 +11,20 @@ export default class MaterialLambertian extends Material {
     rayIn;
 
     const ALBEDO = this.ALBEDO;
+    const ROUGH = this.ROUGH;
 
-    let randomUnitSphere = this.getRandominUnitSphere();
+    // Rough
+    let roughness = this.getRandominUnitSphere();
+
+    roughness[0] *= ROUGH;
+    roughness[1] *= ROUGH;
+    roughness[2] *= ROUGH;
 
     // Target
     let target = vec3.fromValues(
-      hitRecord.position[0] + hitRecord.normal[0] + randomUnitSphere[0],
-      hitRecord.position[1] + hitRecord.normal[1] + randomUnitSphere[1],
-      hitRecord.position[2] + hitRecord.normal[2] + randomUnitSphere[2]
+      hitRecord.position[0] + hitRecord.normal[0] + roughness[0],
+      hitRecord.position[1] + hitRecord.normal[1] + roughness[1],
+      hitRecord.position[2] + hitRecord.normal[2] + roughness[2]
     );
 
     // Scattered

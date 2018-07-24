@@ -12,21 +12,21 @@ export default class World {
 
     // Materials
     this.MATERIAL_METAL_A = new MaterialMetal(
-      vec3.fromValues(0.5, 0.5, 0.5),
-      1.0
+      vec3.fromValues(0.8, 0.8, 0.8),
+      0.1
     );
     this.MATERIAL_METAL_B = new MaterialMetal(
-      vec3.fromValues(0.5, 0.5, 0.5),
-      0.0
+      vec3.fromValues(0.8, 0.8, 0.8),
+      0.5
     );
 
     this.MATERIAL_LAMBERTIAN_A = new MaterialLambertian(
-      vec3.fromValues(0.5, 0.5, 0.5),
+      vec3.fromValues(0.8, 0.8, 0.8),
       1.0
     );
     this.MATERIAL_LAMBERTIAN_B = new MaterialLambertian(
-      vec3.fromValues(1.0, 0.5, 0.5),
-      0.0
+      vec3.fromValues(1.0, 0.4, 0.4),
+      1.0
     );
   }
 
@@ -81,17 +81,17 @@ export default class World {
 
     //
     this.addSphere(
-      vec3.fromValues(-0.501, 0.0, -1.0),
+      vec3.fromValues(-0.505, 0.0, -1.0),
       0.5,
       MATERIAL_LAMBERTIAN_A
     );
     this.addSphere(
-      vec3.fromValues(0.501, 0.0, -1.0),
+      vec3.fromValues(0.505, 0.0, -1.0),
       0.5,
       MATERIAL_LAMBERTIAN_B
     );
 
-    this.addSphere(vec3.fromValues(-0.1, -0.35, -0.6), 0.1, MATERIAL_METAL_A);
+    this.addSphere(vec3.fromValues(-0.15, -0.4, -0.7), 0.1, MATERIAL_METAL_A);
 
     // 'Floor'
     this.addSphere(
@@ -108,11 +108,11 @@ export default class World {
     const MATERIAL_LAMBERTIAN_B = this.MATERIAL_LAMBERTIAN_B;
 
     //
-    this.addSphere(vec3.fromValues(-0.501, 0.0, -1.0), 0.5, MATERIAL_METAL_A);
-    this.addSphere(vec3.fromValues(0.501, 0.0, -1.0), 0.5, MATERIAL_METAL_B);
+    this.addSphere(vec3.fromValues(-0.505, 0.0, -1.0), 0.5, MATERIAL_METAL_A);
+    this.addSphere(vec3.fromValues(0.505, 0.0, -1.0), 0.5, MATERIAL_METAL_B);
 
     this.addSphere(
-      vec3.fromValues(-0.1, -0.35, -0.6),
+      vec3.fromValues(-0.15, -0.4, -0.7),
       0.1,
       MATERIAL_LAMBERTIAN_B
     );

@@ -1,9 +1,9 @@
 import { vec3 } from "gl-matrix";
 
 export default class Material {
-  constructor(albedo, smoothness) {
+  constructor(albedo, rough) {
     this.ALBEDO = albedo;
-    this.SMOOTHNESS = smoothness;
+    this.ROUGH = rough;
   }
 
   scatter(rayIn, hitRecord, attenuation, scattered) {
