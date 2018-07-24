@@ -45,13 +45,18 @@ export default class Gui extends React.Component {
 
           <MenuTitle text="Scene" />
           <MenuButton
-            text="Test Material"
+            text="Test"
             value={0}
             onClick={this.props.onClickSetScene}
           />
           <MenuButton
-            text="Test Many"
+            text="Lambert Smooth"
             value={1}
+            onClick={this.props.onClickSetScene}
+          />
+          <MenuButton
+            text="Metal Smooth"
+            value={2}
             onClick={this.props.onClickSetScene}
           />
 

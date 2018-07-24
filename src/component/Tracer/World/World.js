@@ -10,10 +10,23 @@ export default class World {
   constructor() {
     this.HITABLES = [];
 
-    this.MATERIAL_METAL = new MaterialMetal(vec3.fromValues(0.8, 0.3, 0.3));
+    // Materials
+    this.MATERIAL_METAL_A = new MaterialMetal(
+      vec3.fromValues(0.5, 0.5, 0.5),
+      1.0
+    );
+    this.MATERIAL_METAL_B = new MaterialMetal(
+      vec3.fromValues(0.5, 0.5, 0.5),
+      0.0
+    );
 
-    this.MATERIAL_LAMBERTIAN = new MaterialLambertian(
-      vec3.fromValues(0.8, 0.8, 0.0)
+    this.MATERIAL_LAMBERTIAN_A = new MaterialLambertian(
+      vec3.fromValues(0.5, 0.5, 0.5),
+      1.0
+    );
+    this.MATERIAL_LAMBERTIAN_B = new MaterialLambertian(
+      vec3.fromValues(1.0, 0.5, 0.5),
+      0.0
     );
   }
 
@@ -26,63 +39,89 @@ export default class World {
     // New
     switch (sceneId) {
       case 0: // Test Material
-        this.setSceneTestMaterial();
+        this.setSceneTest();
         break;
       case 1: // Test Many
-        this.setSceneTestMany();
+        this.setSceneLambertianTest();
+        break;
+      case 2: // Test Materials 2
+        this.setSceneMetalTest();
         break;
     }
   }
 
   // _____________________________________________________________ Test Material
 
-  setSceneTestMaterial() {
-    const MATERIAL_METAL = this.MATERIAL_METAL;
-    const MATERIAL_LAMBERTIAN = this.MATERIAL_LAMBERTIAN;
+  setSceneTest() {
+    const MATERIAL_METAL_A = this.MATERIAL_METAL_A;
+    const MATERIAL_METAL_B = this.MATERIAL_METAL_B;
 
-    this.addSphere(vec3.fromValues(-1.05, 0.0, -1.0), 0.5, MATERIAL_METAL);
+    const MATERIAL_LAMBERTIAN_A = this.MATERIAL_LAMBERTIAN_A;
+    const MATERIAL_LAMBERTIAN_B = this.MATERIAL_LAMBERTIAN_B;
 
-    this.addSphere(vec3.fromValues(0.0, 0.0, -1.0), 0.5, MATERIAL_LAMBERTIAN);
+    //
+    this.addSphere(vec3.fromValues(-1.05, 0.0, -1.0), 0.5, MATERIAL_METAL_A);
 
-    this.addSphere(vec3.fromValues(1.05, 0.0, -1.0), 0.5, MATERIAL_METAL);
+    this.addSphere(vec3.fromValues(0.0, 0.0, -1.0), 0.5, MATERIAL_LAMBERTIAN_B);
+
+    this.addSphere(vec3.fromValues(1.05, 0.0, -1.0), 0.5, MATERIAL_METAL_B);
 
     // 'Floor'
     this.addSphere(
       vec3.fromValues(0.0, -100.5, -1.0),
       100,
-      MATERIAL_LAMBERTIAN
+      MATERIAL_LAMBERTIAN_A
     );
   }
 
-  // _________________________________________________________________ Test Many
+  setSceneLambertianTest() {
+    const MATERIAL_METAL_A = this.MATERIAL_METAL_A;
+    const MATERIAL_LAMBERTIAN_A = this.MATERIAL_LAMBERTIAN_A;
+    const MATERIAL_LAMBERTIAN_B = this.MATERIAL_LAMBERTIAN_B;
 
-  setSceneTestMany() {
-    const MATERIAL_METAL = this.MATERIAL_METAL;
-    const MATERIAL_LAMBERTIAN = this.MATERIAL_LAMBERTIAN;
+    //
+    this.addSphere(
+      vec3.fromValues(-0.501, 0.0, -1.0),
+      0.5,
+      MATERIAL_LAMBERTIAN_A
+    );
+    this.addSphere(
+      vec3.fromValues(0.501, 0.0, -1.0),
+      0.5,
+      MATERIAL_LAMBERTIAN_B
+    );
 
-    const RADIUS = 1;
-    const TOTAL = 50;
-    const PROGRESS_INTERVAL = (Math.PI * 2.0) / TOTAL;
-
-    let i;
-
-    for (i = 0; i < TOTAL; i++) {
-      this.addSphere(
-        vec3.fromValues(
-          Math.cos(PROGRESS_INTERVAL * i) * RADIUS,
-          0.0,
-          Math.sin(PROGRESS_INTERVAL * i) * RADIUS
-        ),
-        0.06,
-        MATERIAL_METAL
-      );
-    }
+    this.addSphere(vec3.fromValues(-0.1, -0.35, -0.6), 0.1, MATERIAL_METAL_A);
 
     // 'Floor'
     this.addSphere(
       vec3.fromValues(0.0, -100.5, -1.0),
       100,
-      MATERIAL_LAMBERTIAN
+      MATERIAL_LAMBERTIAN_A
+    );
+  }
+
+  setSceneMetalTest() {
+    const MATERIAL_METAL_A = this.MATERIAL_METAL_A;
+    const MATERIAL_METAL_B = this.MATERIAL_METAL_B;
+    const MATERIAL_LAMBERTIAN_A = this.MATERIAL_LAMBERTIAN_A;
+    const MATERIAL_LAMBERTIAN_B = this.MATERIAL_LAMBERTIAN_B;
+
+    //
+    this.addSphere(vec3.fromValues(-0.501, 0.0, -1.0), 0.5, MATERIAL_METAL_A);
+    this.addSphere(vec3.fromValues(0.501, 0.0, -1.0), 0.5, MATERIAL_METAL_B);
+
+    this.addSphere(
+      vec3.fromValues(-0.1, -0.35, -0.6),
+      0.1,
+      MATERIAL_LAMBERTIAN_B
+    );
+
+    // 'Floor'
+    this.addSphere(
+      vec3.fromValues(0.0, -100.5, -1.0),
+      100,
+      MATERIAL_LAMBERTIAN_A
     );
   }
 

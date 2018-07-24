@@ -3,8 +3,8 @@ import { vec3 } from "gl-matrix";
 import Material from "./Material";
 
 export default class MaterialLambertian extends Material {
-  constructor(albedo) {
-    super(albedo);
+  constructor(albedo, smoothness) {
+    super(albedo, smoothness);
   }
 
   scatter(rayIn, hitRecord, attenuation, scattered) {
