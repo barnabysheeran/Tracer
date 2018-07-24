@@ -1,6 +1,6 @@
 import React from "react";
 
-import Tracer from "./Tracer/Tracer";
+import Renderer from "./Renderer/Renderer";
 
 import style from "./../../index.css";
 
@@ -10,6 +10,9 @@ export default class Visual extends React.Component {
 
     // Canvas Reference
     this.storeCanvasReference = this.storeCanvasReference.bind(this);
+
+    // Scope
+    this.setStatus = this.setStatus.bind(this);
   }
 
   // _________________________________________________________________ Reference
@@ -25,24 +28,37 @@ export default class Visual extends React.Component {
     this.CONTEXT = this.CANVAS.getContext("2d");
 
     // Tracer
-    this.TRACER = new Tracer(this.CONTEXT);
+    this.RENDERER = new Renderer(this.CONTEXT, this.setStatus);
     this.shape(800, 400);
-    this.TRACER.clear();
-    this.TRACER.start();
+    this.RENDERER.clear();
+    this.RENDERER.start();
   }
 
   // _______________________________________________________________ Interaction
 
   clear() {
-    this.TRACER.clear();
+    this.RENDERER.clear();
   }
 
-  start() {
-    this.TRACER.start();
+  setDimensions(dimensions) {
+    this.shape(dimensions[0], dimensions[1]);
+    this.RENDERER.clear();
   }
 
   setAASamples(samples) {
-    this.TRACER.setAASamples(samples);
+    this.RENDERER.setAASamples(samples);
+  }
+
+  setScene(sceneId) {
+    this.RENDERER.setScene(sceneId);
+  }
+
+  start() {
+    this.RENDERER.start();
+  }
+
+  setStatus(status) {
+    this.props.setStatus(status);
   }
 
   // _____________________________________________________________________ Shape
@@ -61,7 +77,7 @@ export default class Visual extends React.Component {
     CANVAS.style.marginTop = h * -0.5 + "px";
 
     // Tracer
-    this.TRACER.shape(w, h);
+    this.RENDERER.shape(w, h);
   }
 
   // ____________________________________________________________________ Render

@@ -1,7 +1,7 @@
 import React from "react";
 
 import Gui from "./../Gui";
-import Visual from "./../Visual";
+import Tracer from "./../Tracer";
 
 import style from "./../../index.css";
 
@@ -11,23 +11,46 @@ export default class Application extends React.Component {
   constructor(props) {
     super(props);
 
+    // State
+    this.state = {
+      status: "Initialised"
+    };
+
+    // Scope
     this.onClickClear = this.onClickClear.bind(this);
+    this.onClickSetDimensions = this.onClickSetDimensions.bind(this);
+    this.onClickSetScene = this.onClickSetScene.bind(this);
+    this.onClickSetAASamples = this.onClickSetAASamples.bind(this);
     this.onClickStart = this.onClickStart.bind(this);
-    this.onClickAASamples = this.onClickAASamples.bind(this);
+    this.setStatus = this.setStatus.bind(this);
   }
 
   // _______________________________________________________________ Interaction
 
   onClickClear() {
-    this.VISUAL.clear();
+    this.TRACER.clear();
+  }
+
+  onClickSetDimensions(dimensions) {
+    this.TRACER.setDimensions(dimensions);
+  }
+
+  onClickSetScene(sceneId) {
+    this.TRACER.setScene(sceneId);
+  }
+
+  onClickSetAASamples(samples) {
+    this.TRACER.setAASamples(samples);
   }
 
   onClickStart() {
-    this.VISUAL.start();
+    this.TRACER.start();
   }
 
-  onClickAASamples(samples) {
-    this.VISUAL.setAASamples(samples);
+  // ____________________________________________________________________ Status
+
+  setStatus(status) {
+    this.setState({ status: status });
   }
 
   // ____________________________________________________________________ Render
@@ -37,10 +60,13 @@ export default class Application extends React.Component {
       <div className={style.fullscreen}>
         <Gui
           onClickClear={this.onClickClear}
+          onClickSetDimensions={this.onClickSetDimensions}
+          onClickSetScene={this.onClickSetScene}
+          onClickSetAASamples={this.onClickSetAASamples}
           onClickStart={this.onClickStart}
-          onClickAASamples={this.onClickAASamples}
+          status={this.state.status}
         />
-        <Visual ref={ref => (this.VISUAL = ref)} />
+        <Tracer ref={ref => (this.TRACER = ref)} setStatus={this.setStatus} />
       </div>
     );
   }

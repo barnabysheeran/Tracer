@@ -2,8 +2,9 @@ import { vec3 } from "gl-matrix";
 
 export default class Ray {
   constructor() {
-    this.POSITION_ORIGIN = vec3.fromValues(0, 0, 0);
-    this.DIRECTION = vec3.fromValues(0, 0, 0);
+    this.POSITION_ORIGIN = vec3.create();
+    this.DIRECTION = vec3.create();
+    this.DIRECTION_NORMALIZED = vec3.create();
   }
 
   // _______________________________________________________________________ Set
@@ -16,10 +17,14 @@ export default class Ray {
   }
 
   setDirection(x, y, z) {
+    // Set Direction
     const DIRECTION = this.DIRECTION;
     DIRECTION[0] = x;
     DIRECTION[1] = y;
     DIRECTION[2] = z;
+
+    // Set Direction Normalized
+    vec3.normalize(this.DIRECTION_NORMALIZED, DIRECTION);
   }
 
   // _______________________________________________________________________ Get
@@ -33,11 +38,7 @@ export default class Ray {
   }
 
   getDirectionNormalized() {
-    let normalized = vec3.fromValues(0, 0, 0);
-
-    vec3.normalizd = vec3.normalize(normalized, this.DIRECTION);
-
-    return normalized;
+    return this.DIRECTION_NORMALIZED;
   }
 
   // ______________________________________________________________ Point on Ray

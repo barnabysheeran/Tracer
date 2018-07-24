@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=Fira+Sans");
+
 html {
   height: 100%;
 }
@@ -33,41 +35,32 @@ body {
   position: absolute;
 }
 
-.guipagetitle {
-  font-family: "Arial", sans-serif;
-  font-size: 18px;
-  padding-left: 4px;
-  padding-bottom: 10px;
-  display: block;
-}
-
 .gui {
+  font-family: "Fira Sans", sans-serif;
   z-index: 200;
   position: absolute;
-  left: 12px;
-  top: 14px;
+  left: 20px;
+  height: 100%;
 }
 
 .guimenu {
-  font-family: "Arial", sans-serif;
   font-size: 12px;
-  width: 100px;
 }
 
 .guimenutitle {
   display: block;
-  height: 18px;
+  height: 20px;
   line-height: 18px;
-  padding-left: 4px;
-  margin-top: 1px;
+  padding-top: 20px;
 }
 
 .guimenubutton {
   display: block;
+  width: 100px;
   height: 18px;
   line-height: 18px;
   padding-left: 4px;
-  margin-top: 1px;
+  margin-top: 2px;
 
   color: #ffffff;
   background: #666666;
@@ -88,4 +81,10 @@ body {
 
   color: #666666;
   background: #ffffff;
+}
+
+.guistatusbar {
+  position: absolute;
+  width: 500px;
+  bottom: 20px;
 }

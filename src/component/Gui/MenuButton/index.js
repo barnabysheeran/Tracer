@@ -2,10 +2,11 @@ import React from "react";
 
 import style from "./../../../index.css";
 
-export default class GuiButton extends React.Component {
+export default class MenuButton extends React.Component {
   constructor(props) {
     super(props);
 
+    // Scope
     this.handleClick = this.handleClick.bind(this);
   }
 
