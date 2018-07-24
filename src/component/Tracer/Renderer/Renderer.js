@@ -134,7 +134,7 @@ export default class Renderer {
 
         ray = CAMERA.getRay(u, v);
 
-        colourSample = this.getColour(ray);
+        colourSample = this.getColour(ray, 0);
 
         colour[0] += colourSample[0];
         colour[1] += colourSample[1];
@@ -176,70 +176,114 @@ export default class Renderer {
 
   // ____________________________________________________________________ Colour
 
-  getColour(ray) {
+  getColour(ray, depth) {
     const WORLD = this.WORLD;
 
-    // Hit anything ?
+    // TODO MAXDEPTH
+
     let hitRecord = new HitRecord();
 
     if (WORLD.didHitAnything(ray, 0.001, Infinity, hitRecord) == true) {
-      let randomUnitSphere = this.getRandominUnitSphere();
+      let attenuation = vec3.create();
+      let scattered = new Ray();
 
-      let target = vec3.fromValues(
-        hitRecord.position[0] + hitRecord.normal[0] + randomUnitSphere[0],
-        hitRecord.position[1] + hitRecord.normal[1] + randomUnitSphere[1],
-        hitRecord.position[2] + hitRecord.normal[2] + randomUnitSphere[2]
-      );
+      if (
+        depth < 50 &&
+        hitRecord.material.scatter(ray, hitRecord, attenuation, scattered) ==
+          true
+      ) {
+        let colour = this.getColour(scattered, depth + 1);
 
-      let newRay = new Ray();
+        return new vec3.fromValues(
+          attenuation[0] * colour[0],
+          attenuation[1] * colour[1],
+          attenuation[2] * colour[2]
+        );
+      } else {
+        return vec3.create();
+      }
+    } else {
+      // Background
+      let directionNormalized = ray.getDirectionNormalized();
+      let t = 0.5 * (directionNormalized[1] + 1.0);
 
-      newRay.setPositionOrigin(
-        hitRecord.position[0],
-        hitRecord.position[1],
-        hitRecord.position[2]
-      );
+      let white = vec3.fromValues(1.0, 1.0, 1.0);
+      vec3.scale(white, white, 1.0 - t);
 
-      newRay.setDirection(
-        target[0] - hitRecord.position[0],
-        target[1] - hitRecord.position[1],
-        target[2] - hitRecord.position[2]
-      );
+      let blue = vec3.fromValues(0.5, 0.7, 1.0);
+      vec3.scale(blue, blue, t);
 
-      let colour = this.getColour(newRay);
+      let colour = vec3.fromValues(0.0, 0.0, 0.0);
+      vec3.add(colour, white, blue);
 
-      return vec3.fromValues(colour[0] * 0.5, colour[1] * 0.5, colour[2] * 0.5);
+      return colour;
     }
-
-    // Background
-    let directionNormalized = ray.getDirectionNormalized();
-    let t = 0.5 * (directionNormalized[1] + 1.0);
-
-    let white = vec3.fromValues(1.0, 1.0, 1.0);
-    vec3.scale(white, white, 1.0 - t);
-
-    let blue = vec3.fromValues(0.5, 0.7, 1.0);
-    vec3.scale(blue, blue, t);
-
-    let colour = vec3.fromValues(0.0, 0.0, 0.0);
-    vec3.add(colour, white, blue);
-
-    return colour;
   }
+
+  // getColour(ray) {
+  //   const WORLD = this.WORLD;
+
+  //   // Hit anything ?
+  //   let hitRecord = new HitRecord();
+
+  //   if (WORLD.didHitAnything(ray, 0.001, Infinity, hitRecord) == true) {
+  //     let randomUnitSphere = this.getRandominUnitSphere();
+
+  //     let target = vec3.fromValues(
+  //       hitRecord.position[0] + hitRecord.normal[0] + randomUnitSphere[0],
+  //       hitRecord.position[1] + hitRecord.normal[1] + randomUnitSphere[1],
+  //       hitRecord.position[2] + hitRecord.normal[2] + randomUnitSphere[2]
+  //     );
+
+  //     let newRay = new Ray();
+
+  //     newRay.setPositionOrigin(
+  //       hitRecord.position[0],
+  //       hitRecord.position[1],
+  //       hitRecord.position[2]
+  //     );
+
+  //     newRay.setDirection(
+  //       target[0] - hitRecord.position[0],
+  //       target[1] - hitRecord.position[1],
+  //       target[2] - hitRecord.position[2]
+  //     );
+
+  //     let colour = this.getColour(newRay);
+
+  //     return vec3.fromValues(colour[0] * 0.5, colour[1] * 0.5, colour[2] * 0.5);
+  //   }
+
+  //   // Background
+  //   let directionNormalized = ray.getDirectionNormalized();
+  //   let t = 0.5 * (directionNormalized[1] + 1.0);
+
+  //   let white = vec3.fromValues(1.0, 1.0, 1.0);
+  //   vec3.scale(white, white, 1.0 - t);
+
+  //   let blue = vec3.fromValues(0.5, 0.7, 1.0);
+  //   vec3.scale(blue, blue, t);
+
+  //   let colour = vec3.fromValues(0.0, 0.0, 0.0);
+  //   vec3.add(colour, white, blue);
+
+  //   return colour;
+  // }
 
   // _____________________________________________________________________ Shape
 
-  getRandominUnitSphere() {
-    // TODO Optimise
-    let p = vec3.fromValues(Infinity, Infinity, Infinity);
+  // getRandominUnitSphere() {
+  //   // TODO Optimise
+  //   let p = vec3.fromValues(Infinity, Infinity, Infinity);
 
-    while (vec3.squaredLength(p) >= 1.0) {
-      p[0] = Math.random() * 2.0 - 1.0;
-      p[1] = Math.random() * 2.0 - 1.0;
-      p[2] = Math.random() * 2.0 - 1.0;
-    }
+  //   while (vec3.squaredLength(p) >= 1.0) {
+  //     p[0] = Math.random() * 2.0 - 1.0;
+  //     p[1] = Math.random() * 2.0 - 1.0;
+  //     p[2] = Math.random() * 2.0 - 1.0;
+  //   }
 
-    return p;
-  }
+  //   return p;
+  // }
 
   // _____________________________________________________________________ Shape
 

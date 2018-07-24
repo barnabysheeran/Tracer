@@ -1,11 +1,20 @@
 import { vec3 } from "gl-matrix";
 
-import HitableSphere from "../Hit/HitableSphere";
 import HitRecord from "../Hit/HitRecord";
+import HitableSphere from "../Hit/HitableSphere";
+
+import MaterialLambertian from "../Material/MaterialLambertian";
+import MaterialMetal from "../Material/MaterialMetal";
 
 export default class World {
   constructor() {
     this.HITABLES = [];
+
+    this.MATERIAL_METAL = new MaterialMetal(vec3.fromValues(0.8, 0.3, 0.3));
+
+    this.MATERIAL_LAMBERTIAN = new MaterialLambertian(
+      vec3.fromValues(0.8, 0.8, 0.0)
+    );
   }
 
   // _____________________________________________________________________ Scene
@@ -25,14 +34,32 @@ export default class World {
     }
   }
 
+  // _____________________________________________________________ Test Material
+
   setSceneTestMaterial() {
-    this.addSphere(vec3.fromValues(-1.05, 0.0, -1.0), 0.5);
-    this.addSphere(vec3.fromValues(0.0, 0.0, -1.0), 0.5);
-    this.addSphere(vec3.fromValues(1.05, 0.0, -1.0), 0.5);
-    this.addSphere(vec3.fromValues(0.0, -100.5, -1.0), 100); // 'Floor'
+    const MATERIAL_METAL = this.MATERIAL_METAL;
+    const MATERIAL_LAMBERTIAN = this.MATERIAL_LAMBERTIAN;
+
+    this.addSphere(vec3.fromValues(-1.05, 0.0, -1.0), 0.5, MATERIAL_METAL);
+
+    this.addSphere(vec3.fromValues(0.0, 0.0, -1.0), 0.5, MATERIAL_LAMBERTIAN);
+
+    this.addSphere(vec3.fromValues(1.05, 0.0, -1.0), 0.5, MATERIAL_METAL);
+
+    // 'Floor'
+    this.addSphere(
+      vec3.fromValues(0.0, -100.5, -1.0),
+      100,
+      MATERIAL_LAMBERTIAN
+    );
   }
 
+  // _________________________________________________________________ Test Many
+
   setSceneTestMany() {
+    const MATERIAL_METAL = this.MATERIAL_METAL;
+    const MATERIAL_LAMBERTIAN = this.MATERIAL_LAMBERTIAN;
+
     const RADIUS = 1;
     const TOTAL = 50;
     const PROGRESS_INTERVAL = (Math.PI * 2.0) / TOTAL;
@@ -46,11 +73,17 @@ export default class World {
           0.0,
           Math.sin(PROGRESS_INTERVAL * i) * RADIUS
         ),
-        0.06
+        0.06,
+        MATERIAL_METAL
       );
     }
 
-    this.addSphere(vec3.fromValues(0.0, -100.5, -1.0), 100); // 'Floor'
+    // 'Floor'
+    this.addSphere(
+      vec3.fromValues(0.0, -100.5, -1.0),
+      100,
+      MATERIAL_LAMBERTIAN
+    );
   }
 
   // _____________________________________________________________________ Clear
@@ -61,8 +94,8 @@ export default class World {
 
   // ____________________________________________________________________ Sphere
 
-  addSphere(position, radius) {
-    this.HITABLES.push(new HitableSphere(position, radius));
+  addSphere(position, radius, material) {
+    this.HITABLES.push(new HitableSphere(position, radius, material));
   }
 
   // _______________________________________________________________________ Hit

@@ -3,11 +3,12 @@ import { vec3 } from "gl-matrix";
 import Hitable from "./Hitable";
 
 export default class HitableSphere extends Hitable {
-  constructor(positionCenter, radius) {
+  constructor(positionCenter, radius, material) {
     super();
 
     this.POSITION_CENTER = positionCenter;
     this.RADIUS = radius;
+    this.MATERIAL = material;
   }
 
   // _______________________________________________________________________ Set
@@ -53,6 +54,7 @@ export default class HitableSphere extends Hitable {
           (hitRecord.position[1] - POSITION_CENTER[1]) / RADIUS,
           (hitRecord.position[2] - POSITION_CENTER[2]) / RADIUS
         );
+        hitRecord.material = this.MATERIAL;
         return true;
       }
 
@@ -66,6 +68,7 @@ export default class HitableSphere extends Hitable {
           (hitRecord.position[1] - POSITION_CENTER[1]) / RADIUS,
           (hitRecord.position[2] - POSITION_CENTER[2]) / RADIUS
         );
+        hitRecord.material = this.MATERIAL;
         return true;
       }
     }
