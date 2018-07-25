@@ -22,3 +22,5 @@ export function reflect(direction, normal) {
     direction[2] - 2 * dot * normal[2]
   );
 }
+
+export function refract() {}
