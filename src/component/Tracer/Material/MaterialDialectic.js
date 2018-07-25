@@ -1,40 +1,67 @@
 import { vec3 } from "gl-matrix";
 
-import { getRandominUnitSphere } from "../Util/util";
+import { reflect, refract, schlick } from "../Util/util";
 
 export default class MaterialLambertian {
-  constructor(albedo) {
-    this.ALBEDO = albedo;
+  constructor(indexRefraction) {
+    this.INDEX_REFRACTION = indexRefraction;
   }
 
   scatter(rayIn, hitRecord, attenuation, scattered) {
-    rayIn;
+    const INDEX_REFRACTION = this.INDEX_REFRACTION;
 
-    const ALBEDO = this.ALBEDO;
+    let outwardNormal = vec3.create();
+    let reflected = reflect(rayIn.getDirection(), hitRecord.normal);
 
-    // Rough
-    let roughness = getRandominUnitSphere();
+    let refracted = vec3.create();
 
-    // Target
-    let target = vec3.fromValues(
-      hitRecord.position[0] + hitRecord.normal[0] + roughness[0],
-      hitRecord.position[1] + hitRecord.normal[1] + roughness[1],
-      hitRecord.position[2] + hitRecord.normal[2] + roughness[2]
-    );
-
-    // Scattered
-    scattered.setPositionOrigin(
-      hitRecord.position[0],
-      hitRecord.position[1],
-      hitRecord.position[2]
-    );
-
-    scattered.setDirection(target[0], target[1], target[2]);
+    let niOverNt;
+    let reflect_prob;
+    let cosine;
 
     // Attenuation
-    attenuation[0] = ALBEDO[0];
-    attenuation[1] = ALBEDO[1];
-    attenuation[2] = ALBEDO[2];
+    attenuation[0] = 1.0;
+    attenuation[1] = 1.0;
+    attenuation[2] = 1.0;
+
+    if (vec3.dot(rayIn.getDirection(), hitRecord.normal) > 0) {
+      outwardNormal[0] = -hitRecord.normal[0];
+      outwardNormal[1] = -hitRecord.normal[1];
+      outwardNormal[2] = -hitRecord.normal[2];
+
+      niOverNt = INDEX_REFRACTION;
+
+      cosine =
+        (INDEX_REFRACTION * vec3.dot(rayIn.getDirection(), hitRecord.normal)) /
+        vec3.length(rayIn.getDirection());
+    } else {
+      outwardNormal[0] = hitRecord.normal[0];
+      outwardNormal[1] = hitRecord.normal[1];
+      outwardNormal[2] = hitRecord.normal[2];
+
+      niOverNt = 1.0 - INDEX_REFRACTION;
+
+      cosine =
+        -vec3.dot(rayIn.getDirection(), hitRecord.normal) /
+        vec3.length(rayIn.getDirection());
+    }
+
+    // if (
+    //   refract(rayIn.getDirection(), outwardNormal, niOverNt, refracted) == true
+    // ) {
+    //   reflect_prob = schlick(cosine, INDEX_REFRACTION);
+    // } else {
+    //   // scattered[0] = 0; // TODO
+    //   // scattered[1] = 0;
+    //   // scattered[2] = 0;
+
+    //   reflect_prob = 1.0;
+    // }
+
+    // if (Math.random() < reflect_prob) {
+    //   // scattered = ray(hitRecord.)
+    // } else {
+    // }
 
     return true;
   }
