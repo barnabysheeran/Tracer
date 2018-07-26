@@ -64,6 +64,11 @@ export default class Gui extends React.Component {
             value={3}
             onClick={this.props.onClickSetScene}
           />
+          <MenuButton
+            text="Defocus"
+            value={4}
+            onClick={this.props.onClickSetScene}
+          />
 
           <MenuTitle text="AA Sample" />
           <MenuButton

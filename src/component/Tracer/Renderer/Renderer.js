@@ -1,7 +1,7 @@
 import { vec3 } from "gl-matrix";
 
 import World from "../World/World";
-import Camera from "../Camera/Camera";
+import CameraController from "../Camera/CameraController";
 import Ray from "../Ray/Ray";
 import HitRecord from "../Hit/HitRecord";
 
@@ -35,8 +35,8 @@ export default class Renderer {
     this.column = 0;
     this.isRendering = false;
 
-    // Camera
-    this.CAMERA = new Camera();
+    // Camera Controller
+    this.CAMERA_CONTROLLER = new CameraController();
 
     // Create World
     this.WORLD = new World();
@@ -103,7 +103,7 @@ export default class Renderer {
     const PIXEL_HEIGHT = this.PIXEL_HEIGHT;
     const PIXELS_PER_FRAME = this.pixelsPerFrame;
     const IMAGEDATA_DATA = this.IMAGEDATA_DATA;
-    const CAMERA = this.CAMERA;
+    const CAMERA_CONTROLLER = this.CAMERA_CONTROLLER;
     const SAMPLES_AA = this.SAMPLES_AA;
 
     // Var
@@ -132,7 +132,7 @@ export default class Renderer {
         u = (column + Math.random()) / PIXEL_WIDTH;
         v = (PIXEL_HEIGHT - row + Math.random()) / PIXEL_HEIGHT;
 
-        ray = CAMERA.getRay(u, v);
+        ray = CAMERA_CONTROLLER.getRay(u, v);
 
         colourSample = this.getColour(ray, 0);
 
@@ -226,7 +226,7 @@ export default class Renderer {
     this.PIXEL_WIDTH = w;
     this.PIXEL_HEIGHT = h;
 
-    this.CAMERA.shape(w, h);
+    this.CAMERA_CONTROLLER.shape(w, h);
   }
 
   // _____________________________________________________________________ Clear

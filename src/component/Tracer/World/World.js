@@ -59,6 +59,9 @@ export default class World {
       case 3: // Test Dialectic
         this.setSceneDielectricTest();
         break;
+      case 4: // Test Defocus
+        this.setSceneDefocusTest();
+        break;
     }
   }
 
@@ -187,6 +190,42 @@ export default class World {
       vec3.fromValues(0.2, -0.4, -0.6),
       0.08,
       this.MATERIAL_LAMBERTIAN_B
+    );
+
+    // 'Floor'
+    this.addSphere(
+      vec3.fromValues(0.0, -100.5, -1.0),
+      100,
+      this.MATERIAL_LAMBERTIAN_WHITE
+    );
+  }
+
+  setSceneDefocusTest() {
+    // Metal
+    this.addSphere(
+      vec3.fromValues(-0.75, 0.0, -0.5),
+      0.5,
+      this.MATERIAL_METAL_A
+    );
+
+    // Dialectic
+    this.addSphere(
+      vec3.fromValues(0.0, 0.02, -1.0),
+      0.5,
+      this.MATERIAL_DIELECTRIC_A
+    );
+
+    this.addSphere(
+      vec3.fromValues(0.0, 0.02, -1.0),
+      -0.48,
+      this.MATERIAL_DIELECTRIC_A
+    );
+
+    // Lambertian
+    this.addSphere(
+      vec3.fromValues(0.75, 0.0, -1.5),
+      0.5,
+      this.MATERIAL_LAMBERTIAN_R
     );
 
     // 'Floor'

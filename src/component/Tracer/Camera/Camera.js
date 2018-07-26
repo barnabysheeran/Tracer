@@ -1,9 +1,17 @@
 import { vec3 } from "gl-matrix";
 
+import { getRandomInUnitDisc } from "../Util/util";
+
 import Ray from "../Ray/Ray";
 
 export default class Camera {
-  constructor() {
+  constructor(position, target, up, fov, aspect, aperture, focusDistance) {
+    this.lensRadius = aperture / 2;
+    this.theta = (fov * Math.PI) / 180;
+
+    this.heightHalf = Math.tan(this.theta / 2);
+    this.widthHalf = aspect * this.heightHalf;
+
     this.LOWER_LEFT_CORNER = vec3.create();
     this.HORIZONTAL = vec3.create();
     this.VERTICAL = vec3.create();
