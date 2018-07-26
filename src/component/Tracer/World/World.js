@@ -156,38 +156,38 @@ export default class World {
 
     this.addSphere(
       vec3.fromValues(0.0, 0.0, -1.0),
-      -0.48,
+      -0.45,
       this.MATERIAL_DIELECTRIC_A
     );
 
     // Metal
     this.addSphere(
-      vec3.fromValues(-1.5, 0.2, -1.5),
-      0.75,
+      vec3.fromValues(-1.01, 0.0, -1.2),
+      0.5,
       this.MATERIAL_METAL_A
     );
 
     this.addSphere(
-      vec3.fromValues(0.8, -0.0, -1.5),
+      vec3.fromValues(1.01, -0.0, -1.2),
       0.5,
       this.MATERIAL_METAL_B
     );
 
     // RGB
     this.addSphere(
-      vec3.fromValues(-0.2, -0.4, -0.6),
+      vec3.fromValues(-0.2, -0.4, -0.4),
       0.08,
       this.MATERIAL_LAMBERTIAN_R
     );
 
     this.addSphere(
-      vec3.fromValues(-0.0, -0.4, -0.6),
+      vec3.fromValues(-0.0, -0.4, -0.4),
       0.08,
       this.MATERIAL_LAMBERTIAN_G
     );
 
     this.addSphere(
-      vec3.fromValues(0.2, -0.4, -0.6),
+      vec3.fromValues(0.2, -0.4, -0.4),
       0.08,
       this.MATERIAL_LAMBERTIAN_B
     );

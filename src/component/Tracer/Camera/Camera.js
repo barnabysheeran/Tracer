@@ -24,10 +24,11 @@ export default class Camera {
     // U
     this.u = vec3.create();
     vec3.cross(this.u, up, this.w);
+    vec3.normalize(this.u, this.u);
 
     // V
     this.v = vec3.create();
-    vec3.cross(this.v, up, this.u);
+    vec3.cross(this.v, this.w, this.u);
 
     this.lowerLeftCorner = vec3.fromValues(
       this.origin[0] -
