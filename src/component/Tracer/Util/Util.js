@@ -13,7 +13,8 @@ export function getRandominUnitSphere() {
 }
 
 export function getRandomInUnitDisc() {
-  let p = vec3.create();
+  let p = vec3.fromValues(Infinity, Infinity, Infinity);
+  //let p = vec3.create();
 
   while (vec3.dot(p, p) >= 1.0) {
     p[0] = 2.0 * (Math.random() - 1.0);
