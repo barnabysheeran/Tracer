@@ -3,7 +3,7 @@ import { vec3 } from "gl-matrix";
 import HitRecord from "../Hit/HitRecord";
 import HitableSphere from "../Hit/HitableSphere";
 
-import MaterialDialectic from "../Material/MaterialDialectic";
+import MaterialDielectric from "../Material/MaterialDielectric";
 import MaterialLambertian from "../Material/MaterialLambertian";
 import MaterialMetal from "../Material/MaterialMetal";
 
@@ -35,11 +35,8 @@ export default class World {
       0.5
     );
 
-    // Dialectic
-    this.MATERIAL_DIALECTIC_A = new MaterialDialectic(
-      vec3.fromValues(0.8, 0.8, 0.8),
-      0.1
-    );
+    // Dielectric
+    this.MATERIAL_DIELECTRIC_A = new MaterialDielectric(1.5);
   }
 
   // _____________________________________________________________________ Scene
@@ -60,7 +57,7 @@ export default class World {
         this.setSceneMetalTest();
         break;
       case 3: // Test Dialectic
-        this.setSceneDialecticTest();
+        this.setSceneDielectricTest();
         break;
     }
   }
@@ -146,42 +143,48 @@ export default class World {
     );
   }
 
-  setSceneDialecticTest() {
+  setSceneDielectricTest() {
     // Dialectic
     this.addSphere(
       vec3.fromValues(0.0, 0.0, -1.0),
       0.5,
-      this.MATERIAL_DIALECTIC_A
+      this.MATERIAL_DIELECTRIC_A
+    );
+
+    this.addSphere(
+      vec3.fromValues(0.0, 0.0, -1.0),
+      -0.48,
+      this.MATERIAL_DIELECTRIC_A
     );
 
     // Metal
     this.addSphere(
-      vec3.fromValues(-0.8, -0.26, -1.0),
-      0.25,
+      vec3.fromValues(-1.5, 0.2, -1.5),
+      0.75,
       this.MATERIAL_METAL_A
     );
 
     this.addSphere(
-      vec3.fromValues(0.8, -0.26, -1.0),
-      0.25,
+      vec3.fromValues(0.8, -0.0, -1.5),
+      0.5,
       this.MATERIAL_METAL_B
     );
 
     // RGB
     this.addSphere(
-      vec3.fromValues(-0.4, -0.3, -0.45),
+      vec3.fromValues(-0.2, -0.4, -0.6),
       0.08,
       this.MATERIAL_LAMBERTIAN_R
     );
 
     this.addSphere(
-      vec3.fromValues(-0.2, -0.3, -0.45),
+      vec3.fromValues(-0.0, -0.4, -0.6),
       0.08,
       this.MATERIAL_LAMBERTIAN_G
     );
 
     this.addSphere(
-      vec3.fromValues(-0.0, -0.3, -0.45),
+      vec3.fromValues(0.2, -0.4, -0.6),
       0.08,
       this.MATERIAL_LAMBERTIAN_B
     );

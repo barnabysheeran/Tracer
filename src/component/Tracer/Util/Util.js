@@ -24,8 +24,11 @@ export function reflect(direction, normal) {
 }
 
 export function refract(direction, normal, niOverNt, refracted) {
-  const UV = vec3.normalize(direction);
+  const UV = vec3.create();
+  vec3.normalize(UV, direction);
+
   const DOT = vec3.dot(UV, normal);
+
   const DISCRIMINANT = 1.0 - niOverNt * niOverNt * (1.0 - DOT * DOT);
 
   if (DISCRIMINANT > 0) {
@@ -47,5 +50,5 @@ export function refract(direction, normal, niOverNt, refracted) {
 export function schlick(cosine, indexRefraction) {
   let r0 = (1.0 - indexRefraction) / (1.0 + indexRefraction);
   r0 = r0 * r0;
-  return r0 + (1 - r0) * Math.pow(1.0 - cosine, 5);
+  return r0 + (1.0 - r0) * Math.pow(1.0 - cosine, 5);
 }

@@ -60,7 +60,7 @@ export default class Gui extends React.Component {
             onClick={this.props.onClickSetScene}
           />
           <MenuButton
-            text="Dialectic"
+            text="Dielectic"
             value={3}
             onClick={this.props.onClickSetScene}
           />

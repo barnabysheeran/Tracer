@@ -2,7 +2,7 @@ import { vec3 } from "gl-matrix";
 
 import { reflect, refract, schlick } from "../Util/util";
 
-export default class MaterialLambertian {
+export default class MaterialDielectric {
   constructor(indexRefraction) {
     this.INDEX_REFRACTION = indexRefraction;
   }
@@ -11,12 +11,11 @@ export default class MaterialLambertian {
     const INDEX_REFRACTION = this.INDEX_REFRACTION;
 
     let outwardNormal = vec3.create();
-    let reflected = reflect(rayIn.getDirection(), hitRecord.normal);
-
+    let reflected = reflect(rayIn.getDirectionNormalized(), hitRecord.normal);
     let refracted = vec3.create();
 
     let niOverNt;
-    let reflect_prob;
+    let reflectPropability;
     let cosine;
 
     // Attenuation
@@ -32,7 +31,8 @@ export default class MaterialLambertian {
       niOverNt = INDEX_REFRACTION;
 
       cosine =
-        (INDEX_REFRACTION * vec3.dot(rayIn.getDirection(), hitRecord.normal)) /
+        (INDEX_REFRACTION *
+          vec3.dot(rayIn.getDirectionNormalized(), hitRecord.normal)) /
         vec3.length(rayIn.getDirection());
     } else {
       outwardNormal[0] = hitRecord.normal[0];
@@ -42,26 +42,30 @@ export default class MaterialLambertian {
       niOverNt = 1.0 - INDEX_REFRACTION;
 
       cosine =
-        -vec3.dot(rayIn.getDirection(), hitRecord.normal) /
+        -vec3.dot(rayIn.getDirectionNormalized(), hitRecord.normal) /
         vec3.length(rayIn.getDirection());
     }
 
-    // if (
-    //   refract(rayIn.getDirection(), outwardNormal, niOverNt, refracted) == true
-    // ) {
-    //   reflect_prob = schlick(cosine, INDEX_REFRACTION);
-    // } else {
-    //   // scattered[0] = 0; // TODO
-    //   // scattered[1] = 0;
-    //   // scattered[2] = 0;
+    if (
+      refract(rayIn.getDirection(), outwardNormal, niOverNt, refracted) == true
+    ) {
+      reflectPropability = schlick(cosine, INDEX_REFRACTION);
+    } else {
+      reflectPropability = 1.0;
+    }
 
-    //   reflect_prob = 1.0;
-    // }
+    // Scattered
+    scattered.setPositionOrigin(
+      hitRecord.position[0],
+      hitRecord.position[1],
+      hitRecord.position[2]
+    );
 
-    // if (Math.random() < reflect_prob) {
-    //   // scattered = ray(hitRecord.)
-    // } else {
-    // }
+    if (Math.random() < reflectPropability) {
+      scattered.setDirection(reflected[0], reflected[1], reflected[2]);
+    } else {
+      scattered.setDirection(refracted[0], refracted[1], refracted[2]);
+    }
 
     return true;
   }
