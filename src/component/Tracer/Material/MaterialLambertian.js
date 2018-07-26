@@ -1,24 +1,19 @@
 import { vec3 } from "gl-matrix";
 
-import Material from "./Material";
+import { getRandominUnitSphere } from "../Util/util";
 
-export default class MaterialLambertian extends Material {
-  constructor(albedo, smoothness) {
-    super(albedo, smoothness);
+export default class MaterialLambertian {
+  constructor(albedo) {
+    this.ALBEDO = albedo;
   }
 
   scatter(rayIn, hitRecord, attenuation, scattered) {
     rayIn;
 
     const ALBEDO = this.ALBEDO;
-    const ROUGH = this.ROUGH;
 
     // Rough
-    let roughness = this.getRandominUnitSphere();
-
-    roughness[0] *= ROUGH;
-    roughness[1] *= ROUGH;
-    roughness[2] *= ROUGH;
+    let roughness = getRandominUnitSphere();
 
     // Target
     let target = vec3.fromValues(

@@ -29,7 +29,7 @@ export default class Visual extends React.Component {
 
     // Tracer
     this.RENDERER = new Renderer(this.CONTEXT, this.setStatus);
-    this.shape(800, 400);
+    this.setDimensions([800, 400]);
     this.RENDERER.clear();
     this.RENDERER.start();
   }
