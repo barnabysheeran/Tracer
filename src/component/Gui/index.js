@@ -21,7 +21,7 @@ export default class Gui extends React.Component {
           <Group
             title="Output"
             narrow={false}
-            initialIndex={0}
+            initialIndex={1}
             options={[
               { label: "400*400", value: [400, 400] },
               { label: "800*400", value: [800, 400] },
@@ -45,7 +45,7 @@ export default class Gui extends React.Component {
           <Group
             title="AA Samples"
             narrow={true}
-            initialIndex={0}
+            initialIndex={1}
             options={[
               { label: "1", value: 1 },
               { label: "10", value: 10 },
