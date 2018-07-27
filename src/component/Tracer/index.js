@@ -49,6 +49,10 @@ export default class Visual extends React.Component {
     this.RENDERER.setAASamples(samples);
   }
 
+  setBounceMax(bounce) {
+    this.RENDERER.setBounceMax(bounce);
+  }
+
   setScene(sceneId) {
     this.RENDERER.setScene(sceneId);
   }

@@ -58,6 +58,21 @@ export default class Gui extends React.Component {
             onClick={this.props.onClickSetAASamples}
           />
           <Group
+            title="Max Bounce"
+            narrow={true}
+            initialIndex={2}
+            options={[
+              { label: "1", value: 1 },
+              { label: "10", value: 10 },
+              { label: "50", value: 50 },
+              { label: "100", value: 100 },
+              { label: "200", value: 200 },
+              { label: "300", value: 300 },
+              { label: "500", value: 500 }
+            ]}
+            onClick={this.props.onClickSetBounceMax}
+          />
+          <Group
             title="Camera"
             narrow={false}
             initialIndex={0}

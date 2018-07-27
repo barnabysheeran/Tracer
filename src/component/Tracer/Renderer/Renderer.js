@@ -26,6 +26,9 @@ export default class Renderer {
     // Samples
     this.SAMPLES_AA = 10;
 
+    // Bounce
+    this.bounceMax = 50;
+
     // Reuseable imagedata
     this.IMAGEDATA = this.CONTEXT.createImageData(1, 1);
     this.IMAGEDATA_DATA = this.IMAGEDATA.data;
@@ -48,12 +51,6 @@ export default class Renderer {
 
     // Start Loop
     requestAnimationFrame(this.render.bind(this));
-  }
-
-  // _____________________________________________________________________ Scene
-
-  setScene(sceneId) {
-    this.WORLD.setScene(sceneId);
   }
 
   // _____________________________________________________________________ Start
@@ -182,6 +179,7 @@ export default class Renderer {
 
   getColour(ray, depth) {
     const WORLD = this.WORLD;
+    const BOUNCE_MAX = this.bounceMax;
 
     // TODO MAXDEPTH
 
@@ -192,7 +190,7 @@ export default class Renderer {
       let scattered = new Ray();
 
       if (
-        depth < 50 &&
+        depth < BOUNCE_MAX &&
         hitRecord.material.scatter(ray, hitRecord, attenuation, scattered) ==
           true
       ) {
@@ -243,6 +241,18 @@ export default class Renderer {
 
     this.setStatus("Cleared");
     this.isRendering = false;
+  }
+
+  // _____________________________________________________________________ Scene
+
+  setScene(sceneId) {
+    this.WORLD.setScene(sceneId);
+  }
+
+  // _____________________________________________________________________ Scene
+
+  setBounceMax(bounceMax) {
+    this.bounceMax = bounceMax;
   }
 
   // ________________________________________________________________________ AA
