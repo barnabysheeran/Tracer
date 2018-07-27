@@ -4,6 +4,7 @@ import World from "../World/World";
 import CameraController from "../Camera/CameraController";
 import Ray from "../Ray/Ray";
 import HitRecord from "../Hit/HitRecord";
+import Recorder from "../Recorder/Recorder";
 
 export default class Renderer {
   constructor(context, setStatus) {
@@ -37,6 +38,9 @@ export default class Renderer {
 
     // Camera Controller
     this.CAMERA_CONTROLLER = new CameraController();
+
+    // Recorder
+    this.RECORDER = new Recorder();
 
     // Create World
     this.WORLD = new World();

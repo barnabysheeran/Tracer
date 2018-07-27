@@ -11,9 +11,7 @@ export default class StatusBar extends React.Component {
 
   render() {
     return (
-      <div className={style.guimenu + " " + style.guistatusbar}>
-        {this.props.status}
-      </div>
+      <div className={style.menu + " " + style.status}>{this.props.status}</div>
     );
   }
 }

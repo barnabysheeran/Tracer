@@ -6,6 +6,10 @@ import Ray from "../Ray/Ray";
 
 export default class Camera {
   constructor(position, target, up, fov, aspect, aperture, focusDistance) {
+    // Reuseable ray
+    this.RAY = new Ray();
+
+    //
     this.lensRadius = aperture / 2;
     this.theta = (fov * Math.PI) / 180;
     this.heightHalf = Math.tan(this.theta / 2);
@@ -56,9 +60,6 @@ export default class Camera {
       2.0 * this.heightHalf * focusDistance * this.v[1],
       2.0 * this.heightHalf * focusDistance * this.v[2]
     );
-
-    // Reuseable ray
-    this.RAY = new Ray();
   }
 
   // _______________________________________________________________________ Ray
@@ -117,6 +118,9 @@ export default class Camera {
   // _____________________________________________________________________ Shape
 
   shape(pixelWidth, pixelHeight) {
+    pixelWidth;
+    pixelHeight;
+
     // let w = pixelWidth / this.PIXELS_TO_WORLD;
     // let h = pixelHeight / this.PIXELS_TO_WORLD;
     // let LOWER_LEFT_CORNER = this.LOWER_LEFT_CORNER;
