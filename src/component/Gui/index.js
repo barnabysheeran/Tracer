@@ -43,7 +43,7 @@ export default class Gui extends React.Component {
           <Group
             title="AA Samples"
             narrow={true}
-            initialIndex={1}
+            initialIndex={0}
             options={[
               { label: "1", value: 1 },
               { label: "10", value: 10 },
@@ -59,32 +59,32 @@ export default class Gui extends React.Component {
           <Group
             title="Max Bounce"
             narrow={true}
-            initialIndex={2}
+            initialIndex={7}
             options={[
               { label: "1", value: 1 },
               { label: "10", value: 10 },
-              { label: "25", value: 25 },
               { label: "50", value: 50 },
               { label: "100", value: 100 },
-              { label: "200", value: 200 },
-              { label: "300", value: 300 },
-              { label: "500", value: 500 }
+              { label: "500", value: 500 },
+              { label: "1k", value: 1000 },
+              { label: "5k", value: 5000 },
+              { label: "10k", value: 10000 }
             ]}
             onClick={this.props.onClickSetBounceMax}
           />
           <Group
             title="Aperture"
             narrow={true}
-            initialIndex={3}
+            initialIndex={1}
             options={[
+              { label: "0.1", value: 0.1 },
+              { label: "0.2", value: 0.2 },
+              { label: "0.3", value: 0.3 },
+              { label: "0.4", value: 0.4 },
               { label: "0.5", value: 0.5 },
               { label: "1", value: 1 },
-              { label: "1.5", value: 1.5 },
               { label: "2", value: 2 },
-              { label: "2.5", value: 2.5 },
-              { label: "3", value: 3 },
-              { label: "3.5", value: 3.5 },
-              { label: "4.0", value: 4.0 }
+              { label: "3", value: 3 }
             ]}
             onClick={this.props.onClickSetAperture}
           />
@@ -110,7 +110,8 @@ export default class Gui extends React.Component {
             initialIndex={0}
             options={[
               { label: "Position A", value: 0 },
-              { label: "Position B", value: 1 }
+              { label: "Position B", value: 1 },
+              { label: "Position C", value: 2 }
             ]}
             onClick={this.props.onClickSetCameraPosition}
           />

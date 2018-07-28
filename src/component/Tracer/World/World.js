@@ -83,14 +83,27 @@ export default class World {
 
     this.addSphere(
       vec3.fromValues(0.0, 0.0, 0.0),
-      -0.48,
+      -0.45,
+      this.MATERIAL_DIELECTRIC_A
+    );
+
+    // Dialectic Inner
+    this.addSphere(
+      vec3.fromValues(0.1, 0.0, 0.0),
+      0.2,
+      this.MATERIAL_DIELECTRIC_A
+    );
+
+    this.addSphere(
+      vec3.fromValues(0.1, 0.0, 0.0),
+      -0.18,
       this.MATERIAL_DIELECTRIC_A
     );
 
     //
     let i;
     let r;
-    let total = 12;
+    let total = 13;
     let progressInterval = (Math.PI * 2) / total;
     let radius = 0.5;
     let material;

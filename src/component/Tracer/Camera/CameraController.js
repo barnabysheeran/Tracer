@@ -10,7 +10,7 @@ export default class CameraController {
     // Initial settings
     this.fov = 20.0;
     this.aspectRatio = 800 / 400;
-    this.aperture = 2.0;
+    this.aperture = 0.2;
 
     // Positions
     this.position = vec3.create();
@@ -66,12 +66,21 @@ export default class CameraController {
         this.positionTarget[2] = 0.0;
         break;
       case 1:
-        this.position[0] = 4.0;
-        this.position[1] = 0.0;
+        this.position[0] = 0.5;
+        this.position[1] = 5.0;
         this.position[2] = 0.0;
 
         this.positionTarget[0] = 0.0;
         this.positionTarget[1] = 0.0;
+        this.positionTarget[2] = 0.0;
+        break;
+      case 2:
+        this.position[0] = 3.0;
+        this.position[1] = 3.0;
+        this.position[2] = 2.0;
+
+        this.positionTarget[0] = 0.0;
+        this.positionTarget[1] = -0.35;
         this.positionTarget[2] = 0.0;
         break;
     }

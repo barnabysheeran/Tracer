@@ -24,7 +24,7 @@ export default class Renderer {
     this.pixelsPerFrame = 100;
 
     // Samples
-    this.SAMPLES_AA = 10;
+    this.SAMPLES_AA = 1;
 
     // Bounce
     this.bounceMax = 50;
