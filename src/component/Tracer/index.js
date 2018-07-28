@@ -36,13 +36,13 @@ export default class Visual extends React.Component {
 
   // _______________________________________________________________ Interaction
 
-  clear() {
-    this.RENDERER.clear();
-  }
-
   setDimensions(dimensions) {
     this.shape(dimensions[0], dimensions[1]);
     this.RENDERER.clear();
+  }
+
+  setScene(sceneId) {
+    this.RENDERER.setScene(sceneId);
   }
 
   setAASamples(samples) {
@@ -61,8 +61,12 @@ export default class Visual extends React.Component {
     this.RENDERER.setFov(fov);
   }
 
-  setScene(sceneId) {
-    this.RENDERER.setScene(sceneId);
+  setCameraPositionById(positionId) {
+    this.RENDERER.setCameraPositionById(positionId);
+  }
+
+  clear() {
+    this.RENDERER.clear();
   }
 
   start() {

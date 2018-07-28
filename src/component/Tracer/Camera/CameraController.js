@@ -4,35 +4,20 @@ import Camera from "./Camera";
 
 export default class CameraController {
   constructor() {
-    // Position
-    this.position = vec3.fromValues(3.0, 3.0, 2.0);
-    this.positionTarget = vec3.fromValues(0.0, 0.0, 0.0);
-
     // Up
     this.UP = vec3.fromValues(0.0, 1.0, 0.0);
 
-    // FOV
+    // Initial settings
     this.fov = 20.0;
-
-    // Aspect
-    this.aspectRatio = 800 / 400; // TODO Update on shape
-
-    // Aperture
+    this.aspectRatio = 800 / 400;
     this.aperture = 2.0;
 
-    // Focus
-    this.distanceFocus = this.calculateDistanceFocus();
+    // Positions
+    this.position = vec3.create();
+    this.positionTarget = vec3.create();
 
-    // Camera
-    this.CAMERA = new Camera(
-      this.position,
-      this.positionTarget,
-      this.UP,
-      this.fov,
-      this.aspectRatio,
-      this.aperture,
-      this.distanceFocus
-    );
+    // Set positions and create camera
+    this.setPositionsById(0);
   }
 
   calculateDistanceFocus() {
@@ -52,20 +37,61 @@ export default class CameraController {
     return this.CAMERA.getRay(u, v);
   }
 
-  shape(w, h) {
-    this.CAMERA.shape(w, h);
-  }
-
   // _______________________________________________________________________ Set
 
+  shape(w, h) {
+    this.aspectRatio = w / h;
+    this.update();
+  }
+
   setAperture(aperture) {
-    aperture;
-    console.log("CameraController setAperture " + aperture);
-    // TODO
+    this.aperture = aperture;
+    this.update();
   }
 
   setFov(fov) {
-    console.log("CameraController setFov " + fov);
-    // TODO
+    this.fov = fov;
+    this.update();
+  }
+
+  setPositionsById(positionId) {
+    switch (positionId) {
+      case 0:
+        this.position[0] = 3.0;
+        this.position[1] = 3.0;
+        this.position[2] = 2.0;
+
+        this.positionTarget[0] = 0.0;
+        this.positionTarget[1] = 0.0;
+        this.positionTarget[2] = 0.0;
+        break;
+      case 1:
+        this.position[0] = 4.0;
+        this.position[1] = 0.0;
+        this.position[2] = 0.0;
+
+        this.positionTarget[0] = 0.0;
+        this.positionTarget[1] = 0.0;
+        this.positionTarget[2] = 0.0;
+        break;
+    }
+
+    this.update();
+  }
+
+  // ____________________________________________________________________ Update
+
+  update() {
+    this.distanceFocus = this.calculateDistanceFocus();
+
+    this.CAMERA = new Camera(
+      this.position,
+      this.positionTarget,
+      this.UP,
+      this.fov,
+      this.aspectRatio,
+      this.aperture,
+      this.distanceFocus
+    );
   }
 }

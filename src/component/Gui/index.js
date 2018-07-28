@@ -93,14 +93,14 @@ export default class Gui extends React.Component {
             narrow={true}
             initialIndex={3}
             options={[
-              { label: "0.5", value: 0.5 },
               { label: "1", value: 1 },
-              { label: "1.5", value: 1.5 },
-              { label: "2", value: 2 },
-              { label: "2.5", value: 2.5 },
-              { label: "3", value: 3 },
-              { label: "3.5", value: 3.5 },
-              { label: "4.0", value: 4.0 }
+              { label: "10", value: 10 },
+              { label: "15", value: 15 },
+              { label: "20", value: 20 },
+              { label: "25", value: 25 },
+              { label: "30", value: 30 },
+              { label: "35", value: 35 },
+              { label: "40", value: 40 }
             ]}
             onClick={this.props.onClickSetFov}
           />
@@ -109,10 +109,10 @@ export default class Gui extends React.Component {
             narrow={false}
             initialIndex={0}
             options={[
-              { label: "Position A", value: 1 },
-              { label: "Position B", value: 10 }
+              { label: "Position A", value: 0 },
+              { label: "Position B", value: 1 }
             ]}
-            onClick={this.props.onClickSetAASamples}
+            onClick={this.props.onClickSetCameraPosition}
           />
           <div className={style.row} />
           <div className={style.row}>

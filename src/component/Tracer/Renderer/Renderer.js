@@ -222,15 +222,6 @@ export default class Renderer {
     }
   }
 
-  // _____________________________________________________________________ Shape
-
-  shape(w, h) {
-    this.PIXEL_WIDTH = w;
-    this.PIXEL_HEIGHT = h;
-
-    this.CAMERA_CONTROLLER.shape(w, h);
-  }
-
   // _____________________________________________________________________ Clear
 
   clear() {
@@ -245,16 +236,23 @@ export default class Renderer {
 
   // _______________________________________________________________________ Set
 
+  shape(w, h) {
+    this.PIXEL_WIDTH = w;
+    this.PIXEL_HEIGHT = h;
+
+    this.CAMERA_CONTROLLER.shape(w, h);
+  }
+
   setScene(sceneId) {
     this.WORLD.setScene(sceneId);
   }
 
-  setBounceMax(bounceMax) {
-    this.bounceMax = bounceMax;
-  }
-
   setAASamples(samples) {
     this.SAMPLES_AA = samples;
+  }
+
+  setBounceMax(bounceMax) {
+    this.bounceMax = bounceMax;
   }
 
   setAperture(aperture) {
@@ -263,5 +261,9 @@ export default class Renderer {
 
   setFov(fov) {
     this.CAMERA_CONTROLLER.setFov(fov);
+  }
+
+  setCameraPositionById(positionId) {
+    this.CAMERA_CONTROLLER.setPositionsById(positionId);
   }
 }

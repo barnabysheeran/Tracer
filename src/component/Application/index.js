@@ -17,22 +17,21 @@ export default class Application extends React.Component {
     };
 
     // Scope
-    this.onClickClear = this.onClickClear.bind(this);
     this.onClickSetDimensions = this.onClickSetDimensions.bind(this);
     this.onClickSetScene = this.onClickSetScene.bind(this);
     this.onClickSetAASamples = this.onClickSetAASamples.bind(this);
     this.onClickSetBounceMax = this.onClickSetBounceMax.bind(this);
     this.onClickSetAperture = this.onClickSetAperture.bind(this);
     this.onClickSetFov = this.onClickSetFov.bind(this);
+    this.onClickSetCameraPosition = this.onClickSetCameraPosition.bind(this);
+
+    this.onClickClear = this.onClickClear.bind(this);
     this.onClickStart = this.onClickStart.bind(this);
+
     this.setStatus = this.setStatus.bind(this);
   }
 
   // _______________________________________________________________ Interaction
-
-  onClickClear() {
-    this.TRACER.clear();
-  }
 
   onClickSetDimensions(dimensions) {
     this.TRACER.setDimensions(dimensions);
@@ -58,11 +57,17 @@ export default class Application extends React.Component {
     this.TRACER.setFov(fov);
   }
 
+  onClickSetCameraPosition(positionId) {
+    this.TRACER.setCameraPositionById(positionId);
+  }
+
+  onClickClear() {
+    this.TRACER.clear();
+  }
+
   onClickStart() {
     this.TRACER.start();
   }
-
-  // ____________________________________________________________________ Status
 
   setStatus(status) {
     this.setState({ status: status });
@@ -74,13 +79,14 @@ export default class Application extends React.Component {
     return (
       <div className={style.fullscreen}>
         <Gui
-          onClickClear={this.onClickClear}
           onClickSetDimensions={this.onClickSetDimensions}
           onClickSetScene={this.onClickSetScene}
           onClickSetAASamples={this.onClickSetAASamples}
           onClickSetBounceMax={this.onClickSetBounceMax}
           onClickSetAperture={this.onClickSetAperture}
           onClickSetFov={this.onClickSetFov}
+          onClickSetCameraPosition={this.onClickSetCameraPosition}
+          onClickClear={this.onClickClear}
           onClickStart={this.onClickStart}
           status={this.state.status}
         />

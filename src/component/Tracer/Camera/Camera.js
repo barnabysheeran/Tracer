@@ -114,22 +114,4 @@ export default class Camera {
 
     return RAY;
   }
-
-  // _____________________________________________________________________ Shape
-
-  shape(pixelWidth, pixelHeight) {
-    pixelWidth;
-    pixelHeight;
-
-    // let w = pixelWidth / this.PIXELS_TO_WORLD;
-    // let h = pixelHeight / this.PIXELS_TO_WORLD;
-    // let LOWER_LEFT_CORNER = this.LOWER_LEFT_CORNER;
-    // LOWER_LEFT_CORNER[0] = -w;
-    // LOWER_LEFT_CORNER[1] = -h;
-    // LOWER_LEFT_CORNER[2] = -h;
-    // this.HORIZONTAL[0] = w * 2;
-    // this.VERTICAL[1] = h * 2;
-    // TODO ASPECT & FOV
-    //this.fov
-  }
 }

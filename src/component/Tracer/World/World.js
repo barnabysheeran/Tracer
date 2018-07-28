@@ -119,7 +119,7 @@ export default class World {
       );
     }
 
-    total = 24;
+    total = 32;
     progressInterval = (Math.PI * 2) / total;
     radius = 0.65;
 
