@@ -36,21 +36,37 @@ export default class Visual extends React.Component {
 
   // _______________________________________________________________ Interaction
 
-  clear() {
-    this.RENDERER.clear();
-  }
-
   setDimensions(dimensions) {
     this.shape(dimensions[0], dimensions[1]);
     this.RENDERER.clear();
+  }
+
+  setScene(sceneId) {
+    this.RENDERER.setScene(sceneId);
   }
 
   setAASamples(samples) {
     this.RENDERER.setAASamples(samples);
   }
 
-  setScene(sceneId) {
-    this.RENDERER.setScene(sceneId);
+  setBounceMax(bounce) {
+    this.RENDERER.setBounceMax(bounce);
+  }
+
+  setAperture(aperture) {
+    this.RENDERER.setAperture(aperture);
+  }
+
+  setFov(fov) {
+    this.RENDERER.setFov(fov);
+  }
+
+  setCameraPositionById(positionId) {
+    this.RENDERER.setCameraPositionById(positionId);
+  }
+
+  clear() {
+    this.RENDERER.clear();
   }
 
   start() {

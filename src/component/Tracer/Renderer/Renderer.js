@@ -1,9 +1,10 @@
 import { vec3 } from "gl-matrix";
 
 import World from "../World/World";
-import Camera from "../Camera/Camera";
+import CameraController from "../Camera/CameraController";
 import Ray from "../Ray/Ray";
 import HitRecord from "../Hit/HitRecord";
+import Recorder from "../Recorder/Recorder";
 
 export default class Renderer {
   constructor(context, setStatus) {
@@ -23,7 +24,10 @@ export default class Renderer {
     this.pixelsPerFrame = 100;
 
     // Samples
-    this.SAMPLES_AA = 10;
+    this.SAMPLES_AA = 1;
+
+    // Bounce
+    this.bounceMax = 50;
 
     // Reuseable imagedata
     this.IMAGEDATA = this.CONTEXT.createImageData(1, 1);
@@ -35,8 +39,11 @@ export default class Renderer {
     this.column = 0;
     this.isRendering = false;
 
-    // Camera
-    this.CAMERA = new Camera();
+    // Camera Controller
+    this.CAMERA_CONTROLLER = new CameraController();
+
+    // Recorder
+    this.RECORDER = new Recorder();
 
     // Create World
     this.WORLD = new World();
@@ -44,12 +51,6 @@ export default class Renderer {
 
     // Start Loop
     requestAnimationFrame(this.render.bind(this));
-  }
-
-  // _____________________________________________________________________ Scene
-
-  setScene(sceneId) {
-    this.WORLD.setScene(sceneId);
   }
 
   // _____________________________________________________________________ Start
@@ -103,7 +104,7 @@ export default class Renderer {
     const PIXEL_HEIGHT = this.PIXEL_HEIGHT;
     const PIXELS_PER_FRAME = this.pixelsPerFrame;
     const IMAGEDATA_DATA = this.IMAGEDATA_DATA;
-    const CAMERA = this.CAMERA;
+    const CAMERA_CONTROLLER = this.CAMERA_CONTROLLER;
     const SAMPLES_AA = this.SAMPLES_AA;
 
     // Var
@@ -132,7 +133,7 @@ export default class Renderer {
         u = (column + Math.random()) / PIXEL_WIDTH;
         v = (PIXEL_HEIGHT - row + Math.random()) / PIXEL_HEIGHT;
 
-        ray = CAMERA.getRay(u, v);
+        ray = CAMERA_CONTROLLER.getRay(u, v);
 
         colourSample = this.getColour(ray, 0);
 
@@ -178,6 +179,7 @@ export default class Renderer {
 
   getColour(ray, depth) {
     const WORLD = this.WORLD;
+    const BOUNCE_MAX = this.bounceMax;
 
     // TODO MAXDEPTH
 
@@ -188,7 +190,7 @@ export default class Renderer {
       let scattered = new Ray();
 
       if (
-        depth < 50 &&
+        depth < BOUNCE_MAX &&
         hitRecord.material.scatter(ray, hitRecord, attenuation, scattered) ==
           true
       ) {
@@ -220,15 +222,6 @@ export default class Renderer {
     }
   }
 
-  // _____________________________________________________________________ Shape
-
-  shape(w, h) {
-    this.PIXEL_WIDTH = w;
-    this.PIXEL_HEIGHT = h;
-
-    this.CAMERA.shape(w, h);
-  }
-
   // _____________________________________________________________________ Clear
 
   clear() {
@@ -241,9 +234,36 @@ export default class Renderer {
     this.isRendering = false;
   }
 
-  // ________________________________________________________________________ AA
+  // _______________________________________________________________________ Set
+
+  shape(w, h) {
+    this.PIXEL_WIDTH = w;
+    this.PIXEL_HEIGHT = h;
+
+    this.CAMERA_CONTROLLER.shape(w, h);
+  }
+
+  setScene(sceneId) {
+    this.WORLD.setScene(sceneId);
+  }
 
   setAASamples(samples) {
     this.SAMPLES_AA = samples;
+  }
+
+  setBounceMax(bounceMax) {
+    this.bounceMax = bounceMax;
+  }
+
+  setAperture(aperture) {
+    this.CAMERA_CONTROLLER.setAperture(aperture);
+  }
+
+  setFov(fov) {
+    this.CAMERA_CONTROLLER.setFov(fov);
+  }
+
+  setCameraPositionById(positionId) {
+    this.CAMERA_CONTROLLER.setPositionsById(positionId);
   }
 }

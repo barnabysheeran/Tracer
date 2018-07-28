@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css?family=Fira+Sans");
-
 html {
   height: 100%;
 }
@@ -36,55 +34,65 @@ body {
 }
 
 .gui {
-  font-family: "Fira Sans", sans-serif;
+  font-family: "Arial", sans-serif;
   z-index: 200;
   position: absolute;
   left: 20px;
-  height: 100%;
+  top: 20px;
 }
 
-.guimenu {
+.menu {
   font-size: 12px;
+  user-select: none;
 }
 
-.guimenutitle {
+.row {
+  height: 20px;
+  margin-bottom: 1px;
+}
+
+.title {
+  display: block;
+  width: 80px;
+  height: 20px;
+  line-height: 20px;
+  float: left;
+}
+
+.button {
   display: block;
   height: 20px;
-  line-height: 18px;
-  padding-top: 20px;
+  line-height: 20px;
+  padding-left: 6px;
+  margin-left: 1px;
+  float: left;
+  text-decoration: none;
 }
 
-.guimenubutton {
-  display: block;
-  width: 100px;
-  height: 18px;
-  line-height: 18px;
-  padding-left: 4px;
-  margin-top: 2px;
+.buttonNarrow {
+  width: 37px;
+}
 
-  color: #ffffff;
+.buttonWide {
+  width: 81px;
+}
+
+.buttonOn {
   background: #666666;
+  cursor: auto;
+}
 
-  text-decoration: none;
+.buttonOff {
+  background: #161616;
   cursor: pointer;
 }
 
-.guimenubutton:link,
-.guimenubutton:visited,
-.guimenubutton:active {
-  text-decoration: none;
+.buttonOff:hover {
+  color: #000;
+  background: #fff;
 }
 
-.guimenubutton:hover {
-  text-decoration: none;
-  cursor: pointer;
-
-  color: #666666;
-  background: #ffffff;
-}
-
-.guistatusbar {
-  position: absolute;
-  width: 500px;
-  bottom: 20px;
+.status {
+  width: 100%;
+  color: #666;
 }

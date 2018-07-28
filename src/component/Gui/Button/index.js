@@ -1,8 +1,6 @@
 import React from "react";
 
-import style from "./../../../index.css";
-
-export default class MenuButton extends React.Component {
+export default class Button extends React.Component {
   constructor(props) {
     super(props);
 
@@ -22,10 +20,7 @@ export default class MenuButton extends React.Component {
 
   render() {
     return (
-      <div
-        className={style.guimenu + " " + style.guimenubutton}
-        onClick={this.handleClick}
-      >
+      <div className={this.props.className} onClick={this.handleClick}>
         {this.props.text}
       </div>
     );
