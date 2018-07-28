@@ -243,21 +243,25 @@ export default class Renderer {
     this.isRendering = false;
   }
 
-  // _____________________________________________________________________ Scene
+  // _______________________________________________________________________ Set
 
   setScene(sceneId) {
     this.WORLD.setScene(sceneId);
   }
 
-  // _____________________________________________________________________ Scene
-
   setBounceMax(bounceMax) {
     this.bounceMax = bounceMax;
   }
 
-  // ________________________________________________________________________ AA
-
   setAASamples(samples) {
     this.SAMPLES_AA = samples;
+  }
+
+  setAperture(aperture) {
+    this.CAMERA_CONTROLLER.setAperture(aperture);
+  }
+
+  setFov(fov) {
+    this.CAMERA_CONTROLLER.setFov(fov);
   }
 }

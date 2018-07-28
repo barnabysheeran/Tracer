@@ -6,7 +6,7 @@ export default class CameraController {
   constructor() {
     // Position
     this.position = vec3.fromValues(3.0, 3.0, 2.0);
-    this.positionTarget = vec3.fromValues(0.0, 0.0, -1.0);
+    this.positionTarget = vec3.fromValues(0.0, 0.0, 0.0);
 
     // Up
     this.UP = vec3.fromValues(0.0, 1.0, 0.0);
@@ -54,5 +54,18 @@ export default class CameraController {
 
   shape(w, h) {
     this.CAMERA.shape(w, h);
+  }
+
+  // _______________________________________________________________________ Set
+
+  setAperture(aperture) {
+    aperture;
+    console.log("CameraController setAperture " + aperture);
+    // TODO
+  }
+
+  setFov(fov) {
+    console.log("CameraController setFov " + fov);
+    // TODO
   }
 }

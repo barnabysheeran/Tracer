@@ -53,6 +53,14 @@ export default class Visual extends React.Component {
     this.RENDERER.setBounceMax(bounce);
   }
 
+  setAperture(aperture) {
+    this.RENDERER.setAperture(aperture);
+  }
+
+  setFov(fov) {
+    this.RENDERER.setFov(fov);
+  }
+
   setScene(sceneId) {
     this.RENDERER.setScene(sceneId);
   }

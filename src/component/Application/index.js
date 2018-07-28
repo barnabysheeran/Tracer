@@ -22,6 +22,8 @@ export default class Application extends React.Component {
     this.onClickSetScene = this.onClickSetScene.bind(this);
     this.onClickSetAASamples = this.onClickSetAASamples.bind(this);
     this.onClickSetBounceMax = this.onClickSetBounceMax.bind(this);
+    this.onClickSetAperture = this.onClickSetAperture.bind(this);
+    this.onClickSetFov = this.onClickSetFov.bind(this);
     this.onClickStart = this.onClickStart.bind(this);
     this.setStatus = this.setStatus.bind(this);
   }
@@ -48,6 +50,14 @@ export default class Application extends React.Component {
     this.TRACER.setBounceMax(bounceMax);
   }
 
+  onClickSetAperture(aperture) {
+    this.TRACER.setAperture(aperture);
+  }
+
+  onClickSetFov(fov) {
+    this.TRACER.setFov(fov);
+  }
+
   onClickStart() {
     this.TRACER.start();
   }
@@ -69,6 +79,8 @@ export default class Application extends React.Component {
           onClickSetScene={this.onClickSetScene}
           onClickSetAASamples={this.onClickSetAASamples}
           onClickSetBounceMax={this.onClickSetBounceMax}
+          onClickSetAperture={this.onClickSetAperture}
+          onClickSetFov={this.onClickSetFov}
           onClickStart={this.onClickStart}
           status={this.state.status}
         />

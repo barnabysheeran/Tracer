@@ -13,13 +13,13 @@ export default class World {
 
     // Lambertian
     this.MATERIAL_LAMBERTIAN_R = new MaterialLambertian(
-      vec3.fromValues(1.0, 0.5, 0.5)
+      vec3.fromValues(1.0, 0.25, 0.25)
     );
     this.MATERIAL_LAMBERTIAN_G = new MaterialLambertian(
-      vec3.fromValues(0.5, 1.0, 0.5)
+      vec3.fromValues(0.25, 1.0, 0.25)
     );
     this.MATERIAL_LAMBERTIAN_B = new MaterialLambertian(
-      vec3.fromValues(0.5, 0.5, 1.0)
+      vec3.fromValues(0.25, 0.25, 1.0)
     );
     this.MATERIAL_LAMBERTIAN_WHITE = new MaterialLambertian(
       vec3.fromValues(0.8, 0.8, 0.8)
@@ -33,6 +33,21 @@ export default class World {
     this.MATERIAL_METAL_B = new MaterialMetal(
       vec3.fromValues(0.8, 0.8, 0.8),
       0.5
+    );
+
+    this.MATERIAL_METAL_R = new MaterialMetal(
+      vec3.fromValues(1.0, 0.5, 0.5),
+      0.1
+    );
+
+    this.MATERIAL_METAL_G = new MaterialMetal(
+      vec3.fromValues(0.5, 1.0, 0.5),
+      0.1
+    );
+
+    this.MATERIAL_METAL_B = new MaterialMetal(
+      vec3.fromValues(0.5, 0.5, 1.0),
+      0.1
     );
 
     // Dielectric
@@ -50,17 +65,8 @@ export default class World {
       case 0: // Test Material
         this.setSceneTest();
         break;
-      case 1: // Test Many
-        this.setSceneLambertianTest();
-        break;
-      case 2: // Test Materials 2
-        this.setSceneMetalTest();
-        break;
-      case 3: // Test Dialectic
-        this.setSceneDielectricTest();
-        break;
-      case 4: // Test Defocus
-        this.setSceneDefocusTest();
+      case 1: // Test Pyramid
+        this.setScenePyramid();
         break;
     }
   }
@@ -68,164 +74,146 @@ export default class World {
   // _____________________________________________________________ Test Material
 
   setSceneTest() {
-    this.addSphere(
-      vec3.fromValues(-1.05, 0.0, -1.0),
-      0.5,
-      this.MATERIAL_METAL_A
-    );
-
-    this.addSphere(
-      vec3.fromValues(0.0, 0.0, -1.0),
-      0.5,
-      this.MATERIAL_LAMBERTIAN_R
-    );
-
-    this.addSphere(
-      vec3.fromValues(1.05, 0.0, -1.0),
-      0.5,
-      this.MATERIAL_METAL_B
-    );
-
-    // 'Floor'
-    this.addSphere(
-      vec3.fromValues(0.0, -100.5, -1.0),
-      100,
-      this.MATERIAL_LAMBERTIAN_WHITE
-    );
-  }
-
-  setSceneLambertianTest() {
-    this.addSphere(
-      vec3.fromValues(-0.505, 0.0, -1.0),
-      0.5,
-      this.MATERIAL_LAMBERTIAN_WHITE
-    );
-    this.addSphere(
-      vec3.fromValues(0.505, 0.0, -1.0),
-      0.5,
-      this.MATERIAL_LAMBERTIAN_R
-    );
-
-    this.addSphere(
-      vec3.fromValues(-0.15, -0.4, -0.7),
-      0.1,
-      this.MATERIAL_METAL_A
-    );
-
-    // 'Floor'
-    this.addSphere(
-      vec3.fromValues(0.0, -100.5, -1.0),
-      100,
-      this.MATERIAL_LAMBERTIAN_WHITE
-    );
-  }
-
-  setSceneMetalTest() {
-    this.addSphere(
-      vec3.fromValues(-0.505, 0.0, -1.0),
-      0.5,
-      this.MATERIAL_METAL_A
-    );
-    this.addSphere(
-      vec3.fromValues(0.505, 0.0, -1.0),
-      0.5,
-      this.MATERIAL_METAL_B
-    );
-
-    this.addSphere(
-      vec3.fromValues(-0.15, -0.4, -0.7),
-      0.1,
-      this.MATERIAL_LAMBERTIAN_R
-    );
-
-    // 'Floor'
-    this.addSphere(
-      vec3.fromValues(0.0, -100.5, -1.0),
-      100,
-      this.MATERIAL_LAMBERTIAN_WHITE
-    );
-  }
-
-  setSceneDielectricTest() {
     // Dialectic
     this.addSphere(
-      vec3.fromValues(0.0, 0.0, -1.0),
+      vec3.fromValues(0.0, 0.0, 0.0),
       0.5,
       this.MATERIAL_DIELECTRIC_A
     );
 
     this.addSphere(
-      vec3.fromValues(0.0, 0.0, -1.0),
-      -0.45,
-      this.MATERIAL_DIELECTRIC_A
-    );
-
-    // Metal
-    this.addSphere(
-      vec3.fromValues(-1.01, 0.0, -1.2),
-      0.5,
-      this.MATERIAL_METAL_A
-    );
-
-    this.addSphere(
-      vec3.fromValues(1.01, -0.0, -1.2),
-      0.5,
-      this.MATERIAL_METAL_B
-    );
-
-    // RGB
-    this.addSphere(
-      vec3.fromValues(-0.2, -0.4, -0.4),
-      0.08,
-      this.MATERIAL_LAMBERTIAN_R
-    );
-
-    this.addSphere(
-      vec3.fromValues(-0.0, -0.4, -0.4),
-      0.08,
-      this.MATERIAL_LAMBERTIAN_G
-    );
-
-    this.addSphere(
-      vec3.fromValues(0.2, -0.4, -0.4),
-      0.08,
-      this.MATERIAL_LAMBERTIAN_B
-    );
-
-    // 'Floor'
-    this.addSphere(
-      vec3.fromValues(0.0, -100.5, -1.0),
-      100,
-      this.MATERIAL_LAMBERTIAN_WHITE
-    );
-  }
-
-  setSceneDefocusTest() {
-    // Metal
-    this.addSphere(
-      vec3.fromValues(-0.75, 0.0, -0.5),
-      0.5,
-      this.MATERIAL_METAL_A
-    );
-
-    // Dialectic
-    this.addSphere(
-      vec3.fromValues(0.0, 0.02, -1.0),
-      0.5,
-      this.MATERIAL_DIELECTRIC_A
-    );
-
-    this.addSphere(
-      vec3.fromValues(0.0, 0.02, -1.0),
+      vec3.fromValues(0.0, 0.0, 0.0),
       -0.48,
       this.MATERIAL_DIELECTRIC_A
     );
 
-    // Lambertian
+    //
+    let i;
+    let r;
+    let total = 12;
+    let progressInterval = (Math.PI * 2) / total;
+    let radius = 0.5;
+    let material;
+
+    for (i = 0; i < total; i++) {
+      // Material
+      r = Math.random();
+
+      if (r < 0.33) {
+        material = this.MATERIAL_METAL_R;
+      } else if (r < 0.66) {
+        material = this.MATERIAL_METAL_G;
+      } else {
+        material = this.MATERIAL_METAL_B;
+      }
+
+      // Sphere
+      this.addSphere(
+        vec3.fromValues(
+          Math.sin(progressInterval * i) * radius,
+          -0.39,
+          Math.cos(progressInterval * i) * radius
+        ),
+        0.1,
+        material
+      );
+    }
+
+    total = 24;
+    progressInterval = (Math.PI * 2) / total;
+    radius = 0.65;
+
+    for (i = 0; i < total; i++) {
+      // Material
+      r = Math.random();
+
+      if (r < 0.33) {
+        material = this.MATERIAL_METAL_R;
+      } else if (r < 0.66) {
+        material = this.MATERIAL_METAL_G;
+      } else {
+        material = this.MATERIAL_METAL_B;
+      }
+
+      // Sphere
+      this.addSphere(
+        vec3.fromValues(
+          Math.sin(progressInterval * i) * radius,
+          -0.449,
+          Math.cos(progressInterval * i) * radius
+        ),
+        0.05,
+        material
+      );
+    }
+
+    // 'Floor'
     this.addSphere(
-      vec3.fromValues(0.75, 0.0, -1.5),
+      vec3.fromValues(0.0, -100.5, -1.0),
+      100,
+      this.MATERIAL_LAMBERTIAN_WHITE
+    );
+  }
+
+  setScenePyramid() {
+    // Center
+    this.addSphere(
+      vec3.fromValues(0.0, 0.0, 0.0),
       0.5,
-      this.MATERIAL_LAMBERTIAN_R
+      this.MATERIAL_DIELECTRIC_A
+    );
+
+    this.addSphere(
+      vec3.fromValues(0.0, 0.0, 0.0),
+      -0.45,
+      this.MATERIAL_DIELECTRIC_A
+    );
+
+    let i;
+    let progressInterval = (Math.PI * 2) / 6;
+    let radius = 1.0;
+
+    for (i = 0; i < 6; i++) {
+      this.addSphere(
+        vec3.fromValues(
+          Math.sin(progressInterval * i) * radius,
+          0.0,
+          Math.cos(progressInterval * i) * radius
+        ),
+        0.5,
+        this.MATERIAL_DIELECTRIC_A
+      );
+
+      this.addSphere(
+        vec3.fromValues(
+          Math.sin(progressInterval * i) * radius,
+          0.0,
+          Math.cos(progressInterval * i) * radius
+        ),
+        -0.45,
+        this.MATERIAL_DIELECTRIC_A
+      );
+    }
+
+    // Red
+    radius = 0.55;
+
+    this.addSphere(
+      vec3.fromValues(Math.sin(-0.2) * radius, 0.4, Math.cos(-0.2) * radius),
+      0.1,
+      this.MATERIAL_METAL_R
+    );
+
+    this.addSphere(
+      vec3.fromValues(Math.sin(-0.8) * radius, 0.4, Math.cos(-0.8) * radius),
+      0.1,
+      this.MATERIAL_METAL_G
+    );
+
+    this.addSphere(
+      vec3.fromValues(Math.sin(-1.4) * radius, 0.4, Math.cos(-1.4) * radius),
+      0.1,
+      this.MATERIAL_METAL_B
     );
 
     // 'Floor'
