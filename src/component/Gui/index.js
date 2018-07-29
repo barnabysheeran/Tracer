@@ -34,10 +34,7 @@ export default class Gui extends React.Component {
             title="Scene"
             narrow={false}
             initialIndex={0}
-            options={[
-              { label: "Test", value: 0 },
-              { label: "Pyramid", value: 1 }
-            ]}
+            options={[{ label: "Test", value: 0 }]}
             onClick={this.props.onClickSetScene}
           />
           <Group
