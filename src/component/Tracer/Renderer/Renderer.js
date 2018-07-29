@@ -7,8 +7,8 @@ import HitRecord from "../Hit/HitRecord";
 import Recorder from "../Recorder/Recorder";
 
 export default class Renderer {
-  constructor(context, setStatus) {
-    this.CONTEXT = context;
+  constructor(canvas, setStatus) {
+    this.CONTEXT = canvas.getContext("2d");
     this.setStatus = setStatus;
 
     // Dimensions
@@ -43,7 +43,7 @@ export default class Renderer {
     this.CAMERA_CONTROLLER = new CameraController();
 
     // Recorder
-    this.RECORDER = new Recorder();
+    this.RECORDER = new Recorder(canvas);
 
     // Create World
     this.WORLD = new World();
@@ -67,10 +67,25 @@ export default class Renderer {
   }
 
   onRenderComplete() {
+    // Status
     let d = new Date();
     let timeTaken = d.getTime() - this.timeRenderStart;
-
     this.setStatus("Complete in " + (timeTaken / 1000).toFixed(2) + "s");
+
+    // Save
+    this.RECORDER.saveImage(
+      "render_" +
+        d.getFullYear() +
+        "_" +
+        d.getMonth() +
+        "_" +
+        d.getDate() +
+        "_" +
+        d.getTime() +
+        ".png"
+    );
+
+    // Done
     this.isRendering = false;
   }
 

@@ -80,7 +80,7 @@ export default class CameraController {
         this.position[2] = 2.0;
 
         this.positionTarget[0] = 0.0;
-        this.positionTarget[1] = -0.35;
+        this.positionTarget[1] = -0.24;
         this.positionTarget[2] = 0.0;
         break;
     }

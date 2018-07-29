@@ -6,6 +6,7 @@ import HitableSphere from "../Hit/HitableSphere";
 import MaterialDielectric from "../Material/MaterialDielectric";
 import MaterialLambertian from "../Material/MaterialLambertian";
 import MaterialMetal from "../Material/MaterialMetal";
+import { HSVtoRGB } from "../Util/util";
 
 export default class World {
   constructor() {
@@ -102,60 +103,31 @@ export default class World {
 
     //
     let i;
-    let r;
     let total = 13;
-    let progressInterval = (Math.PI * 2) / total;
+    let progressIntervalTau = (Math.PI * 2) / total;
+    let progressInterval = 1.0 / total;
+
     let radius = 0.5;
     let material;
+    let colour;
 
     for (i = 0; i < total; i++) {
-      // Material
-      r = Math.random();
+      colour = HSVtoRGB(progressInterval * i, 0.8, 0.8);
 
-      if (r < 0.33) {
-        material = this.MATERIAL_METAL_R;
-      } else if (r < 0.66) {
-        material = this.MATERIAL_METAL_G;
-      } else {
-        material = this.MATERIAL_METAL_B;
-      }
+      // Material
+      material = new MaterialMetal(
+        vec3.fromValues(colour.r, colour.g, colour.b),
+        0.1
+      );
 
       // Sphere
       this.addSphere(
         vec3.fromValues(
-          Math.sin(progressInterval * i) * radius,
+          Math.sin(progressIntervalTau * i) * radius,
           -0.39,
-          Math.cos(progressInterval * i) * radius
+          Math.cos(progressIntervalTau * i) * radius
         ),
         0.1,
-        material
-      );
-    }
-
-    total = 32;
-    progressInterval = (Math.PI * 2) / total;
-    radius = 0.65;
-
-    for (i = 0; i < total; i++) {
-      // Material
-      r = Math.random();
-
-      if (r < 0.33) {
-        material = this.MATERIAL_METAL_R;
-      } else if (r < 0.66) {
-        material = this.MATERIAL_METAL_G;
-      } else {
-        material = this.MATERIAL_METAL_B;
-      }
-
-      // Sphere
-      this.addSphere(
-        vec3.fromValues(
-          Math.sin(progressInterval * i) * radius,
-          -0.449,
-          Math.cos(progressInterval * i) * radius
-        ),
-        0.05,
         material
       );
     }

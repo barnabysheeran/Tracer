@@ -24,11 +24,8 @@ export default class Visual extends React.Component {
   // _____________________________________________________________________ Mount
 
   componentDidMount() {
-    // Context
-    this.CONTEXT = this.CANVAS.getContext("2d");
-
-    // Tracer
-    this.RENDERER = new Renderer(this.CONTEXT, this.setStatus);
+    // Renderer
+    this.RENDERER = new Renderer(this.CANVAS, this.setStatus);
     this.setDimensions([800, 400]);
     this.RENDERER.clear();
     this.RENDERER.start();
