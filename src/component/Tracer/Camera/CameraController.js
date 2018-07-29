@@ -88,6 +88,22 @@ export default class CameraController {
     this.update();
   }
 
+  setPosition(x, y, z) {
+    this.position[0] = x;
+    this.position[1] = y;
+    this.position[2] = z;
+
+    this.update();
+  }
+
+  setPositionTarget(x, y, z) {
+    this.positionTarget[0] = x;
+    this.positionTarget[1] = y;
+    this.positionTarget[2] = z;
+
+    this.update();
+  }
+
   // ____________________________________________________________________ Update
 
   update() {

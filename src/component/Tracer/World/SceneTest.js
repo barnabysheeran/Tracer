@@ -9,8 +9,8 @@ import MaterialLambertian from "../Material/MaterialLambertian";
 import { HSVtoRGB } from "../Util/util";
 
 export default class SceneTest extends Scene {
-  constructor() {
-    super(1);
+  constructor(cameraController) {
+    super(cameraController, 1);
 
     // Dialectic
     const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
@@ -57,5 +57,19 @@ export default class SceneTest extends Scene {
       100,
       new MaterialLambertian(vec3.fromValues(0.8, 0.8, 0.8))
     );
+  }
+
+  // _________________________________________________________________ Animation
+
+  setAnimationFrame(frame) {
+    frame;
+
+    const CAMERA_CONTROLLER = this.CAMERA_CONTROLLER;
+
+    CAMERA_CONTROLLER.setFov(20.0);
+    CAMERA_CONTROLLER.setAperture(0.5);
+
+    CAMERA_CONTROLLER.setPosition(3.0, 3.0, 2.0);
+    CAMERA_CONTROLLER.setPositionTarget(0.0, -0.24, 0.0);
   }
 }

@@ -50,7 +50,7 @@ export default class Renderer {
     this.CAMERA_CONTROLLER = new CameraController();
 
     // Create World
-    this.WORLD = new World();
+    this.WORLD = new World(this.CAMERA_CONTROLLER);
     this.setScene(0);
 
     // Start Loop
@@ -72,6 +72,8 @@ export default class Renderer {
   startFrame() {
     this.row = 0;
     this.column = 0;
+
+    this.WORLD.setAnimationFrame(this.frame);
 
     this.setStatus("Render frame " + this.frame + " of " + this.frameTotal);
   }
@@ -100,7 +102,6 @@ export default class Renderer {
     if (this.frame > this.frameTotal) {
       this.onRenderComplete();
     } else {
-      this.WORLD.setAnimationFrame(this.frame);
       this.startFrame();
     }
   }

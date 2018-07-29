@@ -5,9 +5,11 @@ import SceneTest from "./SceneTest";
 import ScenePyramid from "./ScenePyramid";
 
 export default class World {
-  constructor() {
-    this.SCENE_TEST = new SceneTest();
-    this.SCENE_PYRAMID = new ScenePyramid();
+  constructor(cameraController) {
+    this.CAMERA_CONTROLLER = cameraController;
+
+    this.SCENE_TEST = new SceneTest(cameraController);
+    this.SCENE_PYRAMID = new ScenePyramid(cameraController);
 
     // Default
     this.scene;

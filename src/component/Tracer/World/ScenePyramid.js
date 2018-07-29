@@ -6,8 +6,8 @@ import MaterialDielectric from "../Material/MaterialDielectric";
 import MaterialLambertian from "../Material/MaterialLambertian";
 
 export default class ScenePyramid extends Scene {
-  constructor() {
-    super(2);
+  constructor(cameraController) {
+    super(cameraController, 2);
 
     // Dialectic
     const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
@@ -25,5 +25,12 @@ export default class ScenePyramid extends Scene {
 
   // _________________________________________________________________ Animation
 
-  setAnimationFrame(frame) {}
+  setAnimationFrame(frame) {
+    frame;
+
+    const CAMERA_CONTROLLER = this.CAMERA_CONTROLLER;
+
+    CAMERA_CONTROLLER.setPosition(3.0, 0.0, 0.0);
+    CAMERA_CONTROLLER.setPositionTarget(0.0, 0.0, 0.0);
+  }
 }

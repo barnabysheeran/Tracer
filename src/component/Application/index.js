@@ -21,9 +21,6 @@ export default class Application extends React.Component {
     this.onClickSetScene = this.onClickSetScene.bind(this);
     this.onClickSetAASamples = this.onClickSetAASamples.bind(this);
     this.onClickSetBounceMax = this.onClickSetBounceMax.bind(this);
-    this.onClickSetAperture = this.onClickSetAperture.bind(this);
-    this.onClickSetFov = this.onClickSetFov.bind(this);
-    this.onClickSetCameraPosition = this.onClickSetCameraPosition.bind(this);
 
     this.onClickClear = this.onClickClear.bind(this);
     this.onClickStart = this.onClickStart.bind(this);
@@ -49,18 +46,6 @@ export default class Application extends React.Component {
     this.TRACER.setBounceMax(bounceMax);
   }
 
-  onClickSetAperture(aperture) {
-    this.TRACER.setAperture(aperture);
-  }
-
-  onClickSetFov(fov) {
-    this.TRACER.setFov(fov);
-  }
-
-  onClickSetCameraPosition(positionId) {
-    this.TRACER.setCameraPositionById(positionId);
-  }
-
   onClickClear() {
     this.TRACER.clear();
   }
@@ -83,9 +68,6 @@ export default class Application extends React.Component {
           onClickSetScene={this.onClickSetScene}
           onClickSetAASamples={this.onClickSetAASamples}
           onClickSetBounceMax={this.onClickSetBounceMax}
-          onClickSetAperture={this.onClickSetAperture}
-          onClickSetFov={this.onClickSetFov}
-          onClickSetCameraPosition={this.onClickSetCameraPosition}
           onClickClear={this.onClickClear}
           onClickStart={this.onClickStart}
           status={this.state.status}

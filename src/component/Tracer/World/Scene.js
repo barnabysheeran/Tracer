@@ -1,7 +1,8 @@
 import HitableSphere from "../Hit/HitableSphere";
 
 export default class Scene {
-  constructor(animationFrameTotal) {
+  constructor(cameraController, animationFrameTotal) {
+    this.CAMERA_CONTROLLER = cameraController;
     this.ANIMATION_FRAME_TOTAL = animationFrameTotal;
     this.HITABLES = [];
   }
@@ -13,10 +14,6 @@ export default class Scene {
   }
 
   // _________________________________________________________________ Animation
-
-  setAnimationFrame(frame) {
-    frame;
-  }
 
   getAnimationFrameTotal() {
     return this.ANIMATION_FRAME_TOTAL;

@@ -57,10 +57,6 @@ export default class Visual extends React.Component {
     this.RENDERER.setFov(fov);
   }
 
-  setCameraPositionById(positionId) {
-    this.RENDERER.setCameraPositionById(positionId);
-  }
-
   clear() {
     this.RENDERER.clear();
   }
