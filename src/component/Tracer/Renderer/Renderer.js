@@ -20,6 +20,10 @@ export default class Renderer {
     this.timeLastFrame = 0;
     this.timeRenderStart = 0;
 
+    // Frames
+    this.frame = 0;
+    this.frameTotal = 0;
+
     // Speed
     this.pixelsPerFrame = 100;
 
@@ -39,11 +43,11 @@ export default class Renderer {
     this.column = 0;
     this.isRendering = false;
 
-    // Camera Controller
-    this.CAMERA_CONTROLLER = new CameraController();
-
     // Recorder
     this.RECORDER = new Recorder(canvas);
+
+    // Camera Controller
+    this.CAMERA_CONTROLLER = new CameraController();
 
     // Create World
     this.WORLD = new World();
@@ -55,24 +59,27 @@ export default class Renderer {
 
   // _____________________________________________________________________ Start
 
-  start() {
-    this.row = 0;
-    this.column = 0;
-
+  startAnimation() {
     let d = new Date();
     this.timeRenderStart = d.getTime();
 
-    this.setStatus("Render ...");
+    //
+    this.frame = 1;
     this.isRendering = true;
+    this.startFrame();
   }
 
-  onRenderComplete() {
-    // Status
-    let d = new Date();
-    let timeTaken = d.getTime() - this.timeRenderStart;
-    this.setStatus("Complete in " + (timeTaken / 1000).toFixed(2) + "s");
+  startFrame() {
+    this.row = 0;
+    this.column = 0;
 
+    this.setStatus("Render frame " + this.frame + " of " + this.frameTotal);
+  }
+
+  onFrameComplete() {
     // Save
+    let d = new Date();
+
     this.RECORDER.saveImage(
       "render_" +
         d.getFullYear() +
@@ -82,8 +89,27 @@ export default class Renderer {
         d.getDate() +
         "_" +
         d.getTime() +
+        "_" +
+        this.frame +
         ".png"
     );
+
+    // Frame
+    this.frame++;
+
+    if (this.frame > this.frameTotal) {
+      this.onRenderComplete();
+    } else {
+      this.WORLD.setAnimationFrame(this.frame);
+      this.startFrame();
+    }
+  }
+
+  onRenderComplete() {
+    // Status
+    let d = new Date();
+    let timeTaken = d.getTime() - this.timeRenderStart;
+    this.setStatus("Complete in " + (timeTaken / 1000).toFixed(2) + "s");
 
     // Done
     this.isRendering = false;
@@ -180,7 +206,8 @@ export default class Renderer {
         row++;
 
         if (row >= PIXEL_HEIGHT) {
-          this.onRenderComplete();
+          this.onFrameComplete();
+          return;
         }
       }
     }
@@ -260,6 +287,7 @@ export default class Renderer {
 
   setScene(sceneId) {
     this.WORLD.setScene(sceneId);
+    this.frameTotal = this.WORLD.getAnimationFrameTotal();
   }
 
   setAASamples(samples) {

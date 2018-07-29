@@ -1,16 +1,16 @@
 import { vec3 } from "gl-matrix";
 
+import Scene from "./Scene";
+
 import MaterialDielectric from "../Material/MaterialDielectric";
 import MaterialMetal from "../Material/MaterialMetal";
 import MaterialLambertian from "../Material/MaterialLambertian";
 
-import HitableSphere from "../Hit/HitableSphere";
-
 import { HSVtoRGB } from "../Util/util";
 
-export default class SceneTest {
+export default class SceneTest extends Scene {
   constructor() {
-    this.HITABLES = [];
+    super(1);
 
     // Dialectic
     const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
@@ -57,11 +57,5 @@ export default class SceneTest {
       100,
       new MaterialLambertian(vec3.fromValues(0.8, 0.8, 0.8))
     );
-  }
-
-  // ____________________________________________________________________ Sphere
-
-  addSphere(position, radius, material) {
-    this.HITABLES.push(new HitableSphere(position, radius, material));
   }
 }

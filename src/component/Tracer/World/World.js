@@ -2,12 +2,16 @@ import HitRecord from "../Hit/HitRecord";
 import HitableSphere from "../Hit/HitableSphere";
 
 import SceneTest from "./SceneTest";
+import ScenePyramid from "./ScenePyramid";
 
 export default class World {
   constructor() {
-    this.HITABLES = [];
-
     this.SCENE_TEST = new SceneTest();
+    this.SCENE_PYRAMID = new ScenePyramid();
+
+    // Default
+    this.scene;
+    this.setScene(0);
   }
 
   // _____________________________________________________________________ Scene
@@ -17,9 +21,24 @@ export default class World {
 
     switch (sceneId) {
       case 0: // Test Material
-        this.HITABLES = this.SCENE_TEST.HITABLES;
+        this.scene = this.SCENE_TEST;
+
+        break;
+      case 1: // Pyramid
+        this.scene = this.SCENE_PYRAMID;
+
         break;
     }
+  }
+
+  // _________________________________________________________________ Animation
+
+  setAnimationFrame(frame) {
+    this.scene.setAnimationFrame(frame);
+  }
+
+  getAnimationFrameTotal() {
+    return this.scene.getAnimationFrameTotal();
   }
 
   // _____________________________________________________________________ Clear
@@ -37,7 +56,7 @@ export default class World {
   // _______________________________________________________________________ Hit
 
   didHitAnything(ray, tMin, tMax, hitRecord) {
-    const HITABLES = this.HITABLES;
+    const HITABLES = this.scene.HITABLES;
 
     let hitRecordTemp = new HitRecord();
 

@@ -28,7 +28,6 @@ export default class Visual extends React.Component {
     this.RENDERER = new Renderer(this.CANVAS, this.setStatus);
     this.setDimensions([800, 400]);
     this.RENDERER.clear();
-    this.RENDERER.start();
   }
 
   // _______________________________________________________________ Interaction
@@ -67,7 +66,7 @@ export default class Visual extends React.Component {
   }
 
   start() {
-    this.RENDERER.start();
+    this.RENDERER.startAnimation();
   }
 
   setStatus(status) {
