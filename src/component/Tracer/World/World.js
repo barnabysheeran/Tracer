@@ -3,12 +3,14 @@ import HitableSphere from "../Hit/HitableSphere";
 
 import SceneTest from "./SceneTest";
 import ScenePyramid from "./ScenePyramid";
+import SceneAnimationTest from "./SceneAnimationTest";
 
 export default class World {
   constructor(cameraController) {
     this.CAMERA_CONTROLLER = cameraController;
 
     this.SCENE_TEST = new SceneTest(cameraController);
+    this.SCENE_ANIMATION_TEST = new SceneAnimationTest(cameraController);
     this.SCENE_PYRAMID = new ScenePyramid(cameraController);
 
     // Default
@@ -22,13 +24,14 @@ export default class World {
     this.clear();
 
     switch (sceneId) {
-      case 0: // Test Material
+      case 0:
         this.scene = this.SCENE_TEST;
-
         break;
-      case 1: // Pyramid
+      case 1:
+        this.scene = this.SCENE_ANIMATION_TEST;
+        break;
+      case 2:
         this.scene = this.SCENE_PYRAMID;
-
         break;
     }
   }

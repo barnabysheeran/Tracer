@@ -15,6 +15,10 @@ export default class Scene {
 
   // _________________________________________________________________ Animation
 
+  setAnimationFrame(frame) {
+    frame;
+  }
+
   getAnimationFrameTotal() {
     return this.ANIMATION_FRAME_TOTAL;
   }
