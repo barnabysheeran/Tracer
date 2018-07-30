@@ -2,7 +2,6 @@ import { vec3 } from "gl-matrix";
 
 import Scene from "./Scene";
 
-import MaterialDielectric from "../Material/MaterialDielectric";
 import MaterialLambertian from "../Material/MaterialLambertian";
 import MaterialMetal from "../Material/MaterialMetal";
 
