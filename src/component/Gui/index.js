@@ -72,6 +72,17 @@ export default class Gui extends React.Component {
             ]}
             onClick={this.props.onClickSetBounceMax}
           />
+          <Group
+            title="Save Output"
+            narrow={false}
+            initialIndex={0}
+            options={[
+              { label: "Off", value: false },
+              { label: "On", value: true }
+            ]}
+            onClick={this.props.onClickSetSaveOutput}
+          />
+
           <div className={style.row} />
           <div className={style.row}>
             <Title text="" />

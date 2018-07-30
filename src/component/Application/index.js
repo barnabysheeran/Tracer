@@ -21,6 +21,7 @@ export default class Application extends React.Component {
     this.onClickSetScene = this.onClickSetScene.bind(this);
     this.onClickSetAASamples = this.onClickSetAASamples.bind(this);
     this.onClickSetBounceMax = this.onClickSetBounceMax.bind(this);
+    this.onClickSetSaveOutput = this.onClickSetSaveOutput.bind(this);
 
     this.onClickClear = this.onClickClear.bind(this);
     this.onClickStart = this.onClickStart.bind(this);
@@ -46,6 +47,10 @@ export default class Application extends React.Component {
     this.TRACER.setBounceMax(bounceMax);
   }
 
+  onClickSetSaveOutput(save) {
+    this.TRACER.setSaveOutput(save);
+  }
+
   onClickClear() {
     this.TRACER.clear();
   }
@@ -68,6 +73,7 @@ export default class Application extends React.Component {
           onClickSetScene={this.onClickSetScene}
           onClickSetAASamples={this.onClickSetAASamples}
           onClickSetBounceMax={this.onClickSetBounceMax}
+          onClickSetSaveOutput={this.onClickSetSaveOutput}
           onClickClear={this.onClickClear}
           onClickStart={this.onClickStart}
           status={this.state.status}

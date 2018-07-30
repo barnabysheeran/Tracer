@@ -4,7 +4,7 @@ import Renderer from "./Renderer/Renderer";
 
 import style from "./../../index.css";
 
-export default class Visual extends React.Component {
+export default class Tracer extends React.Component {
   constructor(props) {
     super(props);
 
@@ -49,12 +49,8 @@ export default class Visual extends React.Component {
     this.RENDERER.setBounceMax(bounce);
   }
 
-  setAperture(aperture) {
-    this.RENDERER.setAperture(aperture);
-  }
-
-  setFov(fov) {
-    this.RENDERER.setFov(fov);
+  setSaveOutput(save) {
+    this.RENDERER.setSaveOutput(save);
   }
 
   clear() {

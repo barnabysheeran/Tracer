@@ -115,8 +115,6 @@ export default class ScenePyramid extends Scene {
   // _________________________________________________________________ Animation
 
   setAnimationFrame(frame) {
-    frame;
-
     const CAMERA_CONTROLLER = this.CAMERA_CONTROLLER;
 
     const progress = (1.0 / this.ANIMATION_FRAME_TOTAL) * frame;

@@ -44,6 +44,7 @@ export default class Renderer {
     this.isRendering = false;
 
     // Recorder
+    this.saveOutput = false;
     this.RECORDER = new Recorder(canvas);
 
     // Camera Controller
@@ -79,22 +80,24 @@ export default class Renderer {
   }
 
   onFrameComplete() {
-    // Save
-    let d = new Date();
+    // Save ?
+    if (this.saveOutput == true) {
+      let d = new Date();
 
-    this.RECORDER.saveImage(
-      "render_" +
-        d.getFullYear() +
-        "_" +
-        d.getMonth() +
-        "_" +
-        d.getDate() +
-        "_" +
-        d.getTime() +
-        "_" +
-        this.frame +
-        ".png"
-    );
+      this.RECORDER.saveImage(
+        "render_" +
+          d.getFullYear() +
+          "_" +
+          d.getMonth() +
+          "_" +
+          d.getDate() +
+          "_" +
+          d.getTime() +
+          "_" +
+          this.frame +
+          ".png"
+      );
+    }
 
     // Frame
     this.frame++;
@@ -297,6 +300,10 @@ export default class Renderer {
 
   setBounceMax(bounceMax) {
     this.bounceMax = bounceMax;
+  }
+
+  setSaveOutput(save) {
+    this.saveOutput = save;
   }
 
   setAperture(aperture) {
