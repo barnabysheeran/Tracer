@@ -10,7 +10,7 @@ import { HSVtoRGB } from "../Util/util";
 
 export default class SceneTest extends Scene {
   constructor(cameraController) {
-    super(cameraController, 1);
+    super(cameraController);
 
     // Dialectic
     const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
