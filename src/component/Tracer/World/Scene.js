@@ -29,6 +29,6 @@ export default class Scene {
   getBackground(rayDirectionNormalized) {
     rayDirectionNormalized;
 
-    return vec3.fromValues(0.8, 0.5, 0.5);
+    return vec3.fromValues(0.5, 0.5, 0.5);
   }
 }

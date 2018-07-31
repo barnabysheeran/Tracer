@@ -77,16 +77,8 @@ export default class SceneTest extends Scene {
 
   getBackground(rayDirectionNormalized) {
     let t = 0.5 * (rayDirectionNormalized[1] + 1.0);
+    let white = 1.0 - t;
 
-    let white = vec3.fromValues(1.0, 1.0, 1.0);
-    vec3.scale(white, white, 1.0 - t);
-
-    let blue = vec3.fromValues(0.5, 0.7, 1.0);
-    vec3.scale(blue, blue, t);
-
-    let colour = vec3.fromValues(0.0, 0.0, 0.0);
-    vec3.add(colour, white, blue);
-
-    return colour;
+    return vec3.fromValues(white + 0.5 * t, white + 0.7 * t, white + 1.0 * t);
   }
 }

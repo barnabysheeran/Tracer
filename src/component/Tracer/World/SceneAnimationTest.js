@@ -49,4 +49,13 @@ export default class SceneAnimationTest extends Scene {
     CAMERA_CONTROLLER.setPosition(0.0, 0.0, -4.0);
     CAMERA_CONTROLLER.setPositionTarget(0.0, 0.0, 0.0);
   }
+
+  // ________________________________________________________________ Background
+
+  getBackground(rayDirectionNormalized) {
+    let t = 0.5 * (rayDirectionNormalized[1] + 1.0);
+    let white = 1.0 - t;
+
+    return vec3.fromValues(white + 1.0 * t, white + 0.5 * t, white + 0.5 * t);
+  }
 }
