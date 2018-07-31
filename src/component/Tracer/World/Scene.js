@@ -1,4 +1,5 @@
 import HitableSphere from "../Hit/HitableSphere";
+import { vec3 } from "gl-matrix";
 
 export default class Scene {
   constructor(cameraController) {
@@ -21,5 +22,13 @@ export default class Scene {
 
   getAnimationFrameTotal() {
     return this.ANIMATION_FRAME_TOTAL;
+  }
+
+  // ________________________________________________________________ Background
+
+  getBackground(rayDirectionNormalized) {
+    rayDirectionNormalized;
+
+    return vec3.fromValues(0.8, 0.5, 0.5);
   }
 }

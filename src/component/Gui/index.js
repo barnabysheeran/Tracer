@@ -21,12 +21,11 @@ export default class Gui extends React.Component {
           <Group
             title="Output"
             narrow={false}
-            initialIndex={1}
+            initialIndex={0}
             options={[
-              { label: "400*400", value: [400, 400] },
               { label: "800*400", value: [800, 400] },
-              { label: "800*800", value: [800, 800] },
-              { label: "1600*800", value: [1600, 800] }
+              { label: "500*500", value: [500, 500] },
+              { label: "1024*512", value: [1024, 512] }
             ]}
             onClick={this.props.onClickSetDimensions}
           />

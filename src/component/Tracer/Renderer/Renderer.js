@@ -227,8 +227,6 @@ export default class Renderer {
     const WORLD = this.WORLD;
     const BOUNCE_MAX = this.bounceMax;
 
-    // TODO MAXDEPTH
-
     let hitRecord = new HitRecord();
 
     if (WORLD.didHitAnything(ray, 0.001, Infinity, hitRecord) == true) {
@@ -252,19 +250,7 @@ export default class Renderer {
       }
     } else {
       // Background
-      let directionNormalized = ray.getDirectionNormalized();
-      let t = 0.5 * (directionNormalized[1] + 1.0);
-
-      let white = vec3.fromValues(1.0, 1.0, 1.0);
-      vec3.scale(white, white, 1.0 - t);
-
-      let blue = vec3.fromValues(0.5, 0.7, 1.0);
-      vec3.scale(blue, blue, t);
-
-      let colour = vec3.fromValues(0.0, 0.0, 0.0);
-      vec3.add(colour, white, blue);
-
-      return colour;
+      return WORLD.getBackground(ray.getDirectionNormalized());
     }
   }
 

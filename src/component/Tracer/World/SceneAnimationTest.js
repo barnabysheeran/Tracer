@@ -13,14 +13,20 @@ export default class SceneAnimationTest extends Scene {
     // Center
     const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
     this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), 0.5, MATERIAL_DIELECTRIC);
-    this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), -0.45, MATERIAL_DIELECTRIC);
+    this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), -0.48, MATERIAL_DIELECTRIC);
+
+    this.addSphere(vec3.fromValues(-1.5, 0.0, 0.0), 0.5, MATERIAL_DIELECTRIC);
+    this.addSphere(vec3.fromValues(-1.5, 0.0, 0.0), -0.48, MATERIAL_DIELECTRIC);
+
+    this.addSphere(vec3.fromValues(1.5, 0.0, 0.0), 0.5, MATERIAL_DIELECTRIC);
+    this.addSphere(vec3.fromValues(1.5, 0.0, 0.0), -0.48, MATERIAL_DIELECTRIC);
 
     // Sphere
     const MATERIAL_METAL = new MaterialMetal(
       vec3.fromValues(1.0, 0.5, 0.5),
       0.1
     );
-    this.addSphere(vec3.fromValues(-1, 0.0, 0.0), 0.1, MATERIAL_METAL);
+    this.addSphere(vec3.fromValues(-0.75, 0.0, 0.0), 0.1, MATERIAL_METAL);
 
     // 'Floor'
     this.addSphere(
@@ -37,10 +43,10 @@ export default class SceneAnimationTest extends Scene {
 
     const CAMERA_CONTROLLER = this.CAMERA_CONTROLLER;
 
-    CAMERA_CONTROLLER.setFov(20.0);
-    CAMERA_CONTROLLER.setAperture(0.5);
+    CAMERA_CONTROLLER.setFov(25.0);
+    CAMERA_CONTROLLER.setAperture(0.1);
 
-    CAMERA_CONTROLLER.setPosition(2.0, 2.0, 2.0);
+    CAMERA_CONTROLLER.setPosition(0.0, 0.0, -4.0);
     CAMERA_CONTROLLER.setPositionTarget(0.0, 0.0, 0.0);
   }
 }

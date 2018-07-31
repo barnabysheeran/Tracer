@@ -46,6 +46,12 @@ export default class World {
     return this.scene.getAnimationFrameTotal();
   }
 
+  // ________________________________________________________________ Background
+
+  getBackground(rayDirectionNormalized) {
+    return this.scene.getBackground(rayDirectionNormalized);
+  }
+
   // _____________________________________________________________________ Clear
 
   clear() {

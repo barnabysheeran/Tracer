@@ -72,4 +72,21 @@ export default class SceneTest extends Scene {
     CAMERA_CONTROLLER.setPosition(3.0, 3.0, 2.0);
     CAMERA_CONTROLLER.setPositionTarget(0.0, -0.24, 0.0);
   }
+
+  // ________________________________________________________________ Background
+
+  getBackground(rayDirectionNormalized) {
+    let t = 0.5 * (rayDirectionNormalized[1] + 1.0);
+
+    let white = vec3.fromValues(1.0, 1.0, 1.0);
+    vec3.scale(white, white, 1.0 - t);
+
+    let blue = vec3.fromValues(0.5, 0.7, 1.0);
+    vec3.scale(blue, blue, t);
+
+    let colour = vec3.fromValues(0.0, 0.0, 0.0);
+    vec3.add(colour, white, blue);
+
+    return colour;
+  }
 }
