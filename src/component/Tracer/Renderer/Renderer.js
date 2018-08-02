@@ -24,6 +24,11 @@ export default class Renderer {
     this.frame = 0;
     this.frameMax = 0;
 
+    // Time
+    this.timeFrameStart = 0.0;
+    this.timeFrameEnd = 1.0;
+    this.timeFrameInterval = 1.0;
+
     // Speed
     this.pixelsPerFrame = 100;
 
@@ -72,12 +77,15 @@ export default class Renderer {
   }
 
   startFrame() {
+    // XY
     this.row = 0;
     this.column = 0;
 
-    this.WORLD.setAnimationFrame(this.frame);
+    // Time
+    this.timeFrameStart = this.frame * this.timeFrameInterval;
+    this.timeFrameEnd = (this.frame + 1) * this.timeFrameInterval;
 
-    this.setStatus("Render frame " + this.frame + " / " + this.frameMax);
+    this.setStatus("Render frame " + this.frame);
   }
 
   onFrameComplete() {
@@ -89,7 +97,11 @@ export default class Renderer {
     // Frame
     this.frame++;
 
-    if (this.frame > this.frameMax) {
+    // Time
+    this.timeFrameStart = 0.0;
+    this.timeFrameEnd = 0.0;
+
+    if (this.frame >= this.frameMax) {
       this.onRenderComplete();
     } else {
       this.startFrame();
@@ -108,7 +120,7 @@ export default class Renderer {
 
   // ____________________________________________________________________ Render
 
-  render(time) {
+  render(runTime) {
     // Loop
     requestAnimationFrame(this.render.bind(this));
 
@@ -118,8 +130,8 @@ export default class Renderer {
     }
 
     // Frame duration
-    let frameDuration = time - this.timeLastFrame;
-    this.timeLastFrame = time;
+    let frameDuration = runTime - this.timeLastFrame;
+    this.timeLastFrame = runTime;
 
     if (frameDuration > this.FRAME_TIME_STANDARD * 1.1) {
       this.pixelsPerFrame -= Math.floor(this.pixelsPerFrame * 0.5);
@@ -132,6 +144,7 @@ export default class Renderer {
 
     // Scope
     const CONTEXT = this.CONTEXT;
+    const WORLD = this.WORLD;
     const PIXEL_WIDTH = this.PIXEL_WIDTH;
     const PIXEL_HEIGHT = this.PIXEL_HEIGHT;
     const PIXELS_PER_FRAME = this.pixelsPerFrame;
@@ -149,6 +162,7 @@ export default class Renderer {
 
     // Render row
     let ray;
+    let time;
     let u;
     let v;
     let i;
@@ -164,6 +178,10 @@ export default class Renderer {
       for (s = 0; s < SAMPLES_AA; s++) {
         u = (column + Math.random()) / PIXEL_WIDTH;
         v = (PIXEL_HEIGHT - row + Math.random()) / PIXEL_HEIGHT;
+
+        time = this.timeFrameStart + Math.random() * this.timeFrameInterval;
+
+        WORLD.setAnimationTime(time);
 
         ray = CAMERA_CONTROLLER.getRay(u, v);
 
@@ -263,8 +281,14 @@ export default class Renderer {
   }
 
   setScene(sceneId) {
+    // Scene
     this.WORLD.setScene(sceneId);
+
+    // Frame
     this.frameMax = this.WORLD.getAnimationFrameMax();
+
+    // Time
+    this.timeFrameInterval = 1.0 / this.frameMax;
   }
 
   setAASamples(samples) {

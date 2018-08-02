@@ -11,7 +11,7 @@ export default class SceneAnimationTest extends Scene {
   constructor(cameraController) {
     super(cameraController);
 
-    this.animationFrameMax = 39;
+    this.animationFrameMax = 10;
 
     // Center
     const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
@@ -59,7 +59,7 @@ export default class SceneAnimationTest extends Scene {
 
   // _________________________________________________________________ Animation
 
-  setAnimationFrame(frame) {
+  setAnimationTime(time) {
     const CAMERA_CONTROLLER = this.CAMERA_CONTROLLER;
 
     const TOTAL = this.TOTAL;
@@ -76,8 +76,8 @@ export default class SceneAnimationTest extends Scene {
     CAMERA_CONTROLLER.setPositionTarget(0.0, 0.0, 0.0);
 
     // Position Center
-    const PROGRESS = (1.0 / (this.animationFrameMax + 1)) * frame;
-    const ROTATION = TAU * PROGRESS;
+    //const PROGRESS = (1.0 / (this.animationFrameMax + 1)) * frame;
+    const ROTATION = TAU * time;
 
     const POSITION_CENTER = this.POSITION_CENTER;
     POSITION_CENTER[0] = Math.cos(ROTATION) * RADIUS;
@@ -98,6 +98,46 @@ export default class SceneAnimationTest extends Scene {
       );
     }
   }
+
+  // setAnimationFrame(frame) {
+  //   const CAMERA_CONTROLLER = this.CAMERA_CONTROLLER;
+
+  //   const TOTAL = this.TOTAL;
+  //   const RADIUS = this.RADIUS;
+  //   const OFFSET_ITEM = this.OFFSET_ITEM;
+  //   const OFFSET_SET = this.OFFSET_SET;
+
+  //   const TAU = this.TAU;
+
+  //   // Camera
+  //   CAMERA_CONTROLLER.setFov(20.0);
+  //   CAMERA_CONTROLLER.setAperture(0.1);
+  //   CAMERA_CONTROLLER.setPosition(4.0, -0.52, -1.0);
+  //   CAMERA_CONTROLLER.setPositionTarget(0.0, 0.0, 0.0);
+
+  //   // Position Center
+  //   const PROGRESS = (1.0 / (this.animationFrameMax + 1)) * frame;
+  //   const ROTATION = TAU * PROGRESS;
+
+  //   const POSITION_CENTER = this.POSITION_CENTER;
+  //   POSITION_CENTER[0] = Math.cos(ROTATION) * RADIUS;
+  //   POSITION_CENTER[1] = 0.0;
+  //   POSITION_CENTER[2] = Math.sin(ROTATION) * RADIUS;
+
+  //   // Animated spheres
+  //   let i;
+  //   let y;
+
+  //   for (i = 0; i < TOTAL; i++) {
+  //     y = OFFSET_SET + OFFSET_ITEM * i;
+
+  //     this.spheresAnimated[i].setPositionCenter(
+  //       POSITION_CENTER[0],
+  //       POSITION_CENTER[1] + y,
+  //       POSITION_CENTER[2]
+  //     );
+  //   }
+  // }
 
   // ________________________________________________________________ Background
 

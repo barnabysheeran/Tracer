@@ -33,9 +33,13 @@ export default class World {
 
   // _________________________________________________________________ Animation
 
-  setAnimationFrame(frame) {
-    this.scene.setAnimationFrame(frame);
+  setAnimationTime(time) {
+    this.scene.setAnimationTime(time);
   }
+
+  // setAnimationFrame(frame) {
+  //   this.scene.setAnimationFrame(frame);
+  // }
 
   getAnimationFrameMax() {
     return this.scene.getAnimationFrameMax();

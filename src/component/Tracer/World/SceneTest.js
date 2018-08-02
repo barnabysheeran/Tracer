@@ -61,8 +61,8 @@ export default class SceneTest extends Scene {
 
   // _________________________________________________________________ Animation
 
-  setAnimationFrame(frame) {
-    frame;
+  setAnimationTime(time) {
+    time;
 
     // Camera
     const CAMERA_CONTROLLER = this.CAMERA_CONTROLLER;

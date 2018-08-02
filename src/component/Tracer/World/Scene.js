@@ -20,8 +20,8 @@ export default class Scene {
 
   // _________________________________________________________________ Animation
 
-  setAnimationFrame(frame) {
-    frame;
+  setAnimationTime(time) {
+    time;
   }
 
   getAnimationFrameMax() {
