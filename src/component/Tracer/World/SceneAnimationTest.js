@@ -22,7 +22,7 @@ export default class SceneAnimationTest extends Scene {
     this.TAU = Math.PI * 2.0;
 
     // Line
-    this.RADIUS = 0.56;
+    this.RADIUS = 0.6;
     this.TOTAL = 7;
     this.OFFSET_ITEM = 0.12;
     this.OFFSET_SET = this.OFFSET_ITEM * -3.0;
@@ -30,8 +30,6 @@ export default class SceneAnimationTest extends Scene {
     this.POSITION_CENTER = vec3.create();
 
     let progressInterval = 1.0 / this.TOTAL;
-    //let offsetItem = 0.12;
-    //let offsetSet = offsetItem * -3.0;
     let y;
     let colour;
 
@@ -74,7 +72,7 @@ export default class SceneAnimationTest extends Scene {
     // Camera
     CAMERA_CONTROLLER.setFov(20.0);
     CAMERA_CONTROLLER.setAperture(0.1);
-    CAMERA_CONTROLLER.setPosition(4.0, 0.01, -1.0);
+    CAMERA_CONTROLLER.setPosition(4.0, -0.52, -1.0);
     CAMERA_CONTROLLER.setPositionTarget(0.0, 0.0, 0.0);
 
     // Position Center
