@@ -74,7 +74,7 @@ export default class SceneAnimationTest extends Scene {
     // Camera
     CAMERA_CONTROLLER.setFov(20.0);
     CAMERA_CONTROLLER.setAperture(0.1);
-    CAMERA_CONTROLLER.setPosition(4.0, 2.0, -1.0);
+    CAMERA_CONTROLLER.setPosition(4.0, 0.01, -1.0);
     CAMERA_CONTROLLER.setPositionTarget(0.0, 0.0, 0.0);
 
     // Position Center
@@ -107,6 +107,10 @@ export default class SceneAnimationTest extends Scene {
     let t = 0.5 * (rayDirectionNormalized[1] + 1.0);
     let white = 1.0 - t;
 
-    return vec3.fromValues(white + 0.5 * t, white + 0.7 * t, white + 1.0 * t);
+    return vec3.fromValues(
+      white + 0.61 * t,
+      white + 0.76 * t,
+      white + 0.79 * t
+    );
   }
 }
