@@ -64,6 +64,7 @@ export default class SceneTest extends Scene {
   setAnimationFrame(frame) {
     frame;
 
+    // Camera
     const CAMERA_CONTROLLER = this.CAMERA_CONTROLLER;
 
     CAMERA_CONTROLLER.setFov(20.0);

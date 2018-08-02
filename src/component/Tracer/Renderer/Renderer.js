@@ -22,7 +22,7 @@ export default class Renderer {
 
     // Frames
     this.frame = 0;
-    this.frameTotal = 0;
+    this.frameMax = 0;
 
     // Speed
     this.pixelsPerFrame = 100;
@@ -61,11 +61,12 @@ export default class Renderer {
   // _____________________________________________________________________ Start
 
   startAnimation() {
+    // Record Time
     let d = new Date();
     this.timeRenderStart = d.getTime();
 
-    //
-    this.frame = 1;
+    // Start
+    this.frame = 0;
     this.isRendering = true;
     this.startFrame();
   }
@@ -76,33 +77,19 @@ export default class Renderer {
 
     this.WORLD.setAnimationFrame(this.frame);
 
-    this.setStatus("Render frame " + this.frame + " of " + this.frameTotal);
+    this.setStatus("Render frame " + this.frame + " / " + this.frameMax);
   }
 
   onFrameComplete() {
     // Save ?
     if (this.saveOutput == true) {
-      let d = new Date();
-
-      this.RECORDER.saveImage(
-        "render_" +
-          d.getFullYear() +
-          "_" +
-          d.getMonth() +
-          "_" +
-          d.getDate() +
-          "_" +
-          d.getTime() +
-          "_" +
-          this.frame +
-          ".png"
-      );
+      this.RECORDER.saveImage("frame_" + this.frame + ".png");
     }
 
     // Frame
     this.frame++;
 
-    if (this.frame > this.frameTotal) {
+    if (this.frame > this.frameMax) {
       this.onRenderComplete();
     } else {
       this.startFrame();
@@ -143,7 +130,7 @@ export default class Renderer {
       this.pixelsPerFrame = Math.floor(this.pixelsPerFrame * 2);
     }
 
-    //  Scope
+    // Scope
     const CONTEXT = this.CONTEXT;
     const PIXEL_WIDTH = this.PIXEL_WIDTH;
     const PIXEL_HEIGHT = this.PIXEL_HEIGHT;
@@ -277,7 +264,7 @@ export default class Renderer {
 
   setScene(sceneId) {
     this.WORLD.setScene(sceneId);
-    this.frameTotal = this.WORLD.getAnimationFrameTotal();
+    this.frameMax = this.WORLD.getAnimationFrameMax();
   }
 
   setAASamples(samples) {

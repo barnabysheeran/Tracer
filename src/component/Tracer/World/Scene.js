@@ -4,14 +4,18 @@ import { vec3 } from "gl-matrix";
 export default class Scene {
   constructor(cameraController) {
     this.CAMERA_CONTROLLER = cameraController;
-    this.ANIMATION_FRAME_TOTAL = 1;
+    this.animationFrameMax = 0;
     this.HITABLES = [];
   }
 
   // ____________________________________________________________________ Sphere
 
   addSphere(position, radius, material) {
-    this.HITABLES.push(new HitableSphere(position, radius, material));
+    let sphere = new HitableSphere(position, radius, material);
+
+    this.HITABLES.push(sphere);
+
+    return sphere;
   }
 
   // _________________________________________________________________ Animation
@@ -20,8 +24,8 @@ export default class Scene {
     frame;
   }
 
-  getAnimationFrameTotal() {
-    return this.ANIMATION_FRAME_TOTAL;
+  getAnimationFrameMax() {
+    return this.animationFrameMax;
   }
 
   // ________________________________________________________________ Background

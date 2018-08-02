@@ -2,7 +2,6 @@ import HitRecord from "../Hit/HitRecord";
 import HitableSphere from "../Hit/HitableSphere";
 
 import SceneTest from "./SceneTest";
-import ScenePyramid from "./ScenePyramid";
 import SceneAnimationTest from "./SceneAnimationTest";
 
 export default class World {
@@ -11,7 +10,6 @@ export default class World {
 
     this.SCENE_TEST = new SceneTest(cameraController);
     this.SCENE_ANIMATION_TEST = new SceneAnimationTest(cameraController);
-    this.SCENE_PYRAMID = new ScenePyramid(cameraController);
 
     // Default
     this.scene;
@@ -30,9 +28,6 @@ export default class World {
       case 1:
         this.scene = this.SCENE_ANIMATION_TEST;
         break;
-      case 2:
-        this.scene = this.SCENE_PYRAMID;
-        break;
     }
   }
 
@@ -42,8 +37,8 @@ export default class World {
     this.scene.setAnimationFrame(frame);
   }
 
-  getAnimationFrameTotal() {
-    return this.scene.getAnimationFrameTotal();
+  getAnimationFrameMax() {
+    return this.scene.getAnimationFrameMax();
   }
 
   // ________________________________________________________________ Background
