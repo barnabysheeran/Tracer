@@ -36,7 +36,7 @@ export default class Renderer {
     this.SAMPLES_AA = 1;
 
     // Bounce
-    this.bounceMax = 50;
+    this.bounceMax = 10000;
 
     // Reuseable imagedata
     this.IMAGEDATA = this.CONTEXT.createImageData(1, 1);

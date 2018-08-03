@@ -25,7 +25,8 @@ export default class Gui extends React.Component {
             options={[
               { label: "800*400", value: [800, 400] },
               { label: "500*500", value: [500, 500] },
-              { label: "1024*512", value: [1024, 512] }
+              { label: "1024*512", value: [1024, 512] },
+              { label: "200*200", value: [200, 200] }
             ]}
             onClick={this.props.onClickSetDimensions}
           />

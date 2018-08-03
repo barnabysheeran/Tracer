@@ -100,3 +100,8 @@ export function HSVtoRGB(h, s, v) {
     b: b
   };
 }
+
+export function parametricBlend(t) {
+  let sqt = t * t;
+  return sqt / (2.0 * (sqt - t) + 1.0);
+}
