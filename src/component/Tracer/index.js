@@ -4,7 +4,7 @@ import Renderer from "./Renderer/Renderer";
 
 import style from "./../../index.css";
 
-export default class Visual extends React.Component {
+export default class Tracer extends React.Component {
   constructor(props) {
     super(props);
 
@@ -24,14 +24,10 @@ export default class Visual extends React.Component {
   // _____________________________________________________________________ Mount
 
   componentDidMount() {
-    // Context
-    this.CONTEXT = this.CANVAS.getContext("2d");
-
-    // Tracer
-    this.RENDERER = new Renderer(this.CONTEXT, this.setStatus);
+    // Renderer
+    this.RENDERER = new Renderer(this.CANVAS, this.setStatus);
     this.setDimensions([800, 400]);
     this.RENDERER.clear();
-    this.RENDERER.start();
   }
 
   // _______________________________________________________________ Interaction
@@ -53,16 +49,8 @@ export default class Visual extends React.Component {
     this.RENDERER.setBounceMax(bounce);
   }
 
-  setAperture(aperture) {
-    this.RENDERER.setAperture(aperture);
-  }
-
-  setFov(fov) {
-    this.RENDERER.setFov(fov);
-  }
-
-  setCameraPositionById(positionId) {
-    this.RENDERER.setCameraPositionById(positionId);
+  setSaveOutput(save) {
+    this.RENDERER.setSaveOutput(save);
   }
 
   clear() {
@@ -70,7 +58,7 @@ export default class Visual extends React.Component {
   }
 
   start() {
-    this.RENDERER.start();
+    this.RENDERER.startAnimation();
   }
 
   setStatus(status) {

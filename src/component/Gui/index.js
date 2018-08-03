@@ -21,12 +21,12 @@ export default class Gui extends React.Component {
           <Group
             title="Output"
             narrow={false}
-            initialIndex={1}
+            initialIndex={0}
             options={[
-              { label: "400*400", value: [400, 400] },
               { label: "800*400", value: [800, 400] },
-              { label: "800*800", value: [800, 800] },
-              { label: "1600*800", value: [1600, 800] }
+              { label: "500*500", value: [500, 500] },
+              { label: "1024*512", value: [1024, 512] },
+              { label: "200*200", value: [200, 200] }
             ]}
             onClick={this.props.onClickSetDimensions}
           />
@@ -36,7 +36,7 @@ export default class Gui extends React.Component {
             initialIndex={0}
             options={[
               { label: "Test", value: 0 },
-              { label: "Pyramid", value: 1 }
+              { label: "AnimTest", value: 1 }
             ]}
             onClick={this.props.onClickSetScene}
           />
@@ -73,48 +73,16 @@ export default class Gui extends React.Component {
             onClick={this.props.onClickSetBounceMax}
           />
           <Group
-            title="Aperture"
-            narrow={true}
-            initialIndex={1}
-            options={[
-              { label: "0.1", value: 0.1 },
-              { label: "0.2", value: 0.2 },
-              { label: "0.3", value: 0.3 },
-              { label: "0.4", value: 0.4 },
-              { label: "0.5", value: 0.5 },
-              { label: "1", value: 1 },
-              { label: "2", value: 2 },
-              { label: "3", value: 3 }
-            ]}
-            onClick={this.props.onClickSetAperture}
-          />
-          <Group
-            title="FOV"
-            narrow={true}
-            initialIndex={3}
-            options={[
-              { label: "1", value: 1 },
-              { label: "10", value: 10 },
-              { label: "15", value: 15 },
-              { label: "20", value: 20 },
-              { label: "25", value: 25 },
-              { label: "30", value: 30 },
-              { label: "35", value: 35 },
-              { label: "40", value: 40 }
-            ]}
-            onClick={this.props.onClickSetFov}
-          />
-          <Group
-            title="Camera"
+            title="Save Output"
             narrow={false}
             initialIndex={0}
             options={[
-              { label: "Position A", value: 0 },
-              { label: "Position B", value: 1 },
-              { label: "Position C", value: 2 }
+              { label: "Off", value: false },
+              { label: "On", value: true }
             ]}
-            onClick={this.props.onClickSetCameraPosition}
+            onClick={this.props.onClickSetSaveOutput}
           />
+
           <div className={style.row} />
           <div className={style.row}>
             <Title text="" />

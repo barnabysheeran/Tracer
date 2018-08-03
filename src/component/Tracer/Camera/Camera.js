@@ -34,6 +34,7 @@ export default class Camera {
     this.v = vec3.create();
     vec3.cross(this.v, this.w, this.u);
 
+    // Extent
     this.lowerLeftCorner = vec3.fromValues(
       this.origin[0] -
         this.widthHalf * focusDistance * this.u[0] -
@@ -49,12 +50,14 @@ export default class Camera {
         focusDistance * this.w[2]
     );
 
+    // Horizontal
     this.horizontal = vec3.fromValues(
       2.0 * this.widthHalf * focusDistance * this.u[0],
       2.0 * this.widthHalf * focusDistance * this.u[1],
       2.0 * this.widthHalf * focusDistance * this.u[2]
     );
 
+    // Vertical
     this.vertical = vec3.fromValues(
       2.0 * this.heightHalf * focusDistance * this.v[0],
       2.0 * this.heightHalf * focusDistance * this.v[1],

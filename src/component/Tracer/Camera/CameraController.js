@@ -80,10 +80,26 @@ export default class CameraController {
         this.position[2] = 2.0;
 
         this.positionTarget[0] = 0.0;
-        this.positionTarget[1] = -0.35;
+        this.positionTarget[1] = -0.24;
         this.positionTarget[2] = 0.0;
         break;
     }
+
+    this.update();
+  }
+
+  setPosition(x, y, z) {
+    this.position[0] = x;
+    this.position[1] = y;
+    this.position[2] = z;
+
+    this.update();
+  }
+
+  setPositionTarget(x, y, z) {
+    this.positionTarget[0] = x;
+    this.positionTarget[1] = y;
+    this.positionTarget[2] = z;
 
     this.update();
   }

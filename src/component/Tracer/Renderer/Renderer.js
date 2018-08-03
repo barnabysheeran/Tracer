@@ -7,8 +7,8 @@ import HitRecord from "../Hit/HitRecord";
 import Recorder from "../Recorder/Recorder";
 
 export default class Renderer {
-  constructor(context, setStatus) {
-    this.CONTEXT = context;
+  constructor(canvas, setStatus) {
+    this.CONTEXT = canvas.getContext("2d");
     this.setStatus = setStatus;
 
     // Dimensions
@@ -20,6 +20,15 @@ export default class Renderer {
     this.timeLastFrame = 0;
     this.timeRenderStart = 0;
 
+    // Frames
+    this.frame = 0;
+    this.frameMax = 0;
+
+    // Time
+    this.timeFrameStart = 0.0;
+    this.timeFrameEnd = 1.0;
+    this.timeFrameInterval = 1.0;
+
     // Speed
     this.pixelsPerFrame = 100;
 
@@ -27,7 +36,7 @@ export default class Renderer {
     this.SAMPLES_AA = 1;
 
     // Bounce
-    this.bounceMax = 50;
+    this.bounceMax = 10000;
 
     // Reuseable imagedata
     this.IMAGEDATA = this.CONTEXT.createImageData(1, 1);
@@ -39,14 +48,15 @@ export default class Renderer {
     this.column = 0;
     this.isRendering = false;
 
+    // Recorder
+    this.saveOutput = false;
+    this.RECORDER = new Recorder(canvas);
+
     // Camera Controller
     this.CAMERA_CONTROLLER = new CameraController();
 
-    // Recorder
-    this.RECORDER = new Recorder();
-
     // Create World
-    this.WORLD = new World();
+    this.WORLD = new World(this.CAMERA_CONTROLLER);
     this.setScene(0);
 
     // Start Loop
@@ -55,28 +65,62 @@ export default class Renderer {
 
   // _____________________________________________________________________ Start
 
-  start() {
-    this.row = 0;
-    this.column = 0;
-
+  startAnimation() {
+    // Record Time
     let d = new Date();
     this.timeRenderStart = d.getTime();
 
-    this.setStatus("Render ...");
+    // Start
+    this.frame = 0;
     this.isRendering = true;
+    this.startFrame();
+  }
+
+  startFrame() {
+    // XY
+    this.row = 0;
+    this.column = 0;
+
+    // Time
+    this.timeFrameStart = this.frame * this.timeFrameInterval;
+    this.timeFrameEnd = (this.frame + 1) * this.timeFrameInterval;
+
+    this.setStatus("Render frame " + this.frame);
+  }
+
+  onFrameComplete() {
+    // Save ?
+    if (this.saveOutput == true) {
+      this.RECORDER.saveImage("frame_" + this.frame + ".png");
+    }
+
+    // Frame
+    this.frame++;
+
+    // Time
+    this.timeFrameStart = 0.0;
+    this.timeFrameEnd = 0.0;
+
+    if (this.frame >= this.frameMax) {
+      this.onRenderComplete();
+    } else {
+      this.startFrame();
+    }
   }
 
   onRenderComplete() {
+    // Status
     let d = new Date();
     let timeTaken = d.getTime() - this.timeRenderStart;
-
     this.setStatus("Complete in " + (timeTaken / 1000).toFixed(2) + "s");
+
+    // Done
     this.isRendering = false;
   }
 
   // ____________________________________________________________________ Render
 
-  render(time) {
+  render(runTime) {
     // Loop
     requestAnimationFrame(this.render.bind(this));
 
@@ -86,8 +130,8 @@ export default class Renderer {
     }
 
     // Frame duration
-    let frameDuration = time - this.timeLastFrame;
-    this.timeLastFrame = time;
+    let frameDuration = runTime - this.timeLastFrame;
+    this.timeLastFrame = runTime;
 
     if (frameDuration > this.FRAME_TIME_STANDARD * 1.1) {
       this.pixelsPerFrame -= Math.floor(this.pixelsPerFrame * 0.5);
@@ -98,8 +142,9 @@ export default class Renderer {
       this.pixelsPerFrame = Math.floor(this.pixelsPerFrame * 2);
     }
 
-    //  Scope
+    // Scope
     const CONTEXT = this.CONTEXT;
+    const WORLD = this.WORLD;
     const PIXEL_WIDTH = this.PIXEL_WIDTH;
     const PIXEL_HEIGHT = this.PIXEL_HEIGHT;
     const PIXELS_PER_FRAME = this.pixelsPerFrame;
@@ -117,6 +162,7 @@ export default class Renderer {
 
     // Render row
     let ray;
+    let time;
     let u;
     let v;
     let i;
@@ -132,6 +178,10 @@ export default class Renderer {
       for (s = 0; s < SAMPLES_AA; s++) {
         u = (column + Math.random()) / PIXEL_WIDTH;
         v = (PIXEL_HEIGHT - row + Math.random()) / PIXEL_HEIGHT;
+
+        time = this.timeFrameStart + Math.random() * this.timeFrameInterval;
+
+        WORLD.setAnimationTime(time);
 
         ray = CAMERA_CONTROLLER.getRay(u, v);
 
@@ -165,7 +215,8 @@ export default class Renderer {
         row++;
 
         if (row >= PIXEL_HEIGHT) {
-          this.onRenderComplete();
+          this.onFrameComplete();
+          return;
         }
       }
     }
@@ -180,8 +231,6 @@ export default class Renderer {
   getColour(ray, depth) {
     const WORLD = this.WORLD;
     const BOUNCE_MAX = this.bounceMax;
-
-    // TODO MAXDEPTH
 
     let hitRecord = new HitRecord();
 
@@ -206,19 +255,7 @@ export default class Renderer {
       }
     } else {
       // Background
-      let directionNormalized = ray.getDirectionNormalized();
-      let t = 0.5 * (directionNormalized[1] + 1.0);
-
-      let white = vec3.fromValues(1.0, 1.0, 1.0);
-      vec3.scale(white, white, 1.0 - t);
-
-      let blue = vec3.fromValues(0.5, 0.7, 1.0);
-      vec3.scale(blue, blue, t);
-
-      let colour = vec3.fromValues(0.0, 0.0, 0.0);
-      vec3.add(colour, white, blue);
-
-      return colour;
+      return WORLD.getBackground(ray.getDirectionNormalized());
     }
   }
 
@@ -244,7 +281,14 @@ export default class Renderer {
   }
 
   setScene(sceneId) {
+    // Scene
     this.WORLD.setScene(sceneId);
+
+    // Frame
+    this.frameMax = this.WORLD.getAnimationFrameMax();
+
+    // Time
+    this.timeFrameInterval = 1.0 / this.frameMax;
   }
 
   setAASamples(samples) {
@@ -253,6 +297,10 @@ export default class Renderer {
 
   setBounceMax(bounceMax) {
     this.bounceMax = bounceMax;
+  }
+
+  setSaveOutput(save) {
+    this.saveOutput = save;
   }
 
   setAperture(aperture) {
