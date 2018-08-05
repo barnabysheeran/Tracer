@@ -28,10 +28,6 @@ export default class Ray {
     vec3.normalize(this.DIRECTION_NORMALIZED, DIRECTION);
   }
 
-  setTime(time) {
-    this.time = time;
-  }
-
   // _______________________________________________________________________ Get
 
   getPositionOrigin() {
@@ -44,10 +40,6 @@ export default class Ray {
 
   getDirectionNormalized() {
     return this.DIRECTION_NORMALIZED;
-  }
-
-  getTime() {
-    return this.time;
   }
 
   // ______________________________________________________________ Point on Ray

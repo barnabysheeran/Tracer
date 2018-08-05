@@ -11,7 +11,7 @@ export default class SceneAnimationTest extends Scene {
   constructor(cameraController) {
     super(cameraController);
 
-    this.animationFrameMax = 30;
+    this.animationFrameMax = 13;
 
     // Center
     const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
@@ -25,8 +25,8 @@ export default class SceneAnimationTest extends Scene {
     this.RADIUS = 0.6;
     this.TOTAL = 7;
 
-    this.TIME_MARGIN = 0.02;
-    this.TIME_DURATION = 0.7;
+    this.TIME_MARGIN = 0.01;
+    this.TIME_DURATION = 0.8;
     this.TIME_DELAYS = [];
 
     let timeOffset =
