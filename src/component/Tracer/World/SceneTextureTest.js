@@ -2,22 +2,22 @@ import { vec3 } from "gl-matrix";
 
 import Scene from "./Scene";
 
+import TextureConstant from "../Texture/TextureConstant";
 import TextureChecker from "../Texture/TextureChecker";
-
 import MaterialDielectric from "../Material/MaterialDielectric";
 import MaterialMetal from "../Material/MaterialLambertian";
 import MaterialLambertian from "../Material/MaterialLambertian";
-import TextureConstant from "../Texture/TextureConstant";
+
+import { HSVtoRGB } from "../Util/util";
 
 export default class SceneTextureTest extends Scene {
   constructor(cameraController) {
     super(cameraController);
 
     // Constant
-    const TEXTURE_GREY = new TextureConstant(vec3.fromValues(0.5, 0.5, 0.5));
+    const TEXTURE_GREY = new TextureConstant(vec3.fromValues(0.8, 0.8, 0.8));
     const MATERIAL_GREY = new MaterialLambertian(TEXTURE_GREY);
-
-    this.addSphere(vec3.fromValues(0.0, 0.0, 1.04), 0.5, MATERIAL_GREY);
+    this.addSphere(vec3.fromValues(0.0, 0.0, 1.6), 0.5, MATERIAL_GREY);
 
     // Dialectic
     const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
@@ -25,11 +25,41 @@ export default class SceneTextureTest extends Scene {
     this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), -0.45, MATERIAL_DIELECTRIC);
 
     // Metal
-    const TEXTURE_METAL = new TextureConstant(vec3.fromValues(0.5, 0.5, 0.5));
-
+    const TEXTURE_METAL = new TextureConstant(vec3.fromValues(0.8, 0.8, 0.8));
     const MATERIAL_METAL = new MaterialMetal(TEXTURE_METAL, 0.2);
+    this.addSphere(vec3.fromValues(0.0, 0.0, -1.6), 0.5, MATERIAL_METAL);
 
-    this.addSphere(vec3.fromValues(0.0, 0.0, -1.04), 0.5, MATERIAL_METAL);
+    // Colours
+    let total = 13;
+    let progressIntervalTau = (Math.PI * 2) / total;
+    let progressInterval = 1.0 / total;
+
+    let radius = 0.5;
+    let colour;
+    let texture;
+    let material;
+
+    for (let i = 0; i < total; i++) {
+      colour = HSVtoRGB(progressInterval * i, 0.8, 0.8);
+
+      texture = new TextureConstant(
+        vec3.fromValues(colour.r, colour.g, colour.b)
+      );
+
+      // Material
+      material = new MaterialMetal(texture, 0.1);
+
+      // Sphere
+      this.addSphere(
+        vec3.fromValues(
+          Math.sin(progressIntervalTau * i) * radius,
+          -0.39,
+          Math.cos(progressIntervalTau * i) * radius
+        ),
+        0.1,
+        material
+      );
+    }
 
     // 'Floor'
     const TEXTURE_CHECKER_BLACK = new TextureConstant(
@@ -58,11 +88,11 @@ export default class SceneTextureTest extends Scene {
     // Camera
     const CAMERA_CONTROLLER = this.CAMERA_CONTROLLER;
 
-    CAMERA_CONTROLLER.setFov(16.0);
-    CAMERA_CONTROLLER.setAperture(0.0);
+    CAMERA_CONTROLLER.setFov(18.0);
+    CAMERA_CONTROLLER.setAperture(0.5);
 
-    CAMERA_CONTROLLER.setPosition(3.0, 1.0, 3.0);
-    CAMERA_CONTROLLER.setPositionTarget(0.0, -0.04, 0.0);
+    CAMERA_CONTROLLER.setPosition(3.0, 3.0, 2.0);
+    CAMERA_CONTROLLER.setPositionTarget(0.0, -0.24, 0.0);
   }
 
   // ________________________________________________________________ Background

@@ -3,10 +3,8 @@ import { vec3 } from "gl-matrix";
 import Scene from "./Scene";
 
 import TextureConstant from "../Texture/TextureConstant";
-
 import MaterialDielectric from "../Material/MaterialDielectric";
 import MaterialMetal from "../Material/MaterialMetal";
-import MaterialLambertian from "../Material/MaterialLambertian";
 
 import { HSVtoRGB } from "../Util/util";
 

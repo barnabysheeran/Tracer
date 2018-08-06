@@ -70,7 +70,7 @@ export default class SceneAnimationTest extends Scene {
     this.addSphere(
       vec3.fromValues(0.0, -100.51, -1.0),
       100,
-      new MaterialMetal(vec3.fromValues(0.8, 0.8, 0.8), 0.2)
+      new MaterialMetal(TEXTURE_FLOOR, 0.2)
     );
   }
 
