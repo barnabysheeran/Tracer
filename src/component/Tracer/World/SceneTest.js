@@ -28,12 +28,16 @@ export default class SceneTest extends Scene {
     let progressInterval = 1.0 / total;
 
     let radius = 0.5;
+    let colour;
     let texture;
     let material;
-    //let colour;
 
     for (let i = 0; i < total; i++) {
-      texture = new TextureConstant(HSVtoRGB(progressInterval * i, 0.8, 0.8));
+      colour = HSVtoRGB(progressInterval * i, 0.8, 0.8);
+
+      texture = new TextureConstant(
+        vec3.fromValues(colour.r, colour.g, colour.b)
+      );
 
       // Material
       material = new MaterialMetal(texture, 0.1);

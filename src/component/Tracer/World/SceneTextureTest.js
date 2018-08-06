@@ -25,9 +25,9 @@ export default class SceneTextureTest extends Scene {
     this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), -0.45, MATERIAL_DIELECTRIC);
 
     // Metal
-    const TEXTURE_METAL = new TextureConstant(0.5, 0.5, 0.5);
+    const TEXTURE_METAL = new TextureConstant(vec3.fromValues(0.5, 0.5, 0.5));
 
-    const MATERIAL_METAL = new MaterialMetal(TEXTURE_METAL, 0.5);
+    const MATERIAL_METAL = new MaterialMetal(TEXTURE_METAL, 0.2);
 
     this.addSphere(vec3.fromValues(0.0, 0.0, -1.04), 0.5, MATERIAL_METAL);
 
