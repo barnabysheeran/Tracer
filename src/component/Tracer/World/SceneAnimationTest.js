@@ -2,6 +2,8 @@ import { vec3 } from "gl-matrix";
 
 import Scene from "./Scene";
 
+import TextureConstant from "../Texture/TextureConstant";
+
 import MaterialDielectric from "../Material/MaterialDielectric";
 import MaterialMetal from "../Material/MaterialMetal";
 
@@ -38,6 +40,7 @@ export default class SceneAnimationTest extends Scene {
     let progressInterval = 1.0 / this.TOTAL;
     let y;
     let colour;
+    let texture;
 
     let i;
 
@@ -46,6 +49,10 @@ export default class SceneAnimationTest extends Scene {
     for (i = 0; i < this.TOTAL; i++) {
       colour = HSVtoRGB(progressInterval * i, 0.9, 0.9);
 
+      texture = new TextureConstant(
+        vec3.fromValues(colour.r, colour.g, colour.b)
+      );
+
       y = this.OFFSET_SET + this.OFFSET_ITEM * i;
 
       this.TIME_DELAYS[i] = this.TIME_MARGIN + i * timeOffset;
@@ -53,11 +60,13 @@ export default class SceneAnimationTest extends Scene {
       this.spheresAnimated[i] = this.addSphere(
         vec3.fromValues(this.RADIUS, y, 0.0),
         0.05,
-        new MaterialMetal(vec3.fromValues(colour.r, colour.g, colour.b), 0.1)
+        new MaterialMetal(texture, 0.1)
       );
     }
 
     // 'Floor'
+    const TEXTURE_FLOOR = new TextureConstant(vec3.fromValues(0.8, 0.8, 0.8));
+
     this.addSphere(
       vec3.fromValues(0.0, -100.51, -1.0),
       100,

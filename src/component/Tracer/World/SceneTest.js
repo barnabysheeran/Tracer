@@ -2,12 +2,13 @@ import { vec3 } from "gl-matrix";
 
 import Scene from "./Scene";
 
+import TextureConstant from "../Texture/TextureConstant";
+
 import MaterialDielectric from "../Material/MaterialDielectric";
 import MaterialMetal from "../Material/MaterialMetal";
 import MaterialLambertian from "../Material/MaterialLambertian";
 
 import { HSVtoRGB } from "../Util/util";
-import TextureConstant from "../Texture/TextureConstant";
 
 export default class SceneTest extends Scene {
   constructor(cameraController) {
@@ -60,7 +61,7 @@ export default class SceneTest extends Scene {
     this.addSphere(
       vec3.fromValues(0.0, -100.5, -1.0),
       100,
-      new MaterialLambertian(TEXTURE_FLOOR)
+      new MaterialMetal(TEXTURE_FLOOR, 0.5)
     );
   }
 
