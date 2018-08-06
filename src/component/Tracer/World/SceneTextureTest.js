@@ -4,6 +4,7 @@ import Scene from "./Scene";
 
 import TextureConstant from "../Texture/TextureConstant";
 import TextureChecker from "../Texture/TextureChecker";
+import TextureSimplex from "../Texture/TextureSimplex";
 import MaterialDielectric from "../Material/MaterialDielectric";
 import MaterialMetal from "../Material/MaterialLambertian";
 import MaterialLambertian from "../Material/MaterialLambertian";
@@ -14,20 +15,18 @@ export default class SceneTextureTest extends Scene {
   constructor(cameraController) {
     super(cameraController);
 
-    // Constant
-    const TEXTURE_GREY = new TextureConstant(vec3.fromValues(0.8, 0.8, 0.8));
-    const MATERIAL_GREY = new MaterialLambertian(TEXTURE_GREY);
-    this.addSphere(vec3.fromValues(0.0, 0.0, -1.5), 0.5, MATERIAL_GREY);
-
-    // Dialectic
+    // Dialectric
     const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
-    this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), 0.5, MATERIAL_DIELECTRIC);
-    this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), -0.45, MATERIAL_DIELECTRIC);
+    this.addSphere(vec3.fromValues(0.0, 0.0, -1.5), 0.5, MATERIAL_DIELECTRIC);
+    this.addSphere(vec3.fromValues(0.0, 0.0, -1.5), -0.45, MATERIAL_DIELECTRIC);
 
-    // Metal
-    const TEXTURE_METAL = new TextureConstant(vec3.fromValues(0.8, 0.8, 0.8));
-    const MATERIAL_METAL = new MaterialMetal(TEXTURE_METAL, 0.01);
-    this.addSphere(vec3.fromValues(0.0, 0.0, 1.5), 0.5, MATERIAL_METAL);
+    this.addSphere(vec3.fromValues(0.0, 0.0, 1.5), 0.5, MATERIAL_DIELECTRIC);
+    this.addSphere(vec3.fromValues(0.0, 0.0, 1.5), -0.45, MATERIAL_DIELECTRIC);
+
+    // Simplex
+    const TEXTURE_SIMPLEX = new TextureSimplex(10.0);
+    const MATERIAL_SIMPLEX = new MaterialMetal(TEXTURE_SIMPLEX, 0.01);
+    this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), 0.5, MATERIAL_SIMPLEX);
 
     // Colours
     let total = 13;

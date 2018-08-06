@@ -7,10 +7,10 @@ export default class TextureConstant extends Texture {
     this.COLOUR = colour;
   }
 
-  getValue(u, v, p) {
+  getValue(u, v, position) {
     u;
     v;
-    p;
+    position;
 
     return this.COLOUR;
   }

@@ -2,9 +2,9 @@ import { vec3 } from "gl-matrix";
 
 import Scene from "./Scene";
 
+import TextureConstant from "../Texture/TextureConstant";
 import MaterialDielectric from "../Material/MaterialDielectric";
 import MaterialMetal from "../Material/MaterialMetal";
-import MaterialLambertian from "../Material/MaterialLambertian";
 
 export default class SceneBVHTest extends Scene {
   constructor(cameraController) {
@@ -15,38 +15,13 @@ export default class SceneBVHTest extends Scene {
     this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), 0.5, MATERIAL_DIELECTRIC);
     this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), -0.45, MATERIAL_DIELECTRIC);
 
-    // Colours
-    const TOTAL = 100;
-
-    let i;
-    let x = 1.0;
-    let y = 0.0;
-    let z = -1.0;
-
-    for (i = 0; i < TOTAL; i++) {
-      this.addSphere(
-        vec3.fromValues(x, y, z),
-        0.19,
-        new MaterialMetal(
-          vec3.fromValues(Math.random(), Math.random(), Math.random()),
-          Math.random()
-        )
-      );
-
-      x += 0.2;
-
-      if (x > 5.0) {
-        x = 1.0;
-        z += 0.2;
-        y += 0.05;
-      }
-    }
-
     // 'Floor'
+    const TEXTURE_FLOOR = new TextureConstant(vec3.fromValues(0.8, 0.8, 0.8));
+
     this.addSphere(
       vec3.fromValues(0.0, -100.5, -1.0),
       100,
-      new MaterialLambertian(vec3.fromValues(0.8, 0.8, 0.8))
+      new MaterialMetal(TEXTURE_FLOOR, 0.5)
     );
   }
 
