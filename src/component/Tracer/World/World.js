@@ -23,8 +23,6 @@ export default class World {
   // _____________________________________________________________________ Scene
 
   setScene(sceneId) {
-    this.clear();
-
     switch (sceneId) {
       case 0:
         this.scene = this.SCENE_TEST;
@@ -55,12 +53,6 @@ export default class World {
 
   getBackground(rayDirectionNormalized) {
     return this.scene.getBackground(rayDirectionNormalized);
-  }
-
-  // _____________________________________________________________________ Clear
-
-  clear() {
-    this.HITABLES = [];
   }
 
   // ____________________________________________________________________ Sphere

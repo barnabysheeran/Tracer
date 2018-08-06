@@ -7,6 +7,7 @@ import MaterialMetal from "../Material/MaterialMetal";
 import MaterialLambertian from "../Material/MaterialLambertian";
 
 import { HSVtoRGB } from "../Util/util";
+import TextureConstant from "../Texture/TextureConstant";
 
 export default class SceneTest extends Scene {
   constructor(cameraController) {
@@ -27,17 +28,15 @@ export default class SceneTest extends Scene {
     let progressInterval = 1.0 / total;
 
     let radius = 0.5;
+    let texture;
     let material;
-    let colour;
+    //let colour;
 
     for (let i = 0; i < total; i++) {
-      colour = HSVtoRGB(progressInterval * i, 0.8, 0.8);
+      texture = new TextureConstant(HSVtoRGB(progressInterval * i, 0.8, 0.8));
 
       // Material
-      material = new MaterialMetal(
-        vec3.fromValues(colour.r, colour.g, colour.b),
-        0.1
-      );
+      material = new MaterialMetal(texture, 0.1);
 
       // Sphere
       this.addSphere(
@@ -52,10 +51,12 @@ export default class SceneTest extends Scene {
     }
 
     // 'Floor'
+    const TEXTURE_FLOOR = new TextureConstant(vec3.fromValues(0.8, 0.8, 0.8));
+
     this.addSphere(
       vec3.fromValues(0.0, -100.5, -1.0),
       100,
-      new MaterialLambertian(vec3.fromValues(0.8, 0.8, 0.8))
+      new MaterialLambertian(TEXTURE_FLOOR)
     );
   }
 
