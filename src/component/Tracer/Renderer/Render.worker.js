@@ -63,25 +63,14 @@ self.addEventListener("message", e => {
       CAMERA_CONTROLLER.shape(pixelWidth, pixelHeight);
       break;
     case "render":
-      render();
+      render(data.timeFrameStart, data.column, data.row);
       break;
   }
-
-  postMessage({
-    threadId: threadId,
-    message:
-      "Thread " +
-      threadId +
-      " samplesAA:" +
-      samplesAA +
-      " bounceMax:" +
-      bounceMax
-  });
 });
 
 // ______________________________________________________________________ Render
 
-let render = function(timeFrameStart, timeFrameEnd, column, row) {
+let render = function(timeFrameStart, column, row) {
   // Reset
   colour[0] = 0.0;
   colour[1] = 0.0;
@@ -113,7 +102,14 @@ let render = function(timeFrameStart, timeFrameEnd, column, row) {
   colour[1] = Math.sqrt(colour[1]);
   colour[2] = Math.sqrt(colour[2]);
 
-  postMessage({ threadId: threadId, column: column, row: row, colour: colour });
+  // Done
+  postMessage({
+    message: "complete",
+    threadId: threadId,
+    column: column,
+    row: row,
+    colour: colour
+  });
 };
 
 // ____________________________________________________________________ Colour
@@ -129,7 +125,7 @@ let getColour = function(ray, depth) {
       depth < bounceMax &&
       hitRecord.material.scatter(ray, hitRecord, attenuation, scattered) == true
     ) {
-      let colour = this.getColour(scattered, depth + 1);
+      let colour = getColour(scattered, depth + 1);
 
       return new vec3.fromValues(
         attenuation[0] * colour[0],

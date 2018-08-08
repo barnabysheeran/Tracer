@@ -9,7 +9,7 @@ import HitRecord from "../Hit/HitRecord";
 
 import Recorder from "../Recorder/Recorder";
 
-// TextureTest 800*800 before AABB && Workers 122 seconds
+// TextureTest 800*400 before AABB && Workers 122 seconds
 
 export default class Renderer {
   constructor(canvas, setStatus) {
@@ -30,7 +30,7 @@ export default class Renderer {
       renderWorker.postMessage({ messageType: "init", threadId: i });
 
       // Receive
-      renderWorker.onmessage = this.onRenderWorkerMessage;
+      renderWorker.onmessage = this.onRenderWorkerMessage.bind(this);
 
       // Store
       this.WORKER_POOL[i] = renderWorker;
@@ -83,16 +83,11 @@ export default class Renderer {
     // Create World
     this.WORLD = new World(this.CAMERA_CONTROLLER); // TODO Remove
 
+    // Start
+    this.setStatus("Created " + this.WORKER_TOTAL + " threads");
+
     // Start Loop
-    requestAnimationFrame(this.render.bind(this)); // TODO Remove
-  }
-
-  // ___________________________________________________________________ Workers
-
-  onRenderWorkerMessage(e) {
-    let data = e.data;
-
-    console.log("OnRenderWorkerMessage. " + data.message);
+    //requestAnimationFrame(this.render.bind(this)); // TODO Remove
   }
 
   // _____________________________________________________________________ Start
@@ -109,6 +104,8 @@ export default class Renderer {
   }
 
   startFrame() {
+    const WORKER_TOTAL = this.WORKER_TOTAL;
+
     // XY
     this.row = 0;
     this.column = 0;
@@ -118,9 +115,68 @@ export default class Renderer {
     this.timeFrameEnd = (this.frame + 1) * this.timeFrameInterval;
 
     this.setStatus("Render frame " + this.frame);
+
+    // Start
+    let i;
+
+    for (i = 0; i < WORKER_TOTAL; i++) {
+      this.startWorker(i, this.column, this.row);
+      this.nextPixel();
+    }
+  }
+
+  nextPixel() {
+    // Next column
+    this.column++;
+
+    if (this.column >= this.PIXEL_WIDTH) {
+      // Next row
+      this.column = 0;
+      this.row++;
+
+      if (this.row >= this.PIXEL_HEIGHT) {
+        this.onFrameComplete();
+        return;
+      }
+    }
+  }
+
+  startWorker(workerId, column, row) {
+    this.WORKER_POOL[workerId].postMessage({
+      messageType: "render",
+      timeFrameStart: this.timeFrameStart,
+      column: column,
+      row: row
+    });
+  }
+
+  onRenderWorkerMessage(e) {
+    let data = e.data;
+
+    //console.log("OnRenderWorkerMessage. " + data.message);
+
+    if (data.message == "complete") {
+      this.drawPixel(data.column, data.row, data.colour);
+      this.nextPixel();
+      this.startWorker(data.threadId, this.column, this.row);
+    }
+  }
+
+  drawPixel(column, row, colour) {
+    const IMAGEDATA = this.IMAGEDATA;
+    const IMAGEDATA_DATA = this.IMAGEDATA_DATA;
+    const CONTEXT = this.CONTEXT;
+
+    IMAGEDATA_DATA[0] = colour[0] * 255.99;
+    IMAGEDATA_DATA[1] = colour[1] * 255.99;
+    IMAGEDATA_DATA[2] = colour[2] * 255.99;
+
+    CONTEXT.putImageData(IMAGEDATA, column, row);
   }
 
   onFrameComplete() {
+    // TODO. All workers are complete ?
+
     // Save ?
     if (this.saveOutput == true) {
       this.RECORDER.saveImage("frame_" + this.frame + ".png");
