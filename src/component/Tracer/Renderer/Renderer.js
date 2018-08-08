@@ -6,6 +6,7 @@ import World from "../World/World";
 import CameraController from "../Camera/CameraController";
 import Ray from "../Ray/Ray";
 import HitRecord from "../Hit/HitRecord";
+
 import Recorder from "../Recorder/Recorder";
 
 // TextureTest 800*800 before AABB && Workers 122 seconds
@@ -57,10 +58,10 @@ export default class Renderer {
     this.pixelsPerFrame = 100;
 
     // Samples
-    this.SAMPLES_AA = 1;
+    this.SAMPLES_AA = 1; // TODO Remove
 
     // Bounce
-    this.bounceMax = 5000;
+    this.bounceMax = 5000; // TODO Remove
 
     // Reuseable imagedata
     this.IMAGEDATA = this.CONTEXT.createImageData(1, 1);
@@ -77,14 +78,13 @@ export default class Renderer {
     this.RECORDER = new Recorder(canvas);
 
     // Camera Controller
-    this.CAMERA_CONTROLLER = new CameraController();
+    this.CAMERA_CONTROLLER = new CameraController(); // TODO Remove
 
     // Create World
-    this.WORLD = new World(this.CAMERA_CONTROLLER);
-    this.setScene(0);
+    this.WORLD = new World(this.CAMERA_CONTROLLER); // TODO Remove
 
     // Start Loop
-    requestAnimationFrame(this.render.bind(this));
+    requestAnimationFrame(this.render.bind(this)); // TODO Remove
   }
 
   // ___________________________________________________________________ Workers
@@ -92,9 +92,7 @@ export default class Renderer {
   onRenderWorkerMessage(e) {
     let data = e.data;
 
-    console.log(
-      "OnRenderWorkerMessage. Thread " + data.threadId + " " + data.message
-    );
+    console.log("OnRenderWorkerMessage. " + data.message);
   }
 
   // _____________________________________________________________________ Start
@@ -305,47 +303,136 @@ export default class Renderer {
     this.isRendering = false;
   }
 
-  // _______________________________________________________________________ Set
+  // ______________________________________________________________ Set Threaded
 
   shape(w, h) {
     this.PIXEL_WIDTH = w;
     this.PIXEL_HEIGHT = h;
 
     this.CAMERA_CONTROLLER.shape(w, h);
+
+    // Scene
+    const WORKER_TOTAL = this.WORKER_TOTAL;
+    const WORKER_POOL = this.WORKER_POOL;
+
+    for (let i = 0; i < WORKER_TOTAL; i++) {
+      WORKER_POOL[i].postMessage({
+        messageType: "shape",
+        pixelWidth: w,
+        pixelHeight: h
+      });
+    }
   }
 
   setScene(sceneId) {
-    // Scene
-    this.WORLD.setScene(sceneId);
+    this.WORLD.setScene(sceneId); // TODO REMOVE
 
     // Frame
     this.frameMax = this.WORLD.getAnimationFrameMax();
 
     // Time
-    this.timeFrameInterval = 1.0 / this.frameMax;
+    let timeFrameInterval = 1.0 / this.frameMax;
+
+    this.timeFrameInterval = timeFrameInterval; // TODO Remove
+
+    // Workers
+    const WORKER_TOTAL = this.WORKER_TOTAL;
+    const WORKER_POOL = this.WORKER_POOL;
+
+    let i;
+
+    for (i = 0; i < WORKER_TOTAL; i++) {
+      WORKER_POOL[i].postMessage({
+        messageType: "setScene",
+        sceneId: sceneId,
+        timeFrameInterval: timeFrameInterval
+      });
+    }
   }
 
   setAASamples(samples) {
-    this.SAMPLES_AA = samples;
+    this.SAMPLES_AA = samples; // TODO Remove
+
+    const WORKER_TOTAL = this.WORKER_TOTAL;
+    const WORKER_POOL = this.WORKER_POOL;
+
+    let i;
+
+    for (i = 0; i < WORKER_TOTAL; i++) {
+      WORKER_POOL[i].postMessage({
+        messageType: "setSamplesAA",
+        samples: samples
+      });
+    }
   }
 
   setBounceMax(bounceMax) {
-    this.bounceMax = bounceMax;
-  }
+    this.bounceMax = bounceMax; // TODO Remove
 
-  setSaveOutput(save) {
-    this.saveOutput = save;
+    const WORKER_TOTAL = this.WORKER_TOTAL;
+    const WORKER_POOL = this.WORKER_POOL;
+
+    let i;
+
+    for (i = 0; i < WORKER_TOTAL; i++) {
+      WORKER_POOL[i].postMessage({
+        messageType: "setBounceMax",
+        bounceMax: bounceMax
+      });
+    }
   }
 
   setAperture(aperture) {
-    this.CAMERA_CONTROLLER.setAperture(aperture);
+    this.CAMERA_CONTROLLER.setAperture(aperture); // TODO Remove
+
+    const WORKER_TOTAL = this.WORKER_TOTAL;
+    const WORKER_POOL = this.WORKER_POOL;
+
+    let i;
+
+    for (i = 0; i < WORKER_TOTAL; i++) {
+      WORKER_POOL[i].postMessage({
+        messageType: "setAperture",
+        aperture: aperture
+      });
+    }
   }
 
   setFov(fov) {
-    this.CAMERA_CONTROLLER.setFov(fov);
+    this.CAMERA_CONTROLLER.setFov(fov); // TODO Remove
+
+    const WORKER_TOTAL = this.WORKER_TOTAL;
+    const WORKER_POOL = this.WORKER_POOL;
+
+    let i;
+
+    for (i = 0; i < WORKER_TOTAL; i++) {
+      WORKER_POOL[i].postMessage({
+        messageType: "setFov",
+        fov: fov
+      });
+    }
   }
 
   setCameraPositionById(positionId) {
-    this.CAMERA_CONTROLLER.setPositionsById(positionId);
+    this.CAMERA_CONTROLLER.setPositionsById(positionId); // TODO Remove
+
+    const WORKER_TOTAL = this.WORKER_TOTAL;
+    const WORKER_POOL = this.WORKER_POOL;
+
+    let i;
+
+    for (i = 0; i < WORKER_TOTAL; i++) {
+      WORKER_POOL[i].postMessage({
+        messageType: "setCameraPositionById",
+        positionId: positionId
+      });
+    }
+  }
+
+  // _______________________________________________________________________ Set
+
+  setSaveOutput(save) {
+    this.saveOutput = save;
   }
 }
