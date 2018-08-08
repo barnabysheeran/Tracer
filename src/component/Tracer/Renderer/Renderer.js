@@ -1,15 +1,39 @@
 import { vec3 } from "gl-matrix";
 
+import RenderWorker from "./Render.worker.js";
+
 import World from "../World/World";
 import CameraController from "../Camera/CameraController";
 import Ray from "../Ray/Ray";
 import HitRecord from "../Hit/HitRecord";
 import Recorder from "../Recorder/Recorder";
 
+// TextureTest 800*800 before AABB && Workers 122 seconds
+
 export default class Renderer {
   constructor(canvas, setStatus) {
     this.CONTEXT = canvas.getContext("2d");
     this.setStatus = setStatus;
+
+    // Workers
+    this.WORKER_TOTAL = navigator.hardwareConcurrency || 4;
+
+    this.WORKER_POOL = [];
+
+    let renderWorker;
+
+    for (let i = 0; i < this.WORKER_TOTAL; i++) {
+      renderWorker = new RenderWorker();
+
+      // Init
+      renderWorker.postMessage({ messageType: "init", threadId: i });
+
+      // Receive
+      renderWorker.onmessage = this.onRenderWorkerMessage;
+
+      // Store
+      this.WORKER_POOL[i] = renderWorker;
+    }
 
     // Dimensions
     this.PIXEL_WIDTH = -1;
@@ -36,7 +60,7 @@ export default class Renderer {
     this.SAMPLES_AA = 1;
 
     // Bounce
-    this.bounceMax = 10000;
+    this.bounceMax = 5000;
 
     // Reuseable imagedata
     this.IMAGEDATA = this.CONTEXT.createImageData(1, 1);
@@ -61,6 +85,16 @@ export default class Renderer {
 
     // Start Loop
     requestAnimationFrame(this.render.bind(this));
+  }
+
+  // ___________________________________________________________________ Workers
+
+  onRenderWorkerMessage(e) {
+    let data = e.data;
+
+    console.log(
+      "OnRenderWorkerMessage. Thread " + data.threadId + " " + data.message
+    );
   }
 
   // _____________________________________________________________________ Start

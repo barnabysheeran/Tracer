@@ -7,8 +7,11 @@ export default class AABB {
   // _______________________________________________________________________ Hit
 
   didHit(ray, tMin, tMax) {
+    // TODO Replace with Andrew Kensler version / Pixar version
+
     const MIN = this.MIN;
     const MAX = this.MAX;
+
     const ORIGIN = ray.getPositionOrigin();
     const DIRECTION = ray.getDirection(); // TODO Normalized ?
 
@@ -40,7 +43,17 @@ export default class AABB {
     return true;
   }
 
-  // ____________________________________________________________________ Access
+  // _______________________________________________________________________ Set
+
+  setMin(min) {
+    this.MIN = min;
+  }
+
+  setMax(max) {
+    this.MAX = max;
+  }
+
+  // _______________________________________________________________________ Get
 
   getMin() {
     return this.MIN;

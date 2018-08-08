@@ -7,4 +7,10 @@ export default class Hitable {
     tMax;
     hitRecord;
   }
+
+  getBoundingBox(t0, t1, aabb) {
+    t0;
+    t1;
+    aabb;
+  }
 }
