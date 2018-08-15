@@ -17,6 +17,8 @@ export default class Renderer {
 
     this.WORKER_POOL = [];
 
+    this.workersActive;
+
     let renderWorker;
 
     for (let i = 0; i < this.WORKER_TOTAL; i++) {
@@ -37,8 +39,6 @@ export default class Renderer {
     this.PIXEL_HEIGHT = -1;
 
     // Time
-    //this.FRAME_TIME_STANDARD = 1000 / 60;
-    //this.timeLastFrame = 0;
     this.timeRenderStart = 0;
 
     // Frames
@@ -47,7 +47,6 @@ export default class Renderer {
 
     // Time
     this.timeFrameStart = 0.0;
-    this.timeFrameEnd = 1.0;
     this.timeFrameInterval = 1.0;
 
     // Reuseable imagedata
@@ -94,9 +93,12 @@ export default class Renderer {
     this.row = 0;
     this.column = 0;
 
+    // Workers
+    this.workersActive = this.WORKER_TOTAL;
+
     // Time
     this.timeFrameStart = this.frame * this.timeFrameInterval;
-    this.timeFrameEnd = (this.frame + 1) * this.timeFrameInterval;
+    //this.timeFrameEnd = (this.frame + 1) * this.timeFrameInterval;
 
     this.setStatus("Render frame " + this.frame);
 
@@ -111,21 +113,6 @@ export default class Renderer {
     this.startWorker(WORKER_TOTAL - 1, this.column, this.row);
   }
 
-  nextPixel() {
-    // Next column
-    this.column++;
-
-    if (this.column >= this.PIXEL_WIDTH) {
-      // Next row
-      this.column = 0;
-      this.row++;
-
-      if (this.row >= this.PIXEL_HEIGHT) {
-        this.isRendering = false;
-      }
-    }
-  }
-
   startWorker(workerId, column, row) {
     this.WORKER_POOL[workerId].postMessage({
       messageType: "render",
@@ -135,16 +122,36 @@ export default class Renderer {
     });
   }
 
+  nextPixel() {
+    // Next column
+    this.column++;
+
+    if (this.column >= this.PIXEL_WIDTH) {
+      // Next row
+      this.column = 0;
+      this.row++;
+    }
+  }
+
   onRenderWorkerMessage(e) {
     let data = e.data;
-
-    //console.log("OnRenderWorkerMessage. " + data.message);
 
     if (data.message == "complete") {
       if (this.isRendering == true) {
         this.drawPixel(data.column, data.row, data.colour);
-        this.nextPixel();
-        this.startWorker(data.threadId, this.column, this.row);
+
+        // Next
+        if (this.row < this.PIXEL_HEIGHT) {
+          this.nextPixel();
+
+          this.startWorker(data.threadId, this.column, this.row);
+        } else {
+          this.workersActive--;
+
+          if (this.workersActive == 0) {
+            this.onFrameComplete();
+          }
+        }
       }
     }
   }
@@ -162,8 +169,6 @@ export default class Renderer {
   }
 
   onFrameComplete() {
-    // TODO. All workers are complete ?
-
     // Save ?
     if (this.saveOutput == true) {
       this.RECORDER.saveImage("frame_" + this.frame + ".png");
@@ -173,8 +178,8 @@ export default class Renderer {
     this.frame++;
 
     // Time
-    this.timeFrameStart = 0.0;
-    this.timeFrameEnd = 0.0;
+    this.timeFrameStart = this.frame * this.timeFrameInterval;
+    //this.timeFrameEnd = (this.frame + 1) * this.timeFrameInterval;
 
     if (this.frame >= this.frameMax) {
       this.onRenderComplete();
@@ -235,7 +240,7 @@ export default class Renderer {
     this.frameMax = WORLD.getAnimationFrameMax();
 
     // Time
-    let timeFrameInterval = 1.0 / this.frameMax;
+    this.timeFrameInterval = 1.0 / this.frameMax;
 
     // Workers
     const WORKER_TOTAL = this.WORKER_TOTAL;
@@ -247,7 +252,7 @@ export default class Renderer {
       WORKER_POOL[i].postMessage({
         messageType: "setScene",
         sceneId: sceneId,
-        timeFrameInterval: timeFrameInterval
+        timeFrameInterval: this.timeFrameInterval
       });
     }
   }

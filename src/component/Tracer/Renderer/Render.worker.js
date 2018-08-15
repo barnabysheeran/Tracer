@@ -83,6 +83,8 @@ let render = function(timeFrameStart, column, row) {
 
     time = timeFrameStart + Math.random() * timeFrameInterval; // TODO
 
+    //console.log("time " + time);
+
     WORLD.setAnimationTime(time);
 
     ray = CAMERA_CONTROLLER.getRay(u, v);
