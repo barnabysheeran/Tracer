@@ -112,7 +112,7 @@ let render = function(timeFrameStart, column, row) {
   });
 };
 
-// ____________________________________________________________________ Colour
+// ______________________________________________________________________ Colour
 
 let getColour = function(ray, depth) {
   let hitRecord = new HitRecord();

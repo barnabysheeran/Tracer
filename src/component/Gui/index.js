@@ -26,7 +26,9 @@ export default class Gui extends React.Component {
               { label: "800*400", value: [800, 400] },
               { label: "500*500", value: [500, 500] },
               { label: "1024*512", value: [1024, 512] },
-              { label: "200*200", value: [200, 200] }
+              { label: "200*200", value: [200, 200] },
+              { label: "200*100", value: [200, 100] },
+              { label: "200*100", value: [400, 200] }
             ]}
             onClick={this.props.onClickSetDimensions}
           />
@@ -37,7 +39,8 @@ export default class Gui extends React.Component {
             options={[
               { label: "Test", value: 0 },
               { label: "AnimTest", value: 1 },
-              { label: "TextureTest", value: 2 }
+              { label: "TextureTest", value: 2 },
+              { label: "BVHTest", value: 3 }
             ]}
             onClick={this.props.onClickSetScene}
           />
@@ -47,12 +50,12 @@ export default class Gui extends React.Component {
             initialIndex={0}
             options={[
               { label: "1", value: 1 },
-              { label: "2", value: 2 },
-              { label: "5", value: 5 },
+              { label: "50", value: 50 },
               { label: "100", value: 100 },
               { label: "200", value: 200 },
               { label: "300", value: 300 },
-              { label: "500", value: 500 }
+              { label: "500", value: 500 },
+              { label: "1k", value: 1000 }
             ]}
             onClick={this.props.onClickSetAASamples}
           />

@@ -1,11 +1,7 @@
-import { vec3 } from "gl-matrix";
-
 import RenderWorker from "./Render.worker.js";
 
 import World from "../World/World";
 import CameraController from "../Camera/CameraController";
-import Ray from "../Ray/Ray";
-import HitRecord from "../Hit/HitRecord";
 
 import Recorder from "../Recorder/Recorder";
 
@@ -41,8 +37,8 @@ export default class Renderer {
     this.PIXEL_HEIGHT = -1;
 
     // Time
-    this.FRAME_TIME_STANDARD = 1000 / 60;
-    this.timeLastFrame = 0;
+    //this.FRAME_TIME_STANDARD = 1000 / 60;
+    //this.timeLastFrame = 0;
     this.timeRenderStart = 0;
 
     // Frames
@@ -53,15 +49,6 @@ export default class Renderer {
     this.timeFrameStart = 0.0;
     this.timeFrameEnd = 1.0;
     this.timeFrameInterval = 1.0;
-
-    // Speed
-    this.pixelsPerFrame = 100;
-
-    // Samples
-    this.SAMPLES_AA = 1; // TODO Remove
-
-    // Bounce
-    this.bounceMax = 5000; // TODO Remove
 
     // Reuseable imagedata
     this.IMAGEDATA = this.CONTEXT.createImageData(1, 1);
@@ -78,16 +65,13 @@ export default class Renderer {
     this.RECORDER = new Recorder(canvas);
 
     // Camera Controller
-    this.CAMERA_CONTROLLER = new CameraController(); // TODO Remove
+    this.CAMERA_CONTROLLER = new CameraController();
 
     // Create World
-    this.WORLD = new World(this.CAMERA_CONTROLLER); // TODO Remove
+    this.WORLD = new World(this.CAMERA_CONTROLLER);
 
     // Start
     this.setStatus("Created " + this.WORKER_TOTAL + " threads");
-
-    // Start Loop
-    //requestAnimationFrame(this.render.bind(this)); // TODO Remove
   }
 
   // _____________________________________________________________________ Start
@@ -119,10 +103,12 @@ export default class Renderer {
     // Start
     let i;
 
-    for (i = 0; i < WORKER_TOTAL; i++) {
+    for (i = 0; i < WORKER_TOTAL - 1; i++) {
       this.startWorker(i, this.column, this.row);
       this.nextPixel();
     }
+
+    this.startWorker(WORKER_TOTAL - 1, this.column, this.row);
   }
 
   nextPixel() {
@@ -135,8 +121,7 @@ export default class Renderer {
       this.row++;
 
       if (this.row >= this.PIXEL_HEIGHT) {
-        this.onFrameComplete();
-        return;
+        this.isRendering = false;
       }
     }
   }
@@ -156,9 +141,11 @@ export default class Renderer {
     //console.log("OnRenderWorkerMessage. " + data.message);
 
     if (data.message == "complete") {
-      this.drawPixel(data.column, data.row, data.colour);
-      this.nextPixel();
-      this.startWorker(data.threadId, this.column, this.row);
+      if (this.isRendering == true) {
+        this.drawPixel(data.column, data.row, data.colour);
+        this.nextPixel();
+        this.startWorker(data.threadId, this.column, this.row);
+      }
     }
   }
 
@@ -206,147 +193,6 @@ export default class Renderer {
     this.isRendering = false;
   }
 
-  // ____________________________________________________________________ Render
-
-  render(runTime) {
-    // Loop
-    requestAnimationFrame(this.render.bind(this));
-
-    // Rendering ?
-    if (this.isRendering == false) {
-      return;
-    }
-
-    // Frame duration
-    let frameDuration = runTime - this.timeLastFrame;
-    this.timeLastFrame = runTime;
-
-    if (frameDuration > this.FRAME_TIME_STANDARD * 1.1) {
-      this.pixelsPerFrame -= Math.floor(this.pixelsPerFrame * 0.5);
-      if (this.pixelsPerFrame < 1) {
-        this.pixelsPerFrame = 1;
-      }
-    } else {
-      this.pixelsPerFrame = Math.floor(this.pixelsPerFrame * 2);
-    }
-
-    // Scope
-    const CONTEXT = this.CONTEXT;
-    const WORLD = this.WORLD;
-    const PIXEL_WIDTH = this.PIXEL_WIDTH;
-    const PIXEL_HEIGHT = this.PIXEL_HEIGHT;
-    const PIXELS_PER_FRAME = this.pixelsPerFrame;
-    const IMAGEDATA_DATA = this.IMAGEDATA_DATA;
-    const CAMERA_CONTROLLER = this.CAMERA_CONTROLLER;
-    const SAMPLES_AA = this.SAMPLES_AA;
-
-    // Var
-    let colour = vec3.fromValues(0.0, 0.0, 0.0);
-    let colourSample;
-
-    // Out
-    let row = this.row;
-    let column = this.column;
-
-    // Render row
-    let ray;
-    let time;
-    let u;
-    let v;
-    let i;
-    let s;
-
-    for (i = 0; i < PIXELS_PER_FRAME; i++) {
-      // Reset colour
-      colour[0] = 0.0;
-      colour[1] = 0.0;
-      colour[2] = 0.0;
-
-      // Samples
-      for (s = 0; s < SAMPLES_AA; s++) {
-        u = (column + Math.random()) / PIXEL_WIDTH;
-        v = (PIXEL_HEIGHT - row + Math.random()) / PIXEL_HEIGHT;
-
-        time = this.timeFrameStart + Math.random() * this.timeFrameInterval;
-
-        WORLD.setAnimationTime(time);
-
-        ray = CAMERA_CONTROLLER.getRay(u, v);
-
-        colourSample = this.getColour(ray, 0);
-
-        colour[0] += colourSample[0];
-        colour[1] += colourSample[1];
-        colour[2] += colourSample[2];
-      }
-
-      colour[0] /= SAMPLES_AA;
-      colour[1] /= SAMPLES_AA;
-      colour[2] /= SAMPLES_AA;
-
-      colour[0] = Math.sqrt(colour[0]);
-      colour[1] = Math.sqrt(colour[1]);
-      colour[2] = Math.sqrt(colour[2]);
-
-      IMAGEDATA_DATA[0] = colour[0] * 255.99;
-      IMAGEDATA_DATA[1] = colour[1] * 255.99;
-      IMAGEDATA_DATA[2] = colour[2] * 255.99;
-
-      CONTEXT.putImageData(this.IMAGEDATA, column, row);
-
-      // Next column
-      column++;
-
-      if (column >= PIXEL_WIDTH) {
-        // Next row
-        column = 0;
-        row++;
-
-        if (row >= PIXEL_HEIGHT) {
-          this.onFrameComplete();
-          return;
-        }
-      }
-    }
-
-    // Copy back
-    this.row = row;
-    this.column = column;
-  }
-
-  // ____________________________________________________________________ Colour
-
-  getColour(ray, depth) {
-    const WORLD = this.WORLD;
-    const BOUNCE_MAX = this.bounceMax;
-
-    let hitRecord = new HitRecord();
-
-    if (WORLD.didHitAnything(ray, 0.001, Infinity, hitRecord) == true) {
-      let attenuation = vec3.create();
-      let scattered = new Ray();
-
-      if (
-        depth < BOUNCE_MAX &&
-        hitRecord.material.scatter(ray, hitRecord, attenuation, scattered) ==
-          true
-      ) {
-        let colour = this.getColour(scattered, depth + 1);
-
-        return new vec3.fromValues(
-          attenuation[0] * colour[0],
-          attenuation[1] * colour[1],
-          attenuation[2] * colour[2]
-        );
-      } else {
-        return vec3.create();
-      }
-    } else {
-      // Background
-      return WORLD.getBackground(ray.getDirectionNormalized());
-    }
-  }
-
   // _____________________________________________________________________ Clear
 
   clear() {
@@ -381,15 +227,15 @@ export default class Renderer {
   }
 
   setScene(sceneId) {
-    this.WORLD.setScene(sceneId); // TODO REMOVE
+    const WORLD = this.WORLD;
+
+    WORLD.setScene(sceneId);
 
     // Frame
-    this.frameMax = this.WORLD.getAnimationFrameMax();
+    this.frameMax = WORLD.getAnimationFrameMax();
 
     // Time
     let timeFrameInterval = 1.0 / this.frameMax;
-
-    this.timeFrameInterval = timeFrameInterval; // TODO Remove
 
     // Workers
     const WORKER_TOTAL = this.WORKER_TOTAL;
@@ -407,8 +253,6 @@ export default class Renderer {
   }
 
   setAASamples(samples) {
-    this.SAMPLES_AA = samples; // TODO Remove
-
     const WORKER_TOTAL = this.WORKER_TOTAL;
     const WORKER_POOL = this.WORKER_POOL;
 
@@ -423,8 +267,6 @@ export default class Renderer {
   }
 
   setBounceMax(bounceMax) {
-    this.bounceMax = bounceMax; // TODO Remove
-
     const WORKER_TOTAL = this.WORKER_TOTAL;
     const WORKER_POOL = this.WORKER_POOL;
 
@@ -439,8 +281,6 @@ export default class Renderer {
   }
 
   setAperture(aperture) {
-    this.CAMERA_CONTROLLER.setAperture(aperture); // TODO Remove
-
     const WORKER_TOTAL = this.WORKER_TOTAL;
     const WORKER_POOL = this.WORKER_POOL;
 
@@ -455,8 +295,6 @@ export default class Renderer {
   }
 
   setFov(fov) {
-    this.CAMERA_CONTROLLER.setFov(fov); // TODO Remove
-
     const WORKER_TOTAL = this.WORKER_TOTAL;
     const WORKER_POOL = this.WORKER_POOL;
 
@@ -471,8 +309,6 @@ export default class Renderer {
   }
 
   setCameraPositionById(positionId) {
-    this.CAMERA_CONTROLLER.setPositionsById(positionId); // TODO Remove
-
     const WORKER_TOTAL = this.WORKER_TOTAL;
     const WORKER_POOL = this.WORKER_POOL;
 

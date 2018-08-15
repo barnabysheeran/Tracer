@@ -5,8 +5,9 @@ import Scene from "./Scene";
 import TextureConstant from "../Texture/TextureConstant";
 import TextureChecker from "../Texture/TextureChecker";
 import TextureSimplex from "../Texture/TextureSimplex";
+
 import MaterialDielectric from "../Material/MaterialDielectric";
-import MaterialMetal from "../Material/MaterialLambertian";
+import MaterialMetal from "../Material/MaterialMetal";
 import MaterialLambertian from "../Material/MaterialLambertian";
 
 import { HSVtoRGB } from "../Util/util";
