@@ -10,9 +10,9 @@ export default class Camera {
     this.RAY = new Ray();
 
     //
-    this.lensRadius = aperture / 2;
-    this.theta = (fov * Math.PI) / 180;
-    this.heightHalf = Math.tan(this.theta / 2);
+    this.lensRadius = aperture / 2.0;
+    this.theta = (fov * Math.PI) / 180.0;
+    this.heightHalf = Math.tan(this.theta / 2.0);
     this.widthHalf = aspect * this.heightHalf;
 
     this.origin = vec3.fromValues(position[0], position[1], position[2]);

@@ -10,8 +10,6 @@ export default class MaterialLambertian {
   scatter(rayIn, hitRecord, attenuation, scattered) {
     rayIn;
 
-    const ALBEDO = this.ALBEDO;
-
     // Rough
     let roughness = getRandominUnitSphere();
 
@@ -32,9 +30,11 @@ export default class MaterialLambertian {
     scattered.setDirection(target[0], target[1], target[2]);
 
     // Attenuation
-    attenuation[0] = ALBEDO[0];
-    attenuation[1] = ALBEDO[1];
-    attenuation[2] = ALBEDO[2];
+    const VALUE = this.ALBEDO.getValue(0, 0, hitRecord.position);
+
+    attenuation[0] = VALUE[0];
+    attenuation[1] = VALUE[1];
+    attenuation[2] = VALUE[2];
 
     return true;
   }

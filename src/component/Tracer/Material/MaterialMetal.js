@@ -36,9 +36,11 @@ export default class MaterialMetal {
     );
 
     // Attenuation
-    attenuation[0] = ALBEDO[0];
-    attenuation[1] = ALBEDO[1];
-    attenuation[2] = ALBEDO[2];
+    const VALUE = ALBEDO.getValue(0, 0, hitRecord.position);
+
+    attenuation[0] = VALUE[0];
+    attenuation[1] = VALUE[1];
+    attenuation[2] = VALUE[2];
 
     if (vec3.dot(scattered.getDirection(), hitRecord.normal) > 0) {
       return true;
