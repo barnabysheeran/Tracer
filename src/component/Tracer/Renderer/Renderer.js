@@ -6,6 +6,7 @@ import CameraController from "../Camera/CameraController";
 import Recorder from "../Recorder/Recorder";
 
 // TextureTest 800*400 before AABB && Workers 122 seconds
+// TextureTest 800*400 100AA 1k Bounce 1375s
 
 export default class Renderer {
   constructor(canvas, setStatus) {

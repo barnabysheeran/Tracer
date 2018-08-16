@@ -75,32 +75,4 @@ export default class HitableSphere extends Hitable {
 
     return false;
   }
-
-  // ________________________________________________________________________ BB
-
-  getBoundingBox(t0, t1, aabb) {
-    t0;
-    t1; // TODO Process Time
-
-    const POSITION_CENTER = this.POSITION_CENTER;
-    const RADIUS = this.RADIUS;
-
-    aabb.setMin(
-      vec3.fromValues(
-        POSITION_CENTER[0] - RADIUS,
-        POSITION_CENTER[1] - RADIUS,
-        POSITION_CENTER[2] - RADIUS
-      )
-    );
-
-    aabb.setMax(
-      vec3.fromValues(
-        POSITION_CENTER[0] + RADIUS,
-        POSITION_CENTER[1] + RADIUS,
-        POSITION_CENTER[2] + RADIUS
-      )
-    );
-
-    return true;
-  }
 }
