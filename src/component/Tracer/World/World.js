@@ -31,6 +31,9 @@ export default class World {
       case 2:
         this.scene = this.SCENE_TEXTURE_TEST;
         break;
+      case 3:
+        this.scene = this.SCENE_PERLIN_TEST;
+        break;
     }
   }
 

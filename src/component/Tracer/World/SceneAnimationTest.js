@@ -7,7 +7,8 @@ import TextureConstant from "../Texture/TextureConstant";
 import MaterialDielectric from "../Material/MaterialDielectric";
 import MaterialMetal from "../Material/MaterialMetal";
 
-import { HSVtoRGB, parametricBlend } from "../Util/util";
+import { HSVtoRGB } from "../Util/colour";
+import { parametricBlend } from "../Util/util";
 
 export default class SceneAnimationTest extends Scene {
   constructor(cameraController) {

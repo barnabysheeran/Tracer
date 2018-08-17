@@ -9,35 +9,43 @@ export default class TextureSimplex extends Texture {
 
     this.SCALAR = scalar;
 
-    this.SIMPLEX_R = new SimplexNoise("red");
-    this.SIMPLEX_G = new SimplexNoise("green");
-    this.SIMPLEX_B = new SimplexNoise("blue");
+    this.SIMPLEX = new SimplexNoise("random");
   }
 
   getValue(u, v, position) {
     u;
     v;
 
-    const SCALAR = this.SCALAR;
+    const turb = this.turbulence(position, 7);
 
-    const r = this.SIMPLEX_R.noise3D(
-      position[0] * SCALAR,
-      position[1] * SCALAR,
-      position[2] * SCALAR
-    );
+    const marble =
+      0.5 * (1 + Math.sin(this.SCALAR + position[2] + 10.0 * turb));
 
-    const g = this.SIMPLEX_R.noise3D(
-      position[0] * SCALAR + 0.1,
-      position[1] * SCALAR + 0.1,
-      position[2] * SCALAR + 0.1
-    );
+    return vec3.fromValues(marble, marble, marble);
+  }
 
-    const b = this.SIMPLEX_R.noise3D(
-      position[0] * SCALAR + 0.2,
-      position[1] * SCALAR + 0.2,
-      position[2] * SCALAR + 0.2
-    );
+  // ________________________________________________________________ Turbulence
 
-    return vec3.fromValues(r, g, b);
+  turbulence(position, depth) {
+    const SIMPLEX = this.SIMPLEX;
+
+    let accum = 0.0;
+    let weight = 1.0;
+    let tempPosition = vec3.clone(position);
+
+    let i;
+    for (i = 0; i < depth; i++) {
+      accum +=
+        weight *
+        SIMPLEX.noise3D(tempPosition[0], tempPosition[1], tempPosition[2]);
+
+      weight *= 0.5;
+
+      tempPosition[0] *= 2.0;
+      tempPosition[1] *= 2.0;
+      tempPosition[2] *= 2.0;
+    }
+
+    return Math.abs(accum);
   }
 }

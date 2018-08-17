@@ -10,97 +10,28 @@ import MaterialDielectric from "../Material/MaterialDielectric";
 import MaterialMetal from "../Material/MaterialMetal";
 import MaterialLambertian from "../Material/MaterialLambertian";
 
-import { HSVtoRGB } from "../Util/util";
-
 export default class SceneTextureTest extends Scene {
   constructor(cameraController) {
     super(cameraController);
 
-    // Dialectric
-    const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
-    this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), 0.55, MATERIAL_DIELECTRIC);
-    this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), -0.51, MATERIAL_DIELECTRIC);
+    // Marble
+    const TEXTURE_SIMPLEX = new TextureSimplex(0.7);
+    const MATERIAL_SIMPLEX = new MaterialLambertian(TEXTURE_SIMPLEX, 0.01);
 
-    // Simplex
-    const TEXTURE_SIMPLEX = new TextureSimplex(20.0);
-    const MATERIAL_SIMPLEX = new MaterialMetal(TEXTURE_SIMPLEX, 0.01);
+    this.addSphere(vec3.fromValues(-1.08, 0.0, 0.0), 0.5, MATERIAL_SIMPLEX);
     this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), 0.5, MATERIAL_SIMPLEX);
+    this.addSphere(vec3.fromValues(1.08, 0.0, 0.0), 0.5, MATERIAL_SIMPLEX);
 
-    // Dialectric surround
-    let total = 13;
-    let progressIntervalTau = (Math.PI * 2) / total;
+    // Metal
+    const TEXTURE_METAL = new TextureConstant(vec3.fromValues(0.8, 0.1, 0.1));
+    const MATERIAL_METAL = new MaterialMetal(TEXTURE_METAL, 0.2);
+    this.addSphere(vec3.fromValues(0.0, 0.0, 1.08), 0.1, MATERIAL_METAL);
 
-    let radius = 0.5;
+    // Dielectric
+    const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
+    this.addSphere(vec3.fromValues(0.0, 0.0, -1.08), 0.1, MATERIAL_DIELECTRIC);
 
-    for (let i = 0; i < total; i++) {
-      // Sphere
-      this.addSphere(
-        vec3.fromValues(
-          Math.sin(progressIntervalTau * i) * radius,
-          -0.39,
-          Math.cos(progressIntervalTau * i) * radius
-        ),
-        0.1,
-        MATERIAL_DIELECTRIC
-      );
-
-      this.addSphere(
-        vec3.fromValues(
-          Math.sin(progressIntervalTau * i) * radius,
-          -0.39,
-          Math.cos(progressIntervalTau * i) * radius
-        ),
-        0.09,
-        MATERIAL_DIELECTRIC
-      );
-    }
-
-    // Coloured surround
-    total = 32;
-    progressIntervalTau = (Math.PI * 2) / total;
-
-    let ringTotal = 10.0;
-    let progressInterval = 1.0 / ringTotal;
-    let rotationOffset = 0.0;
-
-    let colour;
-    let texture;
-    let material;
-    let rotation;
-
-    radius = 0.66;
-
-    for (let j = 0; j < ringTotal; j++) {
-      // Material
-      colour = HSVtoRGB(1.0 - progressInterval * j, 0.9, 0.9);
-
-      texture = new TextureConstant(
-        vec3.fromValues(colour.r, colour.g, colour.b)
-      );
-
-      material = new MaterialMetal(texture, 0.1);
-
-      // Spheres
-      for (let i = 0; i < total; i++) {
-        rotation = progressIntervalTau * i + rotationOffset;
-
-        this.addSphere(
-          vec3.fromValues(
-            Math.sin(rotation) * radius,
-            -0.45,
-            Math.cos(rotation) * radius
-          ),
-          0.05,
-          material
-        );
-      }
-
-      // Next
-      rotationOffset += progressInterval * 0.5;
-      radius += 0.12;
-    }
-
-    // 'Floor'
+    // Floor
     const TEXTURE_CHECKER_BLACK = new TextureConstant(
       vec3.fromValues(0.0, 0.0, 0.0)
     );
@@ -128,7 +59,7 @@ export default class SceneTextureTest extends Scene {
     const CAMERA_CONTROLLER = this.CAMERA_CONTROLLER;
 
     CAMERA_CONTROLLER.setFov(18.0);
-    CAMERA_CONTROLLER.setAperture(0.5);
+    CAMERA_CONTROLLER.setAperture(0.2);
 
     CAMERA_CONTROLLER.setPosition(3.0, 3.0, 2.0);
     CAMERA_CONTROLLER.setPositionTarget(0.0, -0.15, 0.0);

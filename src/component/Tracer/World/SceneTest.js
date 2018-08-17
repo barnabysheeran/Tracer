@@ -6,7 +6,7 @@ import TextureConstant from "../Texture/TextureConstant";
 import MaterialDielectric from "../Material/MaterialDielectric";
 import MaterialMetal from "../Material/MaterialMetal";
 
-import { HSVtoRGB } from "../Util/util";
+import { HSVtoRGB } from "../Util/colour";
 
 export default class SceneTest extends Scene {
   constructor(cameraController) {
