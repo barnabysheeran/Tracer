@@ -1,12 +1,9 @@
 import RenderWorker from "./Render.worker.js";
 
-import World from "../World/World";
-import CameraController from "../Camera/CameraController";
-
-import Recorder from "../Recorder/Recorder";
-
-// TextureTest 800*400 before AABB && Workers 122 seconds
-// TextureTest 800*400 100AA 1k Bounce 1375s
+import ImageLibrary from "../Image/ImageLibrary.js";
+import World from "../World/World.js";
+import CameraController from "../Camera/CameraController.js";
+import Recorder from "../Recorder/Recorder.js";
 
 export default class Renderer {
   constructor(canvas, setStatus) {
@@ -50,6 +47,9 @@ export default class Renderer {
     this.timeFrameStart = 0.0;
     this.timeFrameInterval = 1.0;
 
+    // Texture Library - Load images on main thread
+    this.IMAGE_LIBRARY = new ImageLibrary(this);
+
     // Reuseable imagedata
     this.IMAGEDATA = this.CONTEXT.createImageData(1, 1);
     this.IMAGEDATA_DATA = this.IMAGEDATA.data;
@@ -69,6 +69,9 @@ export default class Renderer {
 
     // Create World
     this.WORLD = new World(this.CAMERA_CONTROLLER);
+
+    // Texture Library - Load images on main thread
+    this.IMAGE_LIBRARY = new ImageLibrary(this);
 
     // Start
     this.setStatus("Created " + this.WORKER_TOTAL + " threads");
@@ -326,6 +329,13 @@ export default class Renderer {
         positionId: positionId
       });
     }
+  }
+
+  onImageLibraryLoaded() {
+    const WORKER_TOTAL = this.WORKER_TOTAL;
+    const WORKER_POOL = this.WORKER_POOL;
+
+    this.setStatus("Ready. Using " + this.WORKER_TOTAL + " threads");
   }
 
   // _______________________________________________________________________ Set

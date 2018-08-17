@@ -1,4 +1,5 @@
 import { vec3 } from "gl-matrix";
+
 import SimplexNoise from "simplex-noise";
 
 import Texture from "./Texture";
