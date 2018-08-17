@@ -1,4 +1,5 @@
 import { vec3 } from "gl-matrix";
+import "seedrandom";
 
 import Scene from "./Scene";
 
@@ -6,12 +7,9 @@ import TextureConstant from "../Texture/TextureConstant";
 import TextureChecker from "../Texture/TextureChecker";
 import TextureSimplex from "../Texture/TextureSimplex";
 
-import MaterialDielectric from "../Material/MaterialDielectric";
-import MaterialMetal from "../Material/MaterialMetal";
 import MaterialLambertian from "../Material/MaterialLambertian";
-//import TextureImage from "../Texture/TextureImage";
 
-export default class SceneTextureTest extends Scene {
+export default class SceneMarbleTest extends Scene {
   constructor(cameraController) {
     super(cameraController);
 
@@ -19,25 +17,23 @@ export default class SceneTextureTest extends Scene {
     const TEXTURE_SIMPLEX = new TextureSimplex(0.7);
     const MATERIAL_SIMPLEX = new MaterialLambertian(TEXTURE_SIMPLEX);
 
-    this.addSphere(vec3.fromValues(-1.08, 0.0, 0.0), 0.5, MATERIAL_SIMPLEX);
-    this.addSphere(vec3.fromValues(0.0, 0.0, 0.54), 0.25, MATERIAL_SIMPLEX);
     this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), 0.5, MATERIAL_SIMPLEX);
-    this.addSphere(vec3.fromValues(1.08, 0.0, 0.0), 0.5, MATERIAL_SIMPLEX);
 
-    // Image
-    // const TEXTURE_IMAGE = new TextureImage(
-    //   "https://www.nasa.gov/centers/goddard/images/content/312043main_skyview_pop_car.jpg"
-    // );
-    // const MATERIAL_IMAGE = new MaterialLambertian(TEXTURE_SIMPLEX);
+    Math.seedrandom("darkness");
 
-    // Metal
-    const TEXTURE_METAL = new TextureConstant(vec3.fromValues(0.8, 0.1, 0.1));
-    const MATERIAL_METAL = new MaterialMetal(TEXTURE_METAL, 0.2);
-    this.addSphere(vec3.fromValues(0.0, 0.0, 1.08), 0.1, MATERIAL_METAL);
+    let i;
 
-    // Dielectric
-    const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
-    this.addSphere(vec3.fromValues(0.0, 0.0, -1.08), 0.1, MATERIAL_DIELECTRIC);
+    for (i = 0; i < 30; i++) {
+      this.addSphere(
+        vec3.fromValues(
+          (-0.5 + Math.random()) * 2.1,
+          Math.random() * 1.0,
+          (-0.5 + Math.random()) * 2.1
+        ),
+        0.1 + Math.random() * 0.2,
+        MATERIAL_SIMPLEX
+      );
+    }
 
     // Floor
     const TEXTURE_CHECKER_BLACK = new TextureConstant(
@@ -67,7 +63,7 @@ export default class SceneTextureTest extends Scene {
     const CAMERA_CONTROLLER = this.CAMERA_CONTROLLER;
 
     CAMERA_CONTROLLER.setFov(18.0);
-    CAMERA_CONTROLLER.setAperture(0.2);
+    CAMERA_CONTROLLER.setAperture(0.1);
 
     CAMERA_CONTROLLER.setPosition(3.0, 3.0, 2.0);
     CAMERA_CONTROLLER.setPositionTarget(0.0, -0.15, 0.0);

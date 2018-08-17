@@ -3,7 +3,8 @@ import HitableSphere from "../Hit/HitableSphere";
 
 import SceneTest from "./SceneTest";
 import SceneAnimationTest from "./SceneAnimationTest";
-import SceneTextureTest from "./SceneTextureTest";
+import SceneMarbleTest from "./SceneMarbleTest";
+import SceneImageTest from "./SceneImageTest";
 
 export default class World {
   constructor(cameraController) {
@@ -11,7 +12,8 @@ export default class World {
 
     this.SCENE_TEST = new SceneTest(cameraController);
     this.SCENE_ANIMATION_TEST = new SceneAnimationTest(cameraController);
-    this.SCENE_TEXTURE_TEST = new SceneTextureTest(cameraController);
+    this.SCENE_MARBLE_TEST = new SceneMarbleTest(cameraController);
+    this.SCENE_IMAGE_TEST = new SceneImageTest(cameraController);
 
     // Default
     this.scene;
@@ -29,10 +31,10 @@ export default class World {
         this.scene = this.SCENE_ANIMATION_TEST;
         break;
       case 2:
-        this.scene = this.SCENE_TEXTURE_TEST;
+        this.scene = this.SCENE_MARBLE_TEST;
         break;
       case 3:
-        this.scene = this.SCENE_PERLIN_TEST;
+        this.scene = this.SCENE_IMAGE_TEST;
         break;
     }
   }
