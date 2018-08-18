@@ -47,9 +47,6 @@ export default class Renderer {
     this.timeFrameStart = 0.0;
     this.timeFrameInterval = 1.0;
 
-    // Texture Library - Load images on main thread
-    this.IMAGE_LIBRARY = new ImageLibrary(this);
-
     // Reuseable imagedata
     this.IMAGEDATA = this.CONTEXT.createImageData(1, 1);
     this.IMAGEDATA_DATA = this.IMAGEDATA.data;
@@ -334,6 +331,20 @@ export default class Renderer {
   onImageLibraryLoaded() {
     const WORKER_TOTAL = this.WORKER_TOTAL;
     const WORKER_POOL = this.WORKER_POOL;
+
+    const IMAGE_LIBRARY = this.IMAGE_LIBRARY;
+    const IMAGE_DIMENSIONS = IMAGE_LIBRARY.getImageDimensions();
+    const IMAGE_DATA = IMAGE_LIBRARY.getImageData();
+
+    let i;
+
+    for (i = 0; i < WORKER_TOTAL; i++) {
+      WORKER_POOL[i].postMessage({
+        messageType: "setTextureImageData",
+        imageDimensions: IMAGE_DIMENSIONS,
+        imageData: IMAGE_DATA
+      });
+    }
 
     this.setStatus("Ready. Using " + this.WORKER_TOTAL + " threads");
   }

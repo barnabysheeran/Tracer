@@ -37,6 +37,12 @@ self.addEventListener("message", e => {
     case "init":
       threadId = data.threadId;
       break;
+    case "shape":
+      pixelWidth = data.pixelWidth;
+      pixelHeight = data.pixelHeight;
+
+      CAMERA_CONTROLLER.shape(pixelWidth, pixelHeight);
+      break;
     case "setScene":
       WORLD.setScene(data.sceneId);
       timeFrameInterval = data.timeFrameInterval;
@@ -56,11 +62,9 @@ self.addEventListener("message", e => {
     case "setCameraPositionById":
       CAMERA_CONTROLLER.setPositionsById(data.positionId);
       break;
-    case "shape":
-      pixelWidth = data.pixelWidth;
-      pixelHeight = data.pixelHeight;
-
-      CAMERA_CONTROLLER.shape(pixelWidth, pixelHeight);
+    case "setTextureImageData":
+      WORLD.setTextureImageDimensions(data.imageDimensions);
+      WORLD.setTextureImageData(data.imageData);
       break;
     case "render":
       render(data.timeFrameStart, data.column, data.row);
@@ -81,9 +85,7 @@ let render = function(timeFrameStart, column, row) {
     u = (column + Math.random()) / pixelWidth;
     v = (pixelHeight - row + Math.random()) / pixelHeight;
 
-    time = timeFrameStart + Math.random() * timeFrameInterval; // TODO
-
-    //console.log("time " + time);
+    time = timeFrameStart + Math.random() * timeFrameInterval;
 
     WORLD.setAnimationTime(time);
 

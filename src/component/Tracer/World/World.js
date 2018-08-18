@@ -10,10 +10,12 @@ export default class World {
   constructor(cameraController) {
     this.CAMERA_CONTROLLER = cameraController;
 
-    this.SCENE_TEST = new SceneTest(cameraController);
-    this.SCENE_ANIMATION_TEST = new SceneAnimationTest(cameraController);
-    this.SCENE_MARBLE_TEST = new SceneMarbleTest(cameraController);
-    this.SCENE_IMAGE_TEST = new SceneImageTest(cameraController);
+    this.SCENES = [
+      new SceneTest(cameraController),
+      new SceneAnimationTest(cameraController),
+      new SceneMarbleTest(cameraController),
+      new SceneImageTest(cameraController)
+    ];
 
     // Default
     this.scene;
@@ -23,30 +25,7 @@ export default class World {
   // _____________________________________________________________________ Scene
 
   setScene(sceneId) {
-    switch (sceneId) {
-      case 0:
-        this.scene = this.SCENE_TEST;
-        break;
-      case 1:
-        this.scene = this.SCENE_ANIMATION_TEST;
-        break;
-      case 2:
-        this.scene = this.SCENE_MARBLE_TEST;
-        break;
-      case 3:
-        this.scene = this.SCENE_IMAGE_TEST;
-        break;
-    }
-  }
-
-  // _________________________________________________________________ Animation
-
-  setAnimationTime(time) {
-    this.scene.setAnimationTime(time);
-  }
-
-  getAnimationFrameMax() {
-    return this.scene.getAnimationFrameMax();
+    this.scene = this.SCENES[sceneId];
   }
 
   // ________________________________________________________________ Background
@@ -81,5 +60,37 @@ export default class World {
     }
 
     return hit;
+  }
+
+  // _________________________________________________________________ Animation
+
+  setAnimationTime(time) {
+    this.scene.setAnimationTime(time);
+  }
+
+  getAnimationFrameMax() {
+    return this.scene.getAnimationFrameMax();
+  }
+
+  // __________________________________________________________ TextureImageData
+
+  setTextureImageDimensions(dimensions) {
+    const SCENES = this.SCENES;
+
+    let i;
+
+    for (i = 0; i < SCENES.length; i++) {
+      SCENES[i].setTextureImageDimensions(dimensions);
+    }
+  }
+
+  setTextureImageData(data) {
+    const SCENES = this.SCENES;
+
+    let i;
+
+    for (i = 0; i < SCENES.length; i++) {
+      SCENES[i].setTextureImageData(data);
+    }
   }
 }

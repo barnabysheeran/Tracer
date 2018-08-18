@@ -4,10 +4,10 @@ import Scene from "./Scene";
 
 import TextureConstant from "../Texture/TextureConstant";
 import TextureChecker from "../Texture/TextureChecker";
-import TextureSimplex from "../Texture/TextureSimplex";
+// import TextureSimplex from "../Texture/TextureSimplex";
 
-import MaterialDielectric from "../Material/MaterialDielectric";
-import MaterialMetal from "../Material/MaterialMetal";
+// import MaterialDielectric from "../Material/MaterialDielectric";
+// import MaterialMetal from "../Material/MaterialMetal";
 import MaterialLambertian from "../Material/MaterialLambertian";
 //import TextureImage from "../Texture/TextureImage";
 
@@ -15,28 +15,11 @@ export default class SceneImageTest extends Scene {
   constructor(cameraController) {
     super(cameraController);
 
-    // Marble
-    const TEXTURE_SIMPLEX = new TextureSimplex(0.7);
-    const MATERIAL_SIMPLEX = new MaterialLambertian(TEXTURE_SIMPLEX);
-
-    this.addSphere(vec3.fromValues(-1.08, 0.0, 0.0), 0.5, MATERIAL_SIMPLEX);
-    this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), 0.5, MATERIAL_SIMPLEX);
-    this.addSphere(vec3.fromValues(1.08, 0.0, 0.0), 0.5, MATERIAL_SIMPLEX);
-
     // Image
     // const TEXTURE_IMAGE = new TextureImage(
     //   "https://www.nasa.gov/centers/goddard/images/content/312043main_skyview_pop_car.jpg"
     // );
     // const MATERIAL_IMAGE = new MaterialLambertian(TEXTURE_SIMPLEX);
-
-    // Metal
-    const TEXTURE_METAL = new TextureConstant(vec3.fromValues(0.8, 0.1, 0.1));
-    const MATERIAL_METAL = new MaterialMetal(TEXTURE_METAL, 0.2);
-    this.addSphere(vec3.fromValues(0.0, 0.0, 1.08), 0.1, MATERIAL_METAL);
-
-    // Dielectric
-    const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
-    this.addSphere(vec3.fromValues(0.0, 0.0, -1.08), 0.1, MATERIAL_DIELECTRIC);
 
     // Floor
     const TEXTURE_CHECKER_BLACK = new TextureConstant(
