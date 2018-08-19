@@ -32,6 +32,8 @@ export default class HitableSphere extends Hitable {
     const RAY_ORIGIN = ray.getPositionOrigin();
     const RAY_DIRECTION = ray.getDirection();
 
+    let uv;
+
     const OC = vec3.fromValues(
       RAY_ORIGIN[0] - POSITION_CENTER[0],
       RAY_ORIGIN[1] - POSITION_CENTER[1],
@@ -48,13 +50,28 @@ export default class HitableSphere extends Hitable {
 
       if (temp < tMax && temp > tMin) {
         hitRecord.t = temp;
+
         hitRecord.position = ray.getPointAtParameter(hitRecord.t);
+
         hitRecord.normal = vec3.fromValues(
           (hitRecord.position[0] - POSITION_CENTER[0]) / RADIUS,
           (hitRecord.position[1] - POSITION_CENTER[1]) / RADIUS,
           (hitRecord.position[2] - POSITION_CENTER[2]) / RADIUS
         );
+
         hitRecord.material = this.MATERIAL;
+
+        uv = this.generateUV(
+          vec3.fromValues(
+            hitRecord.position[0] - POSITION_CENTER[0],
+            hitRecord.position[1] - POSITION_CENTER[1],
+            hitRecord.position[2] - POSITION_CENTER[2]
+          )
+        );
+
+        hitRecord.u = uv[0];
+        hitRecord.v = uv[1];
+
         return true;
       }
 
@@ -62,17 +79,45 @@ export default class HitableSphere extends Hitable {
 
       if (temp < tMax && temp > tMin) {
         hitRecord.t = temp;
+
         hitRecord.position = ray.getPointAtParameter(hitRecord.t);
+
         hitRecord.normal = vec3.fromValues(
           (hitRecord.position[0] - POSITION_CENTER[0]) / RADIUS,
           (hitRecord.position[1] - POSITION_CENTER[1]) / RADIUS,
           (hitRecord.position[2] - POSITION_CENTER[2]) / RADIUS
         );
+
         hitRecord.material = this.MATERIAL;
+
+        uv = this.generateUV(
+          vec3.fromValues(
+            hitRecord.position[0] - POSITION_CENTER[0],
+            hitRecord.position[1] - POSITION_CENTER[1],
+            hitRecord.position[2] - POSITION_CENTER[2]
+          )
+        );
+
+        hitRecord.u = uv[0];
+        hitRecord.v = uv[1];
+
         return true;
       }
     }
 
     return false;
+  }
+
+  // ________________________________________________________________________ UV
+
+  generateUV(position) {
+    const PI = Math.PI;
+    const PHI = Math.atan2(position[2], position[0]);
+    const THETA = Math.asin(position[1]);
+
+    const U = 1.0 - (PHI + PI) / (2.0 * PI);
+    const V = (THETA + PI / 2.0) / PI;
+
+    return [U, V];
   }
 }

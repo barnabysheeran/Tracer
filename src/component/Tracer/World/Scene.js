@@ -9,9 +9,13 @@ export default class Scene {
 
     this.HITABLES = [];
 
-    this.textureImageDimensions;
-    this.textureImageData;
+    this.textureImageDimensions = [];
+    this.textureImageData = [];
   }
+
+  // ______________________________________________________________________ Init
+
+  init() {}
 
   // ____________________________________________________________________ Sphere
 
@@ -49,5 +53,13 @@ export default class Scene {
 
   setTextureImageData(data) {
     this.textureImageData = data;
+  }
+
+  getTextureImageDimensions(textureId) {
+    return this.textureImageDimensions[textureId];
+  }
+
+  getTextureImageData(textureId) {
+    return this.textureImageData[textureId];
   }
 }

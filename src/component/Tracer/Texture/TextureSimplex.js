@@ -17,12 +17,12 @@ export default class TextureSimplex extends Texture {
     u;
     v;
 
-    const turb = this.turbulence(position, 7);
+    const TURB = this.turbulence(position, 7);
 
-    const marble =
-      0.5 * (1 + Math.sin(this.SCALAR + position[2] + 10.0 * turb));
+    const MARBLE =
+      0.5 * (1 + Math.sin(this.SCALAR + position[2] + 10.0 * TURB));
 
-    return vec3.fromValues(marble, marble, marble);
+    return vec3.fromValues(MARBLE, MARBLE, MARBLE);
   }
 
   // ________________________________________________________________ Turbulence

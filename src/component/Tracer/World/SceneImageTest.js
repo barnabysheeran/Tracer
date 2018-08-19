@@ -4,22 +4,29 @@ import Scene from "./Scene";
 
 import TextureConstant from "../Texture/TextureConstant";
 import TextureChecker from "../Texture/TextureChecker";
-// import TextureSimplex from "../Texture/TextureSimplex";
+import TextureImage from "../Texture/TextureImage";
 
-// import MaterialDielectric from "../Material/MaterialDielectric";
-// import MaterialMetal from "../Material/MaterialMetal";
 import MaterialLambertian from "../Material/MaterialLambertian";
-//import TextureImage from "../Texture/TextureImage";
 
 export default class SceneImageTest extends Scene {
   constructor(cameraController) {
     super(cameraController);
+  }
+
+  // ______________________________________________________________________ Init
+
+  init() {
+    // Old
+    this.HITABLES = [];
 
     // Image
-    // const TEXTURE_IMAGE = new TextureImage(
-    //   "https://www.nasa.gov/centers/goddard/images/content/312043main_skyview_pop_car.jpg"
-    // );
-    // const MATERIAL_IMAGE = new MaterialLambertian(TEXTURE_SIMPLEX);
+    const TEXTURE_IMAGE = new TextureImage(
+      this.getTextureImageDimensions(0),
+      this.getTextureImageData(0)
+    );
+    const MATERIAL_IMAGE = new MaterialLambertian(TEXTURE_IMAGE);
+
+    this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), 0.5, MATERIAL_IMAGE);
 
     // Floor
     const TEXTURE_CHECKER_BLACK = new TextureConstant(

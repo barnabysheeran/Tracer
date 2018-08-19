@@ -1,5 +1,4 @@
 import HitRecord from "../Hit/HitRecord";
-import HitableSphere from "../Hit/HitableSphere";
 
 import SceneTest from "./SceneTest";
 import SceneAnimationTest from "./SceneAnimationTest";
@@ -26,18 +25,13 @@ export default class World {
 
   setScene(sceneId) {
     this.scene = this.SCENES[sceneId];
+    this.scene.init();
   }
 
   // ________________________________________________________________ Background
 
   getBackground(rayDirectionNormalized) {
     return this.scene.getBackground(rayDirectionNormalized);
-  }
-
-  // ____________________________________________________________________ Sphere
-
-  addSphere(position, radius, material) {
-    this.HITABLES.push(new HitableSphere(position, radius, material));
   }
 
   // _______________________________________________________________________ Hit

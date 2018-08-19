@@ -64,11 +64,11 @@ export default class Renderer {
     // Camera Controller
     this.CAMERA_CONTROLLER = new CameraController();
 
-    // Create World
-    this.WORLD = new World(this.CAMERA_CONTROLLER);
-
     // Texture Library - Load images on main thread
     this.IMAGE_LIBRARY = new ImageLibrary(this);
+
+    // Create World
+    this.WORLD = new World(this.CAMERA_CONTROLLER);
 
     // Start
     this.setStatus("Created " + this.WORKER_TOTAL + " threads");
