@@ -7,8 +7,10 @@ import Recorder from "../Recorder/Recorder.js";
 
 export default class Renderer {
   constructor(canvas, setStatus) {
-    this.CONTEXT = canvas.getContext("2d");
     this.setStatus = setStatus;
+
+    // Context
+    this.CONTEXT = canvas.getContext("2d");
 
     // Workers
     this.WORKER_TOTAL = navigator.hardwareConcurrency || 4;

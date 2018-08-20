@@ -1,13 +1,14 @@
-import textureTest from "./../../../texture/TextureTest.png";
+import testA from "./../../../texture/TextureTestA.png";
+import skymap from "./../../../texture/skymap.jpg";
 
 export default class ImageLibrary {
   constructor(renderer) {
     this.RENDERER = renderer;
 
-    const URLS = [textureTest];
+    this.URLS = [testA, skymap];
 
-    this.IMAGE_TOTAL = URLS.length;
-    this.imagesToLoad = this.IMAGE_TOTAL;
+    this.IMAGE_TOTAL = this.URLS.length;
+    this.imageCurrent = 0;
 
     let i;
     let image;
@@ -22,7 +23,6 @@ export default class ImageLibrary {
     for (i = 0; i < this.IMAGE_TOTAL; i++) {
       image = document.createElement("IMG");
       image.onload = this.onImageLoaded.bind(this);
-      image.src = URLS[i];
 
       this.IMAGES[i] = image;
     }
@@ -30,14 +30,19 @@ export default class ImageLibrary {
     // Data
     this.IMAGE_DIMENSIONS = [];
     this.IMAGE_DATA = [];
+
+    // Start load
+    this.IMAGES[0].src = this.URLS[0];
   }
 
   // ______________________________________________________________________ Load
 
   onImageLoaded() {
-    this.imagesToLoad--;
+    this.imageCurrent++;
 
-    if (this.imagesToLoad == 0) {
+    if (this.imageCurrent < this.IMAGE_TOTAL) {
+      this.IMAGES[this.imageCurrent].src = this.URLS[this.imageCurrent];
+    } else {
       this.onImagesLoaded();
     }
   }
@@ -45,10 +50,8 @@ export default class ImageLibrary {
   onImagesLoaded() {
     let i;
 
-    // TODO Sequential loading to maintain order
-
     for (i = 0; i < this.IMAGE_TOTAL; i++) {
-      this.generateImageData(this.IMAGES[i]);
+      this.generateImageData(i, this.IMAGES[i]);
     }
 
     // Done
@@ -57,7 +60,7 @@ export default class ImageLibrary {
 
   // ______________________________________________________________________ Data
 
-  generateImageData(image) {
+  generateImageData(imageId, image) {
     const CANVAS = this.CANVAS;
     const CONTEXT = this.CONTEXT;
 
@@ -70,27 +73,10 @@ export default class ImageLibrary {
     CONTEXT.drawImage(image, 0, 0);
 
     // Dimensions
-    this.IMAGE_DIMENSIONS.push([W, H]);
+    this.IMAGE_DIMENSIONS[imageId] = [W, H];
 
     // Data
-    let data = [];
-
-    let x;
-    let y;
-    let imageDataData;
-
-    for (x = 0; x < W; x++) {
-      for (y = 0; y < H; y++) {
-        imageDataData = CONTEXT.getImageData(x, y, 1, 1).data;
-
-        // RGB
-        data.push(imageDataData[0]);
-        data.push(imageDataData[1]);
-        data.push(imageDataData[2]);
-      }
-    }
-
-    this.IMAGE_DATA.push(data);
+    this.IMAGE_DATA[imageId] = CONTEXT.getImageData(0, 0, W, H).data;
 
     // Tidy
     CANVAS.width = 0;

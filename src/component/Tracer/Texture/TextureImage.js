@@ -32,7 +32,7 @@ export default class TextureImage extends Texture {
       j = PIXELS_Y - 1;
     }
 
-    const INDEX = 3 * i + 3 * PIXELS_X * j;
+    const INDEX = 4 * i + 4 * PIXELS_X * j;
 
     const R = Math.floor(TEXTURE_IMAGE_DATA[INDEX]) / 255.0;
     const G = Math.floor(TEXTURE_IMAGE_DATA[INDEX + 1]) / 255.0;

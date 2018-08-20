@@ -61,14 +61,7 @@ export default class HitableSphere extends Hitable {
 
         hitRecord.material = this.MATERIAL;
 
-        uv = this.generateUV(
-          vec3.fromValues(
-            hitRecord.position[0] - POSITION_CENTER[0],
-            hitRecord.position[1] - POSITION_CENTER[1],
-            hitRecord.position[2] - POSITION_CENTER[2]
-          )
-        );
-
+        uv = this.generateUV(hitRecord.normal);
         hitRecord.u = uv[0];
         hitRecord.v = uv[1];
 
@@ -90,13 +83,7 @@ export default class HitableSphere extends Hitable {
 
         hitRecord.material = this.MATERIAL;
 
-        uv = this.generateUV(
-          vec3.fromValues(
-            hitRecord.position[0] - POSITION_CENTER[0],
-            hitRecord.position[1] - POSITION_CENTER[1],
-            hitRecord.position[2] - POSITION_CENTER[2]
-          )
-        );
+        uv = this.generateUV(hitRecord.normal);
 
         hitRecord.u = uv[0];
         hitRecord.v = uv[1];
