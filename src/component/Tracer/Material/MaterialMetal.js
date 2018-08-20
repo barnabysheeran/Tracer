@@ -1,9 +1,13 @@
 import { vec3 } from "gl-matrix";
 
+import Material from "./Material";
+
 import { getRandominUnitSphere, reflect } from "../Util/util";
 
-export default class MaterialMetal {
+export default class MaterialMetal extends Material {
   constructor(albedo, rough) {
+    super();
+
     this.ALBEDO = albedo;
     this.ROUGH = rough;
   }

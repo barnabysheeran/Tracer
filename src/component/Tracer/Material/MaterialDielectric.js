@@ -1,9 +1,13 @@
 import { vec3 } from "gl-matrix";
 
+import Material from "./Material";
+
 import { reflect, refract, schlick } from "../Util/util";
 
-export default class MaterialDielectric {
+export default class MaterialDielectric extends Material {
   constructor(indexRefraction) {
+    super();
+
     this.INDEX_REFRACTION = indexRefraction;
   }
 

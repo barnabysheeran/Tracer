@@ -1,9 +1,13 @@
 import { vec3 } from "gl-matrix";
 
+import Material from "./Material";
+
 import { getRandominUnitSphere } from "../Util/util";
 
-export default class MaterialLambertian {
+export default class MaterialLambertian extends Material {
   constructor(albedo) {
+    super();
+
     this.ALBEDO = albedo;
   }
 

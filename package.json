@@ -1,9 +1,9 @@
 {
-  "name": "exercisetwo",
+  "name": "tracer",
   "version": "1.0.0",
   "main": "src/index.js",
-  "repository": "https://github.com/barnabysheeran/ExerciseTwo.git",
-  "author": "Barnaby Sheeran <barnabysheeran@googlemail.com>",
+  "repository": "https://github.com/barnabysheeran/Tracer.git",
+  "author": "Barnaby Sheeran <barnabysheeran@gmail.com>",
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --open --mode development",

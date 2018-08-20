@@ -118,12 +118,46 @@ let render = function(timeFrameStart, column, row) {
 
 // ______________________________________________________________________ Colour
 
+// let getColour = function(ray, depth) {
+//   let hitRecord = new HitRecord();
+
+//   if (WORLD.didHitAnything(ray, 0.001, Infinity, hitRecord) == true) {
+//     let attenuation = vec3.create();
+//     let scattered = new Ray();
+
+//     if (
+//       depth < bounceMax &&
+//       hitRecord.material.scatter(ray, hitRecord, attenuation, scattered) == true
+//     ) {
+//       let colour = getColour(scattered, depth + 1);
+
+//       return new vec3.fromValues(
+//         attenuation[0] * colour[0],
+//         attenuation[1] * colour[1],
+//         attenuation[2] * colour[2]
+//       );
+//     } else {
+//       return vec3.create();
+//     }
+//   } else {
+//     // Background
+//     return WORLD.getBackground(ray.getDirectionNormalized());
+//   }
+// };
+
 let getColour = function(ray, depth) {
   let hitRecord = new HitRecord();
 
   if (WORLD.didHitAnything(ray, 0.001, Infinity, hitRecord) == true) {
-    let attenuation = vec3.create();
     let scattered = new Ray();
+
+    let attenuation = vec3.create();
+
+    let emitted = hitRecord.material.emitted(
+      hitRecord.u,
+      hitRecord.v,
+      hitRecord.position
+    );
 
     if (
       depth < bounceMax &&
@@ -132,12 +166,12 @@ let getColour = function(ray, depth) {
       let colour = getColour(scattered, depth + 1);
 
       return new vec3.fromValues(
-        attenuation[0] * colour[0],
-        attenuation[1] * colour[1],
-        attenuation[2] * colour[2]
+        emitted[0] + attenuation[0] * colour[0],
+        emitted[1] + attenuation[1] * colour[1],
+        emitted[2] + attenuation[2] * colour[2]
       );
     } else {
-      return vec3.create();
+      return emitted;
     }
   } else {
     // Background
