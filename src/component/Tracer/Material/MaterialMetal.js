@@ -36,7 +36,7 @@ export default class MaterialMetal {
     );
 
     // Attenuation
-    const VALUE = ALBEDO.getValue(0, 0, hitRecord.position);
+    const VALUE = ALBEDO.getValue(hitRecord.u, hitRecord.v, hitRecord.position);
 
     attenuation[0] = VALUE[0];
     attenuation[1] = VALUE[1];

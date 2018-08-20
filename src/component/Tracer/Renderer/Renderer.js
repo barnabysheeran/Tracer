@@ -1,17 +1,16 @@
 import RenderWorker from "./Render.worker.js";
 
-import World from "../World/World";
-import CameraController from "../Camera/CameraController";
-
-import Recorder from "../Recorder/Recorder";
-
-// TextureTest 800*400 before AABB && Workers 122 seconds
-// TextureTest 800*400 100AA 1k Bounce 1375s
+import ImageLibrary from "../Image/ImageLibrary.js";
+import World from "../World/World.js";
+import CameraController from "../Camera/CameraController.js";
+import Recorder from "../Recorder/Recorder.js";
 
 export default class Renderer {
   constructor(canvas, setStatus) {
-    this.CONTEXT = canvas.getContext("2d");
     this.setStatus = setStatus;
+
+    // Context
+    this.CONTEXT = canvas.getContext("2d");
 
     // Workers
     this.WORKER_TOTAL = navigator.hardwareConcurrency || 4;
@@ -66,6 +65,9 @@ export default class Renderer {
 
     // Camera Controller
     this.CAMERA_CONTROLLER = new CameraController();
+
+    // Texture Library - Load images on main thread
+    this.IMAGE_LIBRARY = new ImageLibrary(this);
 
     // Create World
     this.WORLD = new World(this.CAMERA_CONTROLLER);
@@ -326,6 +328,27 @@ export default class Renderer {
         positionId: positionId
       });
     }
+  }
+
+  onImageLibraryLoaded() {
+    const WORKER_TOTAL = this.WORKER_TOTAL;
+    const WORKER_POOL = this.WORKER_POOL;
+
+    const IMAGE_LIBRARY = this.IMAGE_LIBRARY;
+    const IMAGE_DIMENSIONS = IMAGE_LIBRARY.getImageDimensions();
+    const IMAGE_DATA = IMAGE_LIBRARY.getImageData();
+
+    let i;
+
+    for (i = 0; i < WORKER_TOTAL; i++) {
+      WORKER_POOL[i].postMessage({
+        messageType: "setTextureImageData",
+        imageDimensions: IMAGE_DIMENSIONS,
+        imageData: IMAGE_DATA
+      });
+    }
+
+    this.setStatus("Ready. Using " + this.WORKER_TOTAL + " threads");
   }
 
   // _______________________________________________________________________ Set

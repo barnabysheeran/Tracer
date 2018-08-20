@@ -4,9 +4,18 @@ import { vec3 } from "gl-matrix";
 export default class Scene {
   constructor(cameraController) {
     this.CAMERA_CONTROLLER = cameraController;
+
     this.animationFrameMax = 0;
+
     this.HITABLES = [];
+
+    this.textureImageDimensions = [];
+    this.textureImageData = [];
   }
+
+  // ______________________________________________________________________ Init
+
+  init() {}
 
   // ____________________________________________________________________ Sphere
 
@@ -34,5 +43,23 @@ export default class Scene {
     rayDirectionNormalized;
 
     return vec3.fromValues(0.5, 0.5, 0.5);
+  }
+
+  // __________________________________________________________ TextureImageData
+
+  setTextureImageDimensions(dimensions) {
+    this.textureImageDimensions = dimensions;
+  }
+
+  setTextureImageData(data) {
+    this.textureImageData = data;
+  }
+
+  getTextureImageDimensions(textureId) {
+    return this.textureImageDimensions[textureId];
+  }
+
+  getTextureImageData(textureId) {
+    return this.textureImageData[textureId];
   }
 }

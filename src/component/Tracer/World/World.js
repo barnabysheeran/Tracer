@@ -1,17 +1,20 @@
 import HitRecord from "../Hit/HitRecord";
-import HitableSphere from "../Hit/HitableSphere";
 
 import SceneTest from "./SceneTest";
 import SceneAnimationTest from "./SceneAnimationTest";
-import SceneTextureTest from "./SceneTextureTest";
+import SceneMarbleTest from "./SceneMarbleTest";
+import SceneImageTest from "./SceneImageTest";
 
 export default class World {
   constructor(cameraController) {
     this.CAMERA_CONTROLLER = cameraController;
 
-    this.SCENE_TEST = new SceneTest(cameraController);
-    this.SCENE_ANIMATION_TEST = new SceneAnimationTest(cameraController);
-    this.SCENE_TEXTURE_TEST = new SceneTextureTest(cameraController);
+    this.SCENES = [
+      new SceneTest(cameraController),
+      new SceneAnimationTest(cameraController),
+      new SceneMarbleTest(cameraController),
+      new SceneImageTest(cameraController)
+    ];
 
     // Default
     this.scene;
@@ -21,39 +24,14 @@ export default class World {
   // _____________________________________________________________________ Scene
 
   setScene(sceneId) {
-    switch (sceneId) {
-      case 0:
-        this.scene = this.SCENE_TEST;
-        break;
-      case 1:
-        this.scene = this.SCENE_ANIMATION_TEST;
-        break;
-      case 2:
-        this.scene = this.SCENE_TEXTURE_TEST;
-        break;
-    }
-  }
-
-  // _________________________________________________________________ Animation
-
-  setAnimationTime(time) {
-    this.scene.setAnimationTime(time);
-  }
-
-  getAnimationFrameMax() {
-    return this.scene.getAnimationFrameMax();
+    this.scene = this.SCENES[sceneId];
+    this.scene.init();
   }
 
   // ________________________________________________________________ Background
 
   getBackground(rayDirectionNormalized) {
     return this.scene.getBackground(rayDirectionNormalized);
-  }
-
-  // ____________________________________________________________________ Sphere
-
-  addSphere(position, radius, material) {
-    this.HITABLES.push(new HitableSphere(position, radius, material));
   }
 
   // _______________________________________________________________________ Hit
@@ -76,5 +54,37 @@ export default class World {
     }
 
     return hit;
+  }
+
+  // _________________________________________________________________ Animation
+
+  setAnimationTime(time) {
+    this.scene.setAnimationTime(time);
+  }
+
+  getAnimationFrameMax() {
+    return this.scene.getAnimationFrameMax();
+  }
+
+  // __________________________________________________________ TextureImageData
+
+  setTextureImageDimensions(dimensions) {
+    const SCENES = this.SCENES;
+
+    let i;
+
+    for (i = 0; i < SCENES.length; i++) {
+      SCENES[i].setTextureImageDimensions(dimensions);
+    }
+  }
+
+  setTextureImageData(data) {
+    const SCENES = this.SCENES;
+
+    let i;
+
+    for (i = 0; i < SCENES.length; i++) {
+      SCENES[i].setTextureImageData(data);
+    }
   }
 }

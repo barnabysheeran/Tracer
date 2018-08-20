@@ -30,7 +30,11 @@ export default class MaterialLambertian {
     scattered.setDirection(target[0], target[1], target[2]);
 
     // Attenuation
-    const VALUE = this.ALBEDO.getValue(0, 0, hitRecord.position);
+    const VALUE = this.ALBEDO.getValue(
+      hitRecord.u,
+      hitRecord.v,
+      hitRecord.position
+    );
 
     attenuation[0] = VALUE[0];
     attenuation[1] = VALUE[1];
