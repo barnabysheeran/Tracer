@@ -51,7 +51,7 @@ export default class HitableSphere extends Hitable {
       if (temp < tMax && temp > tMin) {
         hitRecord.t = temp;
 
-        hitRecord.position = ray.getPointAtParameter(hitRecord.t);
+        hitRecord.position = ray.getPointAtParameter(temp); //TODO Use temp
 
         hitRecord.normal = vec3.fromValues(
           (hitRecord.position[0] - POSITION_CENTER[0]) / RADIUS,
@@ -73,7 +73,7 @@ export default class HitableSphere extends Hitable {
       if (temp < tMax && temp > tMin) {
         hitRecord.t = temp;
 
-        hitRecord.position = ray.getPointAtParameter(hitRecord.t);
+        hitRecord.position = ray.getPointAtParameter(temp); //TODO Use temp
 
         hitRecord.normal = vec3.fromValues(
           (hitRecord.position[0] - POSITION_CENTER[0]) / RADIUS,

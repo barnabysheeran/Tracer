@@ -1,5 +1,7 @@
-import HitableSphere from "../Hit/HitableSphere";
 import { vec3 } from "gl-matrix";
+
+import HitableSphere from "../Hit/HitableSphere";
+import HitablePlane from "../Hit/HitablePlane";
 
 export default class Scene {
   constructor(cameraController) {
@@ -25,6 +27,16 @@ export default class Scene {
     this.HITABLES.push(sphere);
 
     return sphere;
+  }
+
+  //  ____________________________________________________________________ Plane
+
+  addPlane(x0, x1, y0, y1, k, material) {
+    let plane = new HitablePlane(x0, x1, y0, y1, k, material);
+
+    this.HITABLES.push(plane);
+
+    return plane;
   }
 
   // _________________________________________________________________ Animation
