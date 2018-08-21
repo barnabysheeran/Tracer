@@ -31,8 +31,8 @@ export default class Scene {
 
   //  ____________________________________________________________________ Plane
 
-  addPlane(x0, x1, y0, y1, k, material) {
-    let plane = new HitablePlane(x0, x1, y0, y1, k, material);
+  addPlane(x0, x1, y0, y1, material) {
+    let plane = new HitablePlane(x0, x1, y0, y1, material);
 
     this.HITABLES.push(plane);
 

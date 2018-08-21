@@ -1,16 +1,10 @@
-import { vec3 } from "gl-matrix";
+import { vec3, quat } from "gl-matrix";
 
 import Scene from "./Scene";
 
 import TextureConstant from "../Texture/TextureConstant";
-import TextureChecker from "../Texture/TextureChecker";
-
 import MaterialLightDiffuse from "../Material/MaterialLightDiffuse";
-import MaterialDielectric from "../Material/MaterialDielectric";
 import MaterialLambertian from "../Material/MaterialLambertian";
-import MaterialMetal from "../Material/MaterialMetal";
-
-import { HSVtoRGB } from "../Util/colour";
 
 export default class SceneLightTest extends Scene {
   constructor(cameraController) {
@@ -23,30 +17,45 @@ export default class SceneLightTest extends Scene {
     // Old
     this.HITABLES = [];
 
+    // World center
+    const TEXTURE_CENTER = new TextureConstant(vec3.fromValues(0.0, 0.0, 0.0));
+    const MATERIAL_CENTER = new MaterialLambertian(TEXTURE_CENTER);
+    this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), 0.25, MATERIAL_CENTER);
+
+    // X
+    const TEXTURE_X = new TextureConstant(vec3.fromValues(1.0, 0.0, 0.0));
+    const MATERIAL_X = new MaterialLambertian(TEXTURE_X);
+    this.addSphere(vec3.fromValues(1.0, 0.0, 0.0), 0.1, MATERIAL_X);
+    this.addSphere(vec3.fromValues(2.0, 0.0, 0.0), 0.1, MATERIAL_X);
+
+    this.addSphere(vec3.fromValues(-1.0, 0.0, 0.0), 0.05, MATERIAL_X);
+    this.addSphere(vec3.fromValues(-2.0, 0.0, 0.0), 0.05, MATERIAL_X);
+
+    // Y
+    const TEXTURE_Y = new TextureConstant(vec3.fromValues(0.0, 1.0, 0.0));
+    const MATERIAL_Y = new MaterialLambertian(TEXTURE_Y);
+    this.addSphere(vec3.fromValues(0.0, 1.0, 0.0), 0.1, MATERIAL_Y);
+    this.addSphere(vec3.fromValues(0.0, 2.0, 0.0), 0.1, MATERIAL_Y);
+
+    this.addSphere(vec3.fromValues(0.0, -1.0, 0.0), 0.05, MATERIAL_Y);
+    this.addSphere(vec3.fromValues(0.0, -2.0, 0.0), 0.05, MATERIAL_Y);
+
+    // Z
+    const TEXTURE_Z = new TextureConstant(vec3.fromValues(0.0, 0.0, 1.0));
+    const MATERIAL_Z = new MaterialLambertian(TEXTURE_Z);
+    this.addSphere(vec3.fromValues(0.0, 0.0, 1.0), 0.1, MATERIAL_Z);
+    this.addSphere(vec3.fromValues(0.0, 0.0, 2.0), 0.1, MATERIAL_Z);
+
+    this.addSphere(vec3.fromValues(0.0, 0.0, -1.0), 0.05, MATERIAL_Z);
+    this.addSphere(vec3.fromValues(0.0, 0.0, -2.0), 0.05, MATERIAL_Z);
+
     // White A
     const TEXTURE_LIGHT = new TextureConstant(vec3.fromValues(4.0, 4.0, 4.0));
-
     const MATERIAL_LIGHT = new MaterialLightDiffuse(TEXTURE_LIGHT);
 
-    this.addPlane(3, 5, 1, 3, -2, MATERIAL_LIGHT);
-
-    // Floor
-    const TEXTURE_CHECKER_BLACK = new TextureConstant(
-      vec3.fromValues(0.0, 0.0, 0.0)
-    );
-    const TEXTURE_CHECKER_WHITE = new TextureConstant(
-      vec3.fromValues(1.0, 1.0, 1.0)
-    );
-
-    const TEXTURE_CHECKER = new TextureChecker(
-      TEXTURE_CHECKER_BLACK,
-      TEXTURE_CHECKER_WHITE,
-      20.0
-    );
-
-    const MATERIAL_CHECKER = new MaterialLambertian(TEXTURE_CHECKER);
-
-    this.addSphere(vec3.fromValues(0.0, -100.5, -1.0), 100, MATERIAL_CHECKER);
+    const P = this.addPlane(-1, 1, 0, 2, MATERIAL_LIGHT);
+    P.setPosition(vec3.fromValues(0, 0, 2));
+    P.setRotation(quat.create());
   }
 
   // _________________________________________________________________ Animation
@@ -57,11 +66,11 @@ export default class SceneLightTest extends Scene {
     // Camera
     const CAMERA_CONTROLLER = this.CAMERA_CONTROLLER;
 
-    CAMERA_CONTROLLER.setFov(20.0);
+    CAMERA_CONTROLLER.setFov(25.0);
     CAMERA_CONTROLLER.setAperture(0.1);
 
-    CAMERA_CONTROLLER.setPosition(10.0, 10.0, 10.0);
-    CAMERA_CONTROLLER.setPositionTarget(0.0, -0.15, 0.0);
+    CAMERA_CONTROLLER.setPosition(5.0, 5.0, 5.0);
+    CAMERA_CONTROLLER.setPositionTarget(0.0, 0.0, 0.0);
   }
 
   // ________________________________________________________________ Background
@@ -69,6 +78,7 @@ export default class SceneLightTest extends Scene {
   getBackground(rayDirectionNormalized) {
     rayDirectionNormalized;
 
-    return vec3.fromValues(0.0, 0.0, 0.0);
+    // return vec3.fromValues(0.0, 0.0, 0.0);
+    return vec3.fromValues(0.5, 0.5, 0.5);
   }
 }
