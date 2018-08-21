@@ -3,13 +3,13 @@ import { vec3 } from "gl-matrix";
 import Hitable from "./Hitable";
 
 export default class HitablePlane extends Hitable {
-  constructor(x0, x1, y0, y1, material) {
+  constructor(width, height, material) {
     super();
 
-    this.x0 = x0;
-    this.x1 = x1;
-    this.y0 = y0;
-    this.y1 = y1;
+    this.x0 = width * -0.5;
+    this.x1 = width * 0.5;
+    this.y0 = height * -0.5;
+    this.y1 = height * 0.5;
 
     this.MATERIAL = material;
 
@@ -17,7 +17,6 @@ export default class HitablePlane extends Hitable {
   }
 
   setPosition(position) {
-    position;
     const POSITION = this.POSITION;
     POSITION[0] = position[0];
     POSITION[1] = position[1];
@@ -31,17 +30,15 @@ export default class HitablePlane extends Hitable {
   didHit(ray, tMin, tMax, hitRecord) {
     const POSITION = this.POSITION;
 
-    const X0 = this.x0;
-    const X1 = this.x1;
-    const Y0 = this.y0;
-    const Y1 = this.y1;
-
-    const K = POSITION[2];
+    const X0 = this.x0 + POSITION[0];
+    const X1 = this.x1 + POSITION[0];
+    const Y0 = this.y0 + POSITION[1];
+    const Y1 = this.y1 + POSITION[1];
 
     const RAY_ORIGIN = ray.getPositionOrigin();
     const RAY_DIRECTION = ray.getDirection();
 
-    const T = (K - RAY_ORIGIN[2]) / RAY_DIRECTION[2];
+    const T = (POSITION[2] - RAY_ORIGIN[2]) / RAY_DIRECTION[2];
 
     if (T < tMin || T > tMax) {
       return false;

@@ -1,11 +1,12 @@
 import testA from "./../../../texture/TextureTestA.png";
 import skymap from "./../../../texture/skymap.jpg";
+import testSquare from "./../../../texture/testSquare.png";
 
 export default class ImageLibrary {
   constructor(renderer) {
     this.RENDERER = renderer;
 
-    this.URLS = [testA, skymap];
+    this.URLS = [testA, skymap, testSquare];
 
     this.IMAGE_TOTAL = this.URLS.length;
     this.imageCurrent = 0;

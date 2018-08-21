@@ -3,6 +3,7 @@ import { vec3, quat } from "gl-matrix";
 import Scene from "./Scene";
 
 import TextureConstant from "../Texture/TextureConstant";
+import TextureImage from "../Texture/TextureImage";
 import MaterialLightDiffuse from "../Material/MaterialLightDiffuse";
 import MaterialLambertian from "../Material/MaterialLambertian";
 
@@ -49,13 +50,24 @@ export default class SceneLightTest extends Scene {
     this.addSphere(vec3.fromValues(0.0, 0.0, -1.0), 0.05, MATERIAL_Z);
     this.addSphere(vec3.fromValues(0.0, 0.0, -2.0), 0.05, MATERIAL_Z);
 
-    // White A
+    // Image
+    const TEXTURE_IMAGE = new TextureImage(
+      this.getTextureImageDimensions(2),
+      this.getTextureImageData(2)
+    );
+    const MATERIAL_IMAGE = new MaterialLambertian(TEXTURE_IMAGE);
+
+    const PI = this.addPlane(2, 2, MATERIAL_IMAGE);
+    PI.setPosition(vec3.fromValues(0, 0, -2));
+    PI.setRotation(quat.create());
+
+    // Light
     const TEXTURE_LIGHT = new TextureConstant(vec3.fromValues(4.0, 4.0, 4.0));
     const MATERIAL_LIGHT = new MaterialLightDiffuse(TEXTURE_LIGHT);
 
-    const P = this.addPlane(-1, 1, 0, 2, MATERIAL_LIGHT);
-    P.setPosition(vec3.fromValues(0, 0, 2));
-    P.setRotation(quat.create());
+    const PL = this.addPlane(2, 2, MATERIAL_LIGHT);
+    PL.setPosition(vec3.fromValues(0, 0, 2));
+    PL.setRotation(quat.create());
   }
 
   // _________________________________________________________________ Animation
