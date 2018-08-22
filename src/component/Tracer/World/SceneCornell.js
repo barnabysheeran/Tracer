@@ -1,4 +1,4 @@
-import { vec3, quat } from "gl-matrix";
+import { vec3 } from "gl-matrix";
 
 import Scene from "./Scene";
 
@@ -8,9 +8,18 @@ import TextureImage from "../Texture/TextureImage";
 import MaterialLightDiffuse from "../Material/MaterialLightDiffuse";
 import MaterialLambertian from "../Material/MaterialLambertian";
 
-export default class SceneLightTest extends Scene {
+export default class SceneCornell extends Scene {
   constructor(cameraController) {
     super(cameraController);
+
+    this.BOX_HEIGHT = 2;
+    this.BOX_HEIGHT_HALF = this.BOX_HEIGHT * 0.5;
+
+    this.BOX_WIDTH = 1;
+    this.BOX_WIDTH_HALF = this.BOX_WIDTH * 0.5;
+
+    this.BOX_DEPTH = 1;
+    this.BOX_DEPTH_HALF = this.BOX_DEPTH * 0.5;
   }
 
   // ______________________________________________________________________ Init
@@ -19,37 +28,17 @@ export default class SceneLightTest extends Scene {
     // Old
     this.HITABLES = [];
 
-    // World center
-    const TEXTURE_CENTER = new TextureConstant(vec3.fromValues(0.0, 0.0, 0.0));
-    const MATERIAL_CENTER = new MaterialLambertian(TEXTURE_CENTER);
-    this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), 0.25, MATERIAL_CENTER);
+    // Materials
+    const TEXTURE_WHITE = new TextureConstant(vec3.fromValues(1.0, 1.0, 1.0));
+    const MATERIAL_WHITE = new MaterialLambertian(TEXTURE_WHITE);
 
-    // X
-    const TEXTURE_X = new TextureConstant(vec3.fromValues(1.0, 0.0, 0.0));
-    const MATERIAL_X = new MaterialLambertian(TEXTURE_X);
-    this.addSphere(vec3.fromValues(1.0, 0.0, 0.0), 0.1, MATERIAL_X);
-    this.addSphere(vec3.fromValues(2.0, 0.0, 0.0), 0.1, MATERIAL_X);
+    // Roof
 
-    this.addSphere(vec3.fromValues(-1.0, 0.0, 0.0), 0.05, MATERIAL_X);
-    this.addSphere(vec3.fromValues(-2.0, 0.0, 0.0), 0.05, MATERIAL_X);
+    // Back
 
-    // Y
-    const TEXTURE_Y = new TextureConstant(vec3.fromValues(0.0, 1.0, 0.0));
-    const MATERIAL_Y = new MaterialLambertian(TEXTURE_Y);
-    this.addSphere(vec3.fromValues(0.0, 1.0, 0.0), 0.1, MATERIAL_Y);
-    this.addSphere(vec3.fromValues(0.0, 2.0, 0.0), 0.1, MATERIAL_Y);
+    // Left
 
-    this.addSphere(vec3.fromValues(0.0, -1.0, 0.0), 0.05, MATERIAL_Y);
-    this.addSphere(vec3.fromValues(0.0, -2.0, 0.0), 0.05, MATERIAL_Y);
-
-    // Z
-    const TEXTURE_Z = new TextureConstant(vec3.fromValues(0.0, 0.0, 1.0));
-    const MATERIAL_Z = new MaterialLambertian(TEXTURE_Z);
-    this.addSphere(vec3.fromValues(0.0, 0.0, 1.0), 0.1, MATERIAL_Z);
-    this.addSphere(vec3.fromValues(0.0, 0.0, 2.0), 0.1, MATERIAL_Z);
-
-    this.addSphere(vec3.fromValues(0.0, 0.0, -1.0), 0.05, MATERIAL_Z);
-    this.addSphere(vec3.fromValues(0.0, 0.0, -2.0), 0.05, MATERIAL_Z);
+    // Right
 
     // Tri
     const TEXTURE_TRI = new TextureConstant(vec3.fromValues(1.0, 1.0, 1.0));
