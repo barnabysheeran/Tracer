@@ -1,7 +1,7 @@
 import { vec3 } from "gl-matrix";
 
 import HitableSphere from "../Hit/HitableSphere";
-import HitablePlane from "../Hit/HitablePlane";
+import HitableTriangle from "../Hit/HitableTriangle";
 
 export default class Scene {
   constructor(cameraController) {
@@ -29,14 +29,14 @@ export default class Scene {
     return sphere;
   }
 
-  //  ____________________________________________________________________ Plane
+  // __________________________________________________________________ Triangle
 
-  addPlane(width, height, material) {
-    let plane = new HitablePlane(width, height, material);
+  addTriangle(p0, p1, p2, material) {
+    let triangle = new HitableTriangle(p0, p1, p2, material);
 
-    this.HITABLES.push(plane);
+    this.HITABLES.push(triangle);
 
-    return plane;
+    return triangle;
   }
 
   // _________________________________________________________________ Animation

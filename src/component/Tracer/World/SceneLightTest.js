@@ -4,6 +4,7 @@ import Scene from "./Scene";
 
 import TextureConstant from "../Texture/TextureConstant";
 import TextureImage from "../Texture/TextureImage";
+
 import MaterialLightDiffuse from "../Material/MaterialLightDiffuse";
 import MaterialLambertian from "../Material/MaterialLambertian";
 
@@ -50,24 +51,36 @@ export default class SceneLightTest extends Scene {
     this.addSphere(vec3.fromValues(0.0, 0.0, -1.0), 0.05, MATERIAL_Z);
     this.addSphere(vec3.fromValues(0.0, 0.0, -2.0), 0.05, MATERIAL_Z);
 
-    // Image
-    const TEXTURE_IMAGE = new TextureImage(
-      this.getTextureImageDimensions(2),
-      this.getTextureImageData(2)
-    );
-    const MATERIAL_IMAGE = new MaterialLambertian(TEXTURE_IMAGE);
+    // Tri
+    const TEXTURE_TRI = new TextureConstant(vec3.fromValues(1.0, 1.0, 1.0));
+    const MATERIAL_TRI = new MaterialLambertian(TEXTURE_TRI);
 
-    const PI = this.addPlane(2, 2, MATERIAL_IMAGE);
-    PI.setPosition(vec3.fromValues(0, 0, -2));
-    PI.setRotation(quat.create());
+    this.addTriangle(
+      vec3.fromValues(0.0, 0.0, 0.0),
+      vec3.fromValues(0.0, 2.0, 0.0),
+      vec3.fromValues(2.0, 0.0, 0.0),
+      MATERIAL_TRI
+    );
+
+    // this.addTriangle(
+    //   vec3.fromValues(0.0, 0.0, 0.0),
+    //   vec3.fromValues(2.0, 0.0, 0.0),
+    //   vec3.fromValues(0.0, 2.0, 0.0),
+    //   MATERIAL_TRI
+    // );
 
     // Light
-    const TEXTURE_LIGHT = new TextureConstant(vec3.fromValues(4.0, 4.0, 4.0));
-    const MATERIAL_LIGHT = new MaterialLightDiffuse(TEXTURE_LIGHT);
+    // const TEXTURE_LIGHT = new TextureConstant(vec3.fromValues(4.0, 4.0, 4.0));
+    // const MATERIAL_LIGHT = new MaterialLightDiffuse(TEXTURE_LIGHT);
 
-    const PL = this.addPlane(2, 2, MATERIAL_LIGHT);
-    PL.setPosition(vec3.fromValues(0, 0, 2));
-    PL.setRotation(quat.create());
+    // Floor
+    const TEXTURE_FLOOR = new TextureConstant(vec3.fromValues(0.8, 0.8, 0.8));
+
+    this.addSphere(
+      vec3.fromValues(0.0, -101, -1.0),
+      100,
+      new MaterialLambertian(TEXTURE_FLOOR, 0.5)
+    );
   }
 
   // _________________________________________________________________ Animation
@@ -91,6 +104,6 @@ export default class SceneLightTest extends Scene {
     rayDirectionNormalized;
 
     // return vec3.fromValues(0.0, 0.0, 0.0);
-    return vec3.fromValues(0.5, 0.5, 0.5);
+    return vec3.fromValues(0.25, 0.25, 0.25);
   }
 }
