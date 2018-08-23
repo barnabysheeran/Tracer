@@ -26,7 +26,7 @@ export default class Tracer extends React.Component {
   componentDidMount() {
     // Renderer
     this.RENDERER = new Renderer(this.CANVAS, this.setStatus);
-    this.setDimensions([800, 400]);
+    this.setDimensions([200, 100]);
     this.RENDERER.clear();
   }
 
