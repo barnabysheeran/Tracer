@@ -21,13 +21,13 @@ export default class SceneCornell extends Scene {
     this.HITABLES = [];
 
     // Cornell
-    const CORNELL_HEIGHT = 1;
+    const CORNELL_HEIGHT = 10.0;
     const CORNELL_HEIGHT_HALF = CORNELL_HEIGHT * 0.5;
 
-    const CORNELL_WIDTH = 1;
+    const CORNELL_WIDTH = 10.0;
     const CORNELL_WIDTH_HALF = CORNELL_WIDTH * 0.5;
 
-    const CORNELL_DEPTH = 1;
+    const CORNELL_DEPTH = 10.0;
     const CORNELL_DEPTH_HALF = CORNELL_DEPTH * 0.5;
 
     const TEXTURE_WHITE = new TextureConstant(vec3.fromValues(1.0, 1.0, 1.0));
@@ -241,9 +241,11 @@ export default class SceneCornell extends Scene {
     const LIGHT_DEPTH = 0.5;
     const LIGHT_DEPTH_HALF = LIGHT_DEPTH * 0.5;
 
-    const LIGHT_HEIGHT = 0.49;
+    const LIGHT_HEIGHT = CORNELL_HEIGHT_HALF * 0.999;
 
-    const TEXTURE_LIGHT = new TextureConstant(vec3.fromValues(4.0, 4.0, 4.0));
+    const TEXTURE_LIGHT = new TextureConstant(
+      vec3.fromValues(15.0, 15.0, 15.0)
+    );
     const MATERIAL_LIGHT = new MaterialLightDiffuse(TEXTURE_LIGHT);
 
     this.addTriangle(
@@ -291,7 +293,7 @@ export default class SceneCornell extends Scene {
     CAMERA_CONTROLLER.setFov(25.0);
     CAMERA_CONTROLLER.setAperture(0.0);
 
-    CAMERA_CONTROLLER.setPosition(0.0, 0.0, 3.8);
+    CAMERA_CONTROLLER.setPosition(0.0, 0.0, 100);
     CAMERA_CONTROLLER.setPositionTarget(0.0, 0.0, 0.0);
   }
 

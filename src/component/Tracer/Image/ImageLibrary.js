@@ -1,6 +1,6 @@
-import testA from "./../../../texture/TextureTestA.png";
-import skymap from "./../../../texture/skymap.jpg";
-import testSquare from "./../../../texture/testSquare.png";
+import testA from "./../../../asset/texture/TextureTestA.png";
+import skymap from "./../../../asset/texture/skymap.jpg";
+import testSquare from "./../../../asset/texture/testSquare.png";
 
 export default class ImageLibrary {
   constructor(renderer) {

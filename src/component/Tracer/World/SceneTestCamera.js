@@ -86,18 +86,18 @@ export default class SceneTest extends Scene {
     const TEXTURE_METAL = new TextureConstant(vec3.fromValues(4.0, 4.0, 4.0));
     const MATERIAL_METAL = new MaterialMetal(TEXTURE_METAL, 0.0);
 
-    this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), 0.1, MATERIAL_METAL);
-    this.addSphere(vec3.fromValues(0.0, 0.0, -1.0), 0.1, MATERIAL_METAL);
-    this.addSphere(vec3.fromValues(0.0, 0.0, -2.0), 0.1, MATERIAL_METAL);
+    this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), 100, MATERIAL_METAL);
+    this.addSphere(vec3.fromValues(0.0, 0.0, 120.0), 100, MATERIAL_METAL);
+    this.addSphere(vec3.fromValues(0.0, 0.0, 240.0), 100, MATERIAL_METAL);
 
     // 'Floor'
-    const TEXTURE_FLOOR = new TextureConstant(vec3.fromValues(0.8, 0.8, 0.8));
+    // const TEXTURE_FLOOR = new TextureConstant(vec3.fromValues(0.8, 0.8, 0.8));
 
-    this.addSphere(
-      vec3.fromValues(0.0, -100.5, -1.0),
-      100,
-      new MaterialMetal(TEXTURE_FLOOR, 0.5)
-    );
+    // this.addSphere(
+    //   vec3.fromValues(0.0, -100.5, -1.0),
+    //   100,
+    //   new MaterialMetal(TEXTURE_FLOOR, 0.5)
+    // );
   }
 
   // _________________________________________________________________ Animation
@@ -108,10 +108,10 @@ export default class SceneTest extends Scene {
     // Camera
     const CAMERA_CONTROLLER = this.CAMERA_CONTROLLER;
 
-    CAMERA_CONTROLLER.setFov(25.0);
-    CAMERA_CONTROLLER.setAperture(0.1);
+    CAMERA_CONTROLLER.setFov(40.0);
+    CAMERA_CONTROLLER.setAperture(0.0);
 
-    CAMERA_CONTROLLER.setPosition(0.0, 0.0, 3.0);
+    CAMERA_CONTROLLER.setPosition(0.0, 0.0, -800);
     CAMERA_CONTROLLER.setPositionTarget(0.0, 0.0, 0.0);
   }
 
