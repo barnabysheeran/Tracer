@@ -42,17 +42,17 @@ export default class SceneCornell extends Scene {
     // Roof
     this.addTriangle(
       vec3.fromValues(
+        CORNELL_WIDTH_HALF,
+        CORNELL_HEIGHT_HALF,
+        CORNELL_DEPTH_HALF
+      ),
+      vec3.fromValues(
         -CORNELL_WIDTH_HALF,
         CORNELL_HEIGHT_HALF,
         -CORNELL_DEPTH_HALF
       ),
       vec3.fromValues(
         -CORNELL_WIDTH_HALF,
-        CORNELL_HEIGHT_HALF,
-        CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        CORNELL_WIDTH_HALF,
         CORNELL_HEIGHT_HALF,
         CORNELL_DEPTH_HALF
       ),
@@ -61,12 +61,12 @@ export default class SceneCornell extends Scene {
 
     this.addTriangle(
       vec3.fromValues(
-        -CORNELL_WIDTH_HALF,
+        CORNELL_WIDTH_HALF,
         CORNELL_HEIGHT_HALF,
         -CORNELL_DEPTH_HALF
       ),
       vec3.fromValues(
-        CORNELL_WIDTH_HALF,
+        -CORNELL_WIDTH_HALF,
         CORNELL_HEIGHT_HALF,
         -CORNELL_DEPTH_HALF
       ),
@@ -83,12 +83,12 @@ export default class SceneCornell extends Scene {
       vec3.fromValues(
         -CORNELL_WIDTH_HALF,
         -CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
+        CORNELL_DEPTH_HALF
       ),
       vec3.fromValues(
         -CORNELL_WIDTH_HALF,
         -CORNELL_HEIGHT_HALF,
-        CORNELL_DEPTH_HALF
+        -CORNELL_DEPTH_HALF
       ),
       vec3.fromValues(
         CORNELL_WIDTH_HALF,
@@ -100,6 +100,11 @@ export default class SceneCornell extends Scene {
 
     this.addTriangle(
       vec3.fromValues(
+        CORNELL_WIDTH_HALF,
+        -CORNELL_HEIGHT_HALF,
+        CORNELL_DEPTH_HALF
+      ),
+      vec3.fromValues(
         -CORNELL_WIDTH_HALF,
         -CORNELL_HEIGHT_HALF,
         -CORNELL_DEPTH_HALF
@@ -108,11 +113,6 @@ export default class SceneCornell extends Scene {
         CORNELL_WIDTH_HALF,
         -CORNELL_HEIGHT_HALF,
         -CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        CORNELL_WIDTH_HALF,
-        -CORNELL_HEIGHT_HALF,
-        CORNELL_DEPTH_HALF
       ),
       MATERIAL_WHITE
     );
@@ -120,18 +120,18 @@ export default class SceneCornell extends Scene {
     // Back
     this.addTriangle(
       vec3.fromValues(
-        -CORNELL_WIDTH_HALF,
-        CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        -CORNELL_WIDTH_HALF,
-        -CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
         CORNELL_WIDTH_HALF,
         -CORNELL_HEIGHT_HALF,
+        -CORNELL_DEPTH_HALF
+      ),
+      vec3.fromValues(
+        -CORNELL_WIDTH_HALF,
+        -CORNELL_HEIGHT_HALF,
+        -CORNELL_DEPTH_HALF
+      ),
+      vec3.fromValues(
+        -CORNELL_WIDTH_HALF,
+        CORNELL_HEIGHT_HALF,
         -CORNELL_DEPTH_HALF
       ),
       MATERIAL_WHITE
@@ -199,18 +199,18 @@ export default class SceneCornell extends Scene {
     this.addTriangle(
       vec3.fromValues(
         CORNELL_WIDTH_HALF,
-        CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        CORNELL_WIDTH_HALF,
-        -CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        CORNELL_WIDTH_HALF,
         -CORNELL_HEIGHT_HALF,
         CORNELL_DEPTH_HALF
+      ),
+      vec3.fromValues(
+        CORNELL_WIDTH_HALF,
+        -CORNELL_HEIGHT_HALF,
+        -CORNELL_DEPTH_HALF
+      ),
+      vec3.fromValues(
+        CORNELL_WIDTH_HALF,
+        CORNELL_HEIGHT_HALF,
+        -CORNELL_DEPTH_HALF
       ),
       MATERIAL_RED
     );
@@ -218,7 +218,7 @@ export default class SceneCornell extends Scene {
     this.addTriangle(
       vec3.fromValues(
         CORNELL_WIDTH_HALF,
-        CORNELL_HEIGHT_HALF,
+        -CORNELL_HEIGHT_HALF,
         CORNELL_DEPTH_HALF
       ),
       vec3.fromValues(
@@ -228,7 +228,7 @@ export default class SceneCornell extends Scene {
       ),
       vec3.fromValues(
         CORNELL_WIDTH_HALF,
-        -CORNELL_HEIGHT_HALF,
+        CORNELL_HEIGHT_HALF,
         CORNELL_DEPTH_HALF
       ),
       MATERIAL_RED
@@ -254,50 +254,30 @@ export default class SceneCornell extends Scene {
     );
 
     this.addTriangle(
+      vec3.fromValues(LIGHT_WIDTH_HALF, LIGHT_HEIGHT, LIGHT_DEPTH_HALF),
       vec3.fromValues(-LIGHT_WIDTH_HALF, LIGHT_HEIGHT, -LIGHT_DEPTH_HALF),
       vec3.fromValues(LIGHT_WIDTH_HALF, LIGHT_HEIGHT, -LIGHT_DEPTH_HALF),
-      vec3.fromValues(LIGHT_WIDTH_HALF, LIGHT_HEIGHT, LIGHT_DEPTH_HALF),
       MATERIAL_LIGHT
     );
 
-    // Sphere Metal
-    const TEXTURE_METAL = new TextureConstant(vec3.fromValues(4.0, 4.0, 4.0));
-    const MATERIAL_METAL = new MaterialMetal(TEXTURE_METAL, 0.0);
+    // // Sphere Metal
+    // const TEXTURE_METAL = new TextureConstant(vec3.fromValues(4.0, 4.0, 4.0));
+    // const MATERIAL_METAL = new MaterialMetal(TEXTURE_METAL, 0.0);
 
-    this.addSphere(
-      vec3.fromValues(0.0, -CORNELL_HEIGHT_HALF + 0.1, 0.0),
-      0.1,
-      MATERIAL_METAL
-    );
-
-    // Sphere Glass
-    const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
-
-    this.addSphere(
-      vec3.fromValues(0.25, -CORNELL_HEIGHT_HALF + 0.1, 0.0),
-      0.1,
-      MATERIAL_DIELECTRIC
-    );
-
-    // Tri
-    // const TEXTURE_TRI = new TextureConstant(vec3.fromValues(1.0, 1.0, 1.0));
-    // const MATERIAL_TRI = new MaterialLambertian(TEXTURE_TRI);
-
-    // this.addTriangle(
-    //   vec3.fromValues(0.0, 0.0, 0.0),
-    //   vec3.fromValues(0.0, 2.0, 0.0),
-    //   vec3.fromValues(2.0, 0.0, 0.0),
-    //   MATERIAL_TRI
+    // this.addSphere(
+    //   vec3.fromValues(0.0, -CORNELL_HEIGHT_HALF + 0.101, 0.0),
+    //   0.1,
+    //   MATERIAL_METAL
     // );
 
-    // this.addTriangle(
-    //   vec3.fromValues(0.0, 0.0, 0.0),
-    //   vec3.fromValues(2.0, 0.0, 0.0),
-    //   vec3.fromValues(0.0, 2.0, 0.0),
-    //   MATERIAL_TRI
-    // );
+    // // Sphere Glass
+    // const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
 
-    // Light
+    // this.addSphere(
+    //   vec3.fromValues(0.25, -CORNELL_HEIGHT_HALF + 0.101, 0.0),
+    //   0.1,
+    //   MATERIAL_DIELECTRIC
+    // );
   }
 
   // _________________________________________________________________ Animation

@@ -6,10 +6,12 @@ export default class HitableTriangle extends Hitable {
   constructor(v0, v1, v2, material) {
     super();
 
+    // Vertex
     this.VERTEX0 = v0;
     this.VERTEX1 = v1;
     this.VERTEX2 = v2;
 
+    // Edge
     this.EDGE1 = vec3.fromValues(
       this.VERTEX1[0] - this.VERTEX0[0],
       this.VERTEX1[1] - this.VERTEX0[1],
@@ -22,6 +24,16 @@ export default class HitableTriangle extends Hitable {
       this.VERTEX2[2] - this.VERTEX0[2]
     );
 
+    // Normal
+    const A = vec3.fromValues(v2[0] - v0[0], v2[1] - v0[1], v2[2] - v0[2]);
+    const B = vec3.fromValues(v1[0] - v0[0], v1[1] - v0[1], v1[2] - v0[2]);
+
+    this.NORMAL = vec3.fromValues();
+
+    vec3.cross(this.NORMAL, A, B);
+    vec3.normalize(this.NORMAL, this.NORMAL);
+
+    // Material
     this.MATERIAL = material;
   }
 
@@ -65,7 +77,7 @@ export default class HitableTriangle extends Hitable {
     if (T > tMin && T < tMax) {
       hitRecord.t = T;
       hitRecord.position = ray.getPointAtParameter(T);
-      hitRecord.normal = vec3.fromValues(0, 1, 0); //TODO
+      hitRecord.normal = this.NORMAL;
       hitRecord.material = this.MATERIAL;
       hitRecord.u = U;
       hitRecord.v = V;

@@ -10,8 +10,8 @@ const WORLD = new World(CAMERA_CONTROLLER);
 
 let threadId = -1;
 
-let samplesAA = 1;
-let bounceMax = 5000;
+let samplesAA = 10;
+let bounceMax = 1000;
 
 let pixelWidth = -1;
 let pixelHeight = -1;
