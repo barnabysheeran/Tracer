@@ -9,7 +9,7 @@ module.exports = {
         use: { loader: "babel-loader" }
       },
       {
-        test: /\.(svg|png|gif|jpg|ico)$/,
+        test: /\.(svg|png|gif|jpg|ico|gltf)$/,
         exclude: /node_modules/,
         use: {
           loader: "file-loader",
@@ -32,11 +32,6 @@ module.exports = {
             }
           }
         ]
-      },
-      {
-        test: /\.glsl$/,
-        loader: "shader-loader",
-        options: { glsl: { chunkPath: "./src/glsl" } }
       },
       {
         test: /\.worker\.js$/,

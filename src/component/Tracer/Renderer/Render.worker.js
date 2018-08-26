@@ -66,6 +66,9 @@ self.addEventListener("message", e => {
       WORLD.setTextureImageDimensions(data.imageDimensions);
       WORLD.setTextureImageData(data.imageData);
       break;
+    case "setMeshData":
+      WORLD.setMeshAssets(data.meshAssets);
+      break;
     case "render":
       render(data.timeFrameStart, data.column, data.row);
       break;

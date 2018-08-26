@@ -93,4 +93,16 @@ export default class World {
       SCENES[i].setTextureImageData(data);
     }
   }
+
+  // ________________________________________________________________ MeshAssets
+
+  setMeshAssets(meshAssets) {
+    const SCENES = this.SCENES;
+
+    let i;
+
+    for (i = 0; i < SCENES.length; i++) {
+      SCENES[i].setMeshAssets(meshAssets);
+    }
+  }
 }

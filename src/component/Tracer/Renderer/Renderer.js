@@ -4,6 +4,7 @@ import ImageLibrary from "../Image/ImageLibrary.js";
 import World from "../World/World.js";
 import CameraController from "../Camera/CameraController.js";
 import Recorder from "../Recorder/Recorder.js";
+import MeshLibrary from "../Image/MeshLibrary.js";
 
 export default class Renderer {
   constructor(canvas, setStatus) {
@@ -66,14 +67,15 @@ export default class Renderer {
     // Camera Controller
     this.CAMERA_CONTROLLER = new CameraController();
 
-    // Texture Library - Load images on main thread
+    // Asset Libraries - Load on main thread
+    this.LIBRARY_IMAGE_LOADED = false;
+    this.LIBRARY_MESH_LOADED = false;
+
     this.IMAGE_LIBRARY = new ImageLibrary(this);
+    this.MESH_LIBRARY = new MeshLibrary(this);
 
     // Create World
     this.WORLD = new World(this.CAMERA_CONTROLLER);
-
-    // Start
-    this.setStatus("Created " + this.WORKER_TOTAL + " threads");
   }
 
   // _____________________________________________________________________ Start
@@ -101,9 +103,10 @@ export default class Renderer {
 
     // Time
     this.timeFrameStart = this.frame * this.timeFrameInterval;
-    //this.timeFrameEnd = (this.frame + 1) * this.timeFrameInterval;
 
-    this.setStatus("Render frame " + this.frame);
+    this.setStatus(
+      "Render. Frame " + (this.frame + 1) + " of " + (this.frameMax + 1)
+    );
 
     // Start
     let i;
@@ -195,7 +198,7 @@ export default class Renderer {
     // Status
     let d = new Date();
     let timeTaken = d.getTime() - this.timeRenderStart;
-    this.setStatus("Complete in " + (timeTaken / 1000).toFixed(2) + "s");
+    this.setStatus("Frame complete. " + (timeTaken / 1000).toFixed(2) + "s");
 
     // Done
     this.isRendering = false;
@@ -205,11 +208,9 @@ export default class Renderer {
 
   clear() {
     const CONTEXT = this.CONTEXT;
-
     CONTEXT.fillStyle = "#000000";
     CONTEXT.fillRect(0, 0, this.PIXEL_WIDTH, this.PIXEL_HEIGHT);
 
-    this.setStatus("Cleared");
     this.isRendering = false;
   }
 
@@ -348,7 +349,35 @@ export default class Renderer {
       });
     }
 
-    this.setStatus("Ready. Using " + this.WORKER_TOTAL + " threads");
+    this.LIBRARY_IMAGE_LOADED = true;
+    this.showLoadStatus();
+  }
+
+  onMeshLibraryLoaded() {
+    const WORKER_TOTAL = this.WORKER_TOTAL;
+    const WORKER_POOL = this.WORKER_POOL;
+
+    const MESH_ASSETS = this.MESH_LIBRARY.getAssets();
+
+    let i;
+
+    for (i = 0; i < WORKER_TOTAL; i++) {
+      WORKER_POOL[i].postMessage({
+        messageType: "setMeshData",
+        meshData: MESH_ASSETS
+      });
+    }
+
+    this.LIBRARY_MESH_LOADED = true;
+    this.showLoadStatus();
+  }
+
+  // ___________________________________________________________________ Loading
+
+  showLoadStatus() {
+    if (this.LIBRARY_IMAGE_LOADED == true && this.LIBRARY_MESH_LOADED) {
+      this.setStatus("Ready. " + this.WORKER_TOTAL + " workers");
+    }
   }
 
   // _______________________________________________________________________ Set

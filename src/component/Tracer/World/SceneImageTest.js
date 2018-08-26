@@ -15,8 +15,7 @@ export default class SceneImageTest extends Scene {
   // ______________________________________________________________________ Init
 
   init() {
-    // Old
-    this.HITABLES = [];
+    this.reset();
 
     const TEXTURE_TEST_A = new TextureImage(
       this.getTextureImageDimensions(0),

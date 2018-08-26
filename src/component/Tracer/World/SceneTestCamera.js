@@ -3,9 +3,6 @@ import { vec3 } from "gl-matrix";
 import Scene from "./Scene";
 
 import TextureConstant from "../Texture/TextureConstant";
-import TextureImage from "../Texture/TextureImage";
-
-import MaterialLambertian from "../Material/MaterialLambertian";
 import MaterialMetal from "../Material/MaterialMetal";
 
 export default class SceneTest extends Scene {
@@ -16,71 +13,7 @@ export default class SceneTest extends Scene {
   // ______________________________________________________________________ Init
 
   init() {
-    // Old
-    this.HITABLES = [];
-
-    let WIDTH_HALF = 0.5;
-    let HEIGHT_HALF = 0.5;
-    let DEPTH = 0.0;
-
-    // Material
-    const TEXTURE_WHITE = new TextureConstant(vec3.fromValues(1.0, 1.0, 1.0));
-    const MATERIAL_WHITE = new MaterialLambertian(TEXTURE_WHITE);
-
-    const TEXTURE_IMAGE = new TextureImage(
-      this.getTextureImageDimensions(2),
-      this.getTextureImageData(2)
-    );
-    const MATERIAL_IMAGE = new MaterialLambertian(TEXTURE_IMAGE);
-
-    // 0
-    // this.addTriangle(
-    //   vec3.fromValues(WIDTH_HALF, -HEIGHT_HALF, DEPTH),
-    //   vec3.fromValues(-WIDTH_HALF, -HEIGHT_HALF, DEPTH),
-    //   vec3.fromValues(-WIDTH_HALF, HEIGHT_HALF, DEPTH),
-    //   MATERIAL_IMAGE
-    // );
-
-    // this.addTriangle(
-    //   vec3.fromValues(-WIDTH_HALF, HEIGHT_HALF, DEPTH),
-    //   vec3.fromValues(WIDTH_HALF, HEIGHT_HALF, DEPTH),
-    //   vec3.fromValues(WIDTH_HALF, -HEIGHT_HALF, DEPTH),
-    //   MATERIAL_IMAGE
-    // );
-
-    // 1
-    DEPTH = 1;
-
-    // this.addTriangle(
-    //   vec3.fromValues(WIDTH_HALF, -HEIGHT_HALF, DEPTH),
-    //   vec3.fromValues(-WIDTH_HALF, -HEIGHT_HALF, DEPTH),
-    //   vec3.fromValues(-WIDTH_HALF, HEIGHT_HALF, DEPTH),
-    //   MATERIAL_IMAGE
-    // );
-
-    // this.addTriangle(
-    //   vec3.fromValues(-WIDTH_HALF, HEIGHT_HALF, DEPTH),
-    //   vec3.fromValues(WIDTH_HALF, HEIGHT_HALF, DEPTH),
-    //   vec3.fromValues(WIDTH_HALF, -HEIGHT_HALF, DEPTH),
-    //   MATERIAL_IMAGE
-    // );
-
-    // 2
-    DEPTH = 2;
-
-    // this.addTriangle(
-    //   vec3.fromValues(WIDTH_HALF, -HEIGHT_HALF, DEPTH),
-    //   vec3.fromValues(-WIDTH_HALF, -HEIGHT_HALF, DEPTH),
-    //   vec3.fromValues(-WIDTH_HALF, HEIGHT_HALF, DEPTH),
-    //   MATERIAL_IMAGE
-    // );
-
-    // this.addTriangle(
-    //   vec3.fromValues(-WIDTH_HALF, HEIGHT_HALF, DEPTH),
-    //   vec3.fromValues(WIDTH_HALF, HEIGHT_HALF, DEPTH),
-    //   vec3.fromValues(WIDTH_HALF, -HEIGHT_HALF, DEPTH),
-    //   MATERIAL_IMAGE
-    // );
+    this.reset();
 
     // Sphere Metal
     const TEXTURE_METAL = new TextureConstant(vec3.fromValues(4.0, 4.0, 4.0));
@@ -89,15 +22,6 @@ export default class SceneTest extends Scene {
     this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), 100, MATERIAL_METAL);
     this.addSphere(vec3.fromValues(0.0, 0.0, 120.0), 100, MATERIAL_METAL);
     this.addSphere(vec3.fromValues(0.0, 0.0, 240.0), 100, MATERIAL_METAL);
-
-    // 'Floor'
-    // const TEXTURE_FLOOR = new TextureConstant(vec3.fromValues(0.8, 0.8, 0.8));
-
-    // this.addSphere(
-    //   vec3.fromValues(0.0, -100.5, -1.0),
-    //   100,
-    //   new MaterialMetal(TEXTURE_FLOOR, 0.5)
-    // );
   }
 
   // _________________________________________________________________ Animation

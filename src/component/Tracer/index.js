@@ -28,13 +28,15 @@ export default class Tracer extends React.Component {
     this.RENDERER = new Renderer(this.CANVAS, this.setStatus);
     this.setDimensions([200, 100]);
     this.RENDERER.clear();
+
+    this.setStatus("Loading ...");
   }
 
   // _______________________________________________________________ Interaction
 
   setDimensions(dimensions) {
     this.shape(dimensions[0], dimensions[1]);
-    this.RENDERER.clear();
+    this.clear();
   }
 
   setScene(sceneId) {

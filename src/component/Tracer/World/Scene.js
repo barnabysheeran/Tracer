@@ -13,11 +13,19 @@ export default class Scene {
 
     this.textureImageDimensions = [];
     this.textureImageData = [];
+
+    this.meshAssets = [];
   }
 
   // ______________________________________________________________________ Init
 
   init() {}
+
+  // _____________________________________________________________________ Reset
+
+  reset() {
+    this.HITABLES = [];
+  }
 
   // ____________________________________________________________________ Sphere
 
@@ -57,6 +65,8 @@ export default class Scene {
     return vec3.fromValues(0.5, 0.5, 0.5);
   }
 
+  //
+
   // __________________________________________________________ TextureImageData
 
   setTextureImageDimensions(dimensions) {
@@ -73,5 +83,11 @@ export default class Scene {
 
   getTextureImageData(textureId) {
     return this.textureImageData[textureId];
+  }
+
+  // _________________________________________________________________ Mesh Data
+
+  setMeshAssets(meshAssets) {
+    this.meshAsstes = meshAssets;
   }
 }

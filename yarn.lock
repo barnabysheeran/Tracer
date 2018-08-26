@@ -2682,6 +2682,10 @@ globjoin@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/globjoin/-/globjoin-0.1.4.tgz#2f4494ac8919e3767c5cbb691e9f463324285d43"
 
+gltf-loader-ts@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/gltf-loader-ts/-/gltf-loader-ts-0.3.1.tgz#917395bfc77dc98df148c57a2585170241be6318"
+
 gonzales-pe@4.2.3:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/gonzales-pe/-/gonzales-pe-4.2.3.tgz#41091703625433285e0aee3aa47829fc1fbeb6f2"

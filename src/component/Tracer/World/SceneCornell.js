@@ -6,8 +6,8 @@ import TextureConstant from "../Texture/TextureConstant";
 
 import MaterialLightDiffuse from "../Material/MaterialLightDiffuse";
 import MaterialLambertian from "../Material/MaterialLambertian";
-import MaterialMetal from "../Material/MaterialMetal";
-import MaterialDielectric from "../Material/MaterialDielectric";
+// import MaterialMetal from "../Material/MaterialMetal";
+// import MaterialDielectric from "../Material/MaterialDielectric";
 
 export default class SceneCornell extends Scene {
   constructor(cameraController) {
@@ -17,8 +17,7 @@ export default class SceneCornell extends Scene {
   // ______________________________________________________________________ Init
 
   init() {
-    // Old
-    this.HITABLES = [];
+    this.reset();
 
     // Cornell
     const CORNELL_HEIGHT = 10.0;

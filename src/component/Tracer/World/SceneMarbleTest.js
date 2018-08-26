@@ -12,6 +12,12 @@ import MaterialLambertian from "../Material/MaterialLambertian";
 export default class SceneMarbleTest extends Scene {
   constructor(cameraController) {
     super(cameraController);
+  }
+
+  // ______________________________________________________________________ Init
+
+  init() {
+    this.reset();
 
     // Marble
     const TEXTURE_SIMPLEX = new TextureSimplex(0.7);
