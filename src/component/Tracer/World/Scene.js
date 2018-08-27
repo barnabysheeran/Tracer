@@ -30,21 +30,56 @@ export default class Scene {
   // ____________________________________________________________________ Sphere
 
   addSphere(position, radius, material) {
-    let sphere = new HitableSphere(position, radius, material);
+    const SPHERE = new HitableSphere(position, radius, material);
 
-    this.HITABLES.push(sphere);
+    this.HITABLES.push(SPHERE);
 
-    return sphere;
+    return SPHERE;
   }
 
   // __________________________________________________________________ Triangle
 
   addTriangle(p0, p1, p2, material) {
-    let triangle = new HitableTriangle(p0, p1, p2, material);
+    const TRIANGLE = new HitableTriangle(p0, p1, p2, material);
 
-    this.HITABLES.push(triangle);
+    this.HITABLES.push(TRIANGLE);
 
-    return triangle;
+    return TRIANGLE;
+  }
+
+  // _____________________________________________________________________ Plane
+
+  addPlane(p0, p1, p2, p3, material) {
+    const TRIANGLE_0 = this.addTriangle(p0, p1, p3, material);
+    const TRIANGLE_1 = this.addTriangle(p1, p2, p3, material);
+
+    return [TRIANGLE_0, TRIANGLE_1];
+  }
+
+  // _______________________________________________________________________ Box
+
+  addBox(p0, p1, p2, p3, p4, p5, p6, p7, material) {
+    const PLANE_0 = this.addPlane(p0, p1, p2, p3, material); // TODO
+    const PLANE_1 = this.addPlane(p0, p1, p2, p3, material); // TODO
+    const PLANE_2 = this.addPlane(p0, p1, p2, p3, material); // TODO
+    const PLANE_3 = this.addPlane(p0, p1, p2, p3, material); // TODO
+    const PLANE_4 = this.addPlane(p0, p1, p2, p3, material); // TODO
+    const PLANE_5 = this.addPlane(p0, p1, p2, p3, material); // TODO
+
+    return [
+      PLANE_0[0],
+      PLANE_0[1],
+      PLANE_1[0],
+      PLANE_1[1],
+      PLANE_2[0],
+      PLANE_2[1],
+      PLANE_3[0],
+      PLANE_3[1],
+      PLANE_4[0],
+      PLANE_4[1],
+      PLANE_5[0],
+      PLANE_5[1]
+    ];
   }
 
   // _________________________________________________________________ Animation
@@ -64,8 +99,6 @@ export default class Scene {
 
     return vec3.fromValues(0.5, 0.5, 0.5);
   }
-
-  //
 
   // __________________________________________________________ TextureImageData
 
@@ -88,6 +121,10 @@ export default class Scene {
   // _________________________________________________________________ Mesh Data
 
   setMeshAssets(meshAssets) {
-    this.meshAsstes = meshAssets;
+    this.meshAssets = meshAssets;
+  }
+
+  getMeshAsset(assetId) {
+    return this.meshAssets[assetId];
   }
 }

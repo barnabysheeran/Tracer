@@ -6,8 +6,8 @@ import TextureConstant from "../Texture/TextureConstant";
 
 import MaterialLightDiffuse from "../Material/MaterialLightDiffuse";
 import MaterialLambertian from "../Material/MaterialLambertian";
-// import MaterialMetal from "../Material/MaterialMetal";
-// import MaterialDielectric from "../Material/MaterialDielectric";
+import MaterialMetal from "../Material/MaterialMetal";
+import MaterialDielectric from "../Material/MaterialDielectric";
 
 export default class SceneCornell extends Scene {
   constructor(cameraController) {
@@ -20,16 +20,7 @@ export default class SceneCornell extends Scene {
     this.reset();
 
     // Cornell
-    const CORNELL_HEIGHT = 10.0;
-    const CORNELL_HEIGHT_HALF = CORNELL_HEIGHT * 0.5;
-
-    const CORNELL_WIDTH = 10.0;
-    const CORNELL_WIDTH_HALF = CORNELL_WIDTH * 0.5;
-
-    const CORNELL_DEPTH = 10.0;
-    const CORNELL_DEPTH_HALF = CORNELL_DEPTH * 0.5;
-
-    const TEXTURE_WHITE = new TextureConstant(vec3.fromValues(1.0, 1.0, 1.0));
+    const TEXTURE_WHITE = new TextureConstant(vec3.fromValues(1.0, 0.0, 1.0));
     const MATERIAL_WHITE = new MaterialLambertian(TEXTURE_WHITE);
 
     const TEXTURE_RED = new TextureConstant(vec3.fromValues(1.0, 0.0, 0.0));
@@ -38,245 +29,91 @@ export default class SceneCornell extends Scene {
     const TEXTURE_GREEN = new TextureConstant(vec3.fromValues(0.0, 1.0, 0.0));
     const MATERIAL_GREEN = new MaterialLambertian(TEXTURE_GREEN);
 
-    // Roof
-    this.addTriangle(
-      vec3.fromValues(
-        CORNELL_WIDTH_HALF,
-        CORNELL_HEIGHT_HALF,
-        CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        -CORNELL_WIDTH_HALF,
-        CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        -CORNELL_WIDTH_HALF,
-        CORNELL_HEIGHT_HALF,
-        CORNELL_DEPTH_HALF
-      ),
-      MATERIAL_WHITE
-    );
-
-    this.addTriangle(
-      vec3.fromValues(
-        CORNELL_WIDTH_HALF,
-        CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        -CORNELL_WIDTH_HALF,
-        CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        CORNELL_WIDTH_HALF,
-        CORNELL_HEIGHT_HALF,
-        CORNELL_DEPTH_HALF
-      ),
-      MATERIAL_WHITE
-    );
-
-    // Floor
-    this.addTriangle(
-      vec3.fromValues(
-        -CORNELL_WIDTH_HALF,
-        -CORNELL_HEIGHT_HALF,
-        CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        -CORNELL_WIDTH_HALF,
-        -CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        CORNELL_WIDTH_HALF,
-        -CORNELL_HEIGHT_HALF,
-        CORNELL_DEPTH_HALF
-      ),
-      MATERIAL_WHITE
-    );
-
-    this.addTriangle(
-      vec3.fromValues(
-        CORNELL_WIDTH_HALF,
-        -CORNELL_HEIGHT_HALF,
-        CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        -CORNELL_WIDTH_HALF,
-        -CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        CORNELL_WIDTH_HALF,
-        -CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
-      MATERIAL_WHITE
-    );
+    const C_HEIGHT_HALF = 300.0;
+    const C_WIDTH_HALF = 300;
+    const C_DEPTH_HALF = 300;
 
     // Back
-    this.addTriangle(
-      vec3.fromValues(
-        CORNELL_WIDTH_HALF,
-        -CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        -CORNELL_WIDTH_HALF,
-        -CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        -CORNELL_WIDTH_HALF,
-        CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
-      MATERIAL_WHITE
-    );
-
-    this.addTriangle(
-      vec3.fromValues(
-        -CORNELL_WIDTH_HALF,
-        CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        CORNELL_WIDTH_HALF,
-        CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        CORNELL_WIDTH_HALF,
-        -CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
+    this.addPlane(
+      vec3.fromValues(-C_WIDTH_HALF, -C_HEIGHT_HALF, -C_DEPTH_HALF),
+      vec3.fromValues(C_WIDTH_HALF, -C_HEIGHT_HALF, -C_DEPTH_HALF),
+      vec3.fromValues(C_WIDTH_HALF, C_HEIGHT_HALF, -C_DEPTH_HALF),
+      vec3.fromValues(-C_WIDTH_HALF, C_HEIGHT_HALF, -C_DEPTH_HALF),
       MATERIAL_WHITE
     );
 
     // Left
-    this.addTriangle(
-      vec3.fromValues(
-        -CORNELL_WIDTH_HALF,
-        CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        -CORNELL_WIDTH_HALF,
-        -CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        -CORNELL_WIDTH_HALF,
-        -CORNELL_HEIGHT_HALF,
-        CORNELL_DEPTH_HALF
-      ),
-      MATERIAL_GREEN
-    );
-
-    this.addTriangle(
-      vec3.fromValues(
-        -CORNELL_WIDTH_HALF,
-        CORNELL_HEIGHT_HALF,
-        CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        -CORNELL_WIDTH_HALF,
-        CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        -CORNELL_WIDTH_HALF,
-        -CORNELL_HEIGHT_HALF,
-        CORNELL_DEPTH_HALF
-      ),
-      MATERIAL_GREEN
+    this.addPlane(
+      vec3.fromValues(-C_WIDTH_HALF, C_HEIGHT_HALF, -C_DEPTH_HALF),
+      vec3.fromValues(-C_WIDTH_HALF, C_HEIGHT_HALF, C_DEPTH_HALF),
+      vec3.fromValues(-C_WIDTH_HALF, -C_HEIGHT_HALF, C_DEPTH_HALF),
+      vec3.fromValues(-C_WIDTH_HALF, -C_HEIGHT_HALF, -C_DEPTH_HALF),
+      MATERIAL_RED
     );
 
     // Right
-    this.addTriangle(
-      vec3.fromValues(
-        CORNELL_WIDTH_HALF,
-        -CORNELL_HEIGHT_HALF,
-        CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        CORNELL_WIDTH_HALF,
-        -CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        CORNELL_WIDTH_HALF,
-        CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
-      MATERIAL_RED
+    this.addPlane(
+      vec3.fromValues(C_WIDTH_HALF, C_HEIGHT_HALF, C_DEPTH_HALF),
+      vec3.fromValues(C_WIDTH_HALF, C_HEIGHT_HALF, -C_DEPTH_HALF),
+      vec3.fromValues(C_WIDTH_HALF, -C_HEIGHT_HALF, -C_DEPTH_HALF),
+      vec3.fromValues(C_WIDTH_HALF, -C_HEIGHT_HALF, C_DEPTH_HALF),
+      MATERIAL_GREEN
     );
 
-    this.addTriangle(
-      vec3.fromValues(
-        CORNELL_WIDTH_HALF,
-        -CORNELL_HEIGHT_HALF,
-        CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        CORNELL_WIDTH_HALF,
-        CORNELL_HEIGHT_HALF,
-        -CORNELL_DEPTH_HALF
-      ),
-      vec3.fromValues(
-        CORNELL_WIDTH_HALF,
-        CORNELL_HEIGHT_HALF,
-        CORNELL_DEPTH_HALF
-      ),
-      MATERIAL_RED
+    // Roof
+    this.addPlane(
+      vec3.fromValues(-C_WIDTH_HALF, C_HEIGHT_HALF, C_DEPTH_HALF),
+      vec3.fromValues(-C_WIDTH_HALF, C_HEIGHT_HALF, -C_DEPTH_HALF),
+      vec3.fromValues(C_WIDTH_HALF, C_HEIGHT_HALF, -C_DEPTH_HALF),
+      vec3.fromValues(C_WIDTH_HALF, C_HEIGHT_HALF, C_DEPTH_HALF),
+      MATERIAL_WHITE
+    );
+
+    // Floor
+    this.addPlane(
+      vec3.fromValues(-C_WIDTH_HALF, -C_HEIGHT_HALF, C_DEPTH_HALF),
+      vec3.fromValues(C_WIDTH_HALF, -C_HEIGHT_HALF, C_DEPTH_HALF),
+      vec3.fromValues(C_WIDTH_HALF, -C_HEIGHT_HALF, -C_DEPTH_HALF),
+      vec3.fromValues(-C_WIDTH_HALF, -C_HEIGHT_HALF, -C_DEPTH_HALF),
+      MATERIAL_WHITE
     );
 
     // Light
-    const LIGHT_WIDTH = 0.5;
-    const LIGHT_WIDTH_HALF = LIGHT_WIDTH * 0.5;
-
-    const LIGHT_DEPTH = 0.5;
-    const LIGHT_DEPTH_HALF = LIGHT_DEPTH * 0.5;
-
-    const LIGHT_HEIGHT = CORNELL_HEIGHT_HALF * 0.999;
-
     const TEXTURE_LIGHT = new TextureConstant(
-      vec3.fromValues(15.0, 15.0, 15.0)
+      vec3.fromValues(10.0, 10.0, 10.0)
     );
     const MATERIAL_LIGHT = new MaterialLightDiffuse(TEXTURE_LIGHT);
 
-    this.addTriangle(
-      vec3.fromValues(-LIGHT_WIDTH_HALF, LIGHT_HEIGHT, -LIGHT_DEPTH_HALF),
-      vec3.fromValues(-LIGHT_WIDTH_HALF, LIGHT_HEIGHT, LIGHT_DEPTH_HALF),
-      vec3.fromValues(LIGHT_WIDTH_HALF, LIGHT_HEIGHT, LIGHT_DEPTH_HALF),
+    const L_HEIGHT_HALF = 299.99;
+    const L_WIDTH_HALF = 150;
+    const L_DEPTH_HALF = 150;
+
+    this.addPlane(
+      vec3.fromValues(-L_WIDTH_HALF, L_HEIGHT_HALF, L_DEPTH_HALF),
+      vec3.fromValues(-L_WIDTH_HALF, L_HEIGHT_HALF, -L_DEPTH_HALF),
+      vec3.fromValues(L_WIDTH_HALF, L_HEIGHT_HALF, -L_DEPTH_HALF),
+      vec3.fromValues(L_WIDTH_HALF, L_HEIGHT_HALF, L_DEPTH_HALF),
       MATERIAL_LIGHT
     );
 
-    this.addTriangle(
-      vec3.fromValues(LIGHT_WIDTH_HALF, LIGHT_HEIGHT, LIGHT_DEPTH_HALF),
-      vec3.fromValues(-LIGHT_WIDTH_HALF, LIGHT_HEIGHT, -LIGHT_DEPTH_HALF),
-      vec3.fromValues(LIGHT_WIDTH_HALF, LIGHT_HEIGHT, -LIGHT_DEPTH_HALF),
-      MATERIAL_LIGHT
+    this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), 50.0, MATERIAL_LIGHT);
+
+    // Sphere Metal
+    const TEXTURE_METAL = new TextureConstant(vec3.fromValues(4.0, 4.0, 4.0));
+    const MATERIAL_METAL = new MaterialMetal(TEXTURE_METAL, 0.0);
+
+    this.addSphere(
+      vec3.fromValues(100.0, -C_HEIGHT_HALF + 100.001, 0.0),
+      100.0,
+      MATERIAL_METAL
     );
-
-    // // Sphere Metal
-    // const TEXTURE_METAL = new TextureConstant(vec3.fromValues(4.0, 4.0, 4.0));
-    // const MATERIAL_METAL = new MaterialMetal(TEXTURE_METAL, 0.0);
-
-    // this.addSphere(
-    //   vec3.fromValues(0.0, -CORNELL_HEIGHT_HALF + 0.101, 0.0),
-    //   0.1,
-    //   MATERIAL_METAL
-    // );
 
     // // Sphere Glass
     // const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
 
     // this.addSphere(
-    //   vec3.fromValues(0.25, -CORNELL_HEIGHT_HALF + 0.101, 0.0),
-    //   0.1,
+    //   vec3.fromValues(0.25, -C_HEIGHT_HALF + 0.101, 0.0),
+    //   10.0,
     //   MATERIAL_DIELECTRIC
     // );
   }
@@ -289,10 +126,10 @@ export default class SceneCornell extends Scene {
     // Camera
     const CAMERA_CONTROLLER = this.CAMERA_CONTROLLER;
 
-    CAMERA_CONTROLLER.setFov(25.0);
+    CAMERA_CONTROLLER.setFov(20.0);
     CAMERA_CONTROLLER.setAperture(0.0);
 
-    CAMERA_CONTROLLER.setPosition(0.0, 0.0, 100);
+    CAMERA_CONTROLLER.setPosition(1.0, 0.0, 2100);
     CAMERA_CONTROLLER.setPositionTarget(0.0, 0.0, 0.0);
   }
 
@@ -301,6 +138,6 @@ export default class SceneCornell extends Scene {
   getBackground(rayDirectionNormalized) {
     rayDirectionNormalized;
 
-    return vec3.fromValues(0.0, 0.0, 0.0);
+    return vec3.fromValues(0, 0, 0);
   }
 }

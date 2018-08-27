@@ -2,6 +2,8 @@ import { vec3 } from "gl-matrix";
 
 import Scene from "./Scene";
 
+import MeshHelper from "../Library/MeshHelper";
+
 import TextureConstant from "../Texture/TextureConstant";
 import MaterialMetal from "../Material/MaterialMetal";
 
@@ -23,6 +25,15 @@ export default class SceneBunny extends Scene {
 
   init() {
     this.reset();
+
+    // Mesh
+    const MESH_HELPER = new MeshHelper(this.getMeshAsset(0));
+
+    // Test sphere
+    const TEXTURE_METAL = new TextureConstant(vec3.fromValues(1.0, 0.0, 0.0));
+    const MATERIAL_METAL = new MaterialMetal(TEXTURE_METAL, 0.0);
+
+    this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), 20, MATERIAL_METAL);
   }
 
   // _________________________________________________________________ Animation
@@ -36,8 +47,8 @@ export default class SceneBunny extends Scene {
     CAMERA_CONTROLLER.setFov(22.0);
     CAMERA_CONTROLLER.setAperture(0.5);
 
-    CAMERA_CONTROLLER.setPosition(3.0, 3.0, 3.0);
-    CAMERA_CONTROLLER.setPositionTarget(0.0, -0.24, 0.0);
+    CAMERA_CONTROLLER.setPosition(75.0, 75.0, 75.0);
+    CAMERA_CONTROLLER.setPositionTarget(0.0, 0.0, 0.0);
   }
 
   // ________________________________________________________________ Background

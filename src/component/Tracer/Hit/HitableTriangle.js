@@ -25,13 +25,14 @@ export default class HitableTriangle extends Hitable {
     );
 
     // Normal
-    const A = vec3.fromValues(v2[0] - v0[0], v2[1] - v0[1], v2[2] - v0[2]);
-    const B = vec3.fromValues(v1[0] - v0[0], v1[1] - v0[1], v1[2] - v0[2]);
+    // const A = vec3.fromValues(v2[0] - v0[0], v2[1] - v0[1], v2[2] - v0[2]);
+    // const B = vec3.fromValues(v1[0] - v0[0], v1[1] - v0[1], v1[2] - v0[2]);
 
     this.NORMAL = vec3.fromValues();
 
-    vec3.cross(this.NORMAL, A, B);
-    vec3.normalize(this.NORMAL, this.NORMAL);
+    vec3.cross(this.NORMAL, this.EDGE1, this.EDGE2);
+    //this.NORMAL = vec3.normalize(this.NORMAL, this.NORMAL);
+    //this.NORMAL = vec3.inverse(this.NORMAL, this.NORMAL);
 
     // Material
     this.MATERIAL = material;
@@ -41,7 +42,7 @@ export default class HitableTriangle extends Hitable {
 
   didHit(ray, tMin, tMax, hitRecord) {
     const RAY_ORIGIN = ray.getPositionOrigin();
-    const RAY_DIRECTION = ray.getDirection();
+    const RAY_DIRECTION = ray.getDirectionNormalized();
 
     const EPSILON = 0.0000001;
     const VERTEX0 = this.VERTEX0;
@@ -49,11 +50,18 @@ export default class HitableTriangle extends Hitable {
     const EDGE1 = this.EDGE1;
     const EDGE2 = this.EDGE2;
 
+    // const NORMAL = this.NORMAL;
+
     const H = vec3.create();
     vec3.cross(H, RAY_DIRECTION, EDGE2);
 
     const A = vec3.dot(EDGE1, H);
     if (A > -EPSILON && A < EPSILON) return false;
+
+    // One sided
+    if (A < 0) {
+      return false;
+    }
 
     const F = 1.0 / A;
 
@@ -77,7 +85,7 @@ export default class HitableTriangle extends Hitable {
     if (T > tMin && T < tMax) {
       hitRecord.t = T;
       hitRecord.position = ray.getPointAtParameter(T);
-      hitRecord.normal = this.NORMAL;
+      hitRecord.normal = this.NORMAL; //vec3.fromValues(NORMAL[0], NORMAL[1], NORMAL[2]);
       hitRecord.material = this.MATERIAL;
       hitRecord.u = U;
       hitRecord.v = V;

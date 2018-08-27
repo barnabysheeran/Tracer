@@ -1,10 +1,10 @@
 import RenderWorker from "./Render.worker.js";
 
-import ImageLibrary from "../Image/ImageLibrary.js";
+import ImageLibrary from "../Library/ImageLibrary.js";
+import MeshLibrary from "../Library/MeshLibrary.js";
 import World from "../World/World.js";
 import CameraController from "../Camera/CameraController.js";
 import Recorder from "../Recorder/Recorder.js";
-import MeshLibrary from "../Image/MeshLibrary.js";
 
 export default class Renderer {
   constructor(canvas, setStatus) {
@@ -14,7 +14,7 @@ export default class Renderer {
     this.CONTEXT = canvas.getContext("2d");
 
     // Workers
-    this.WORKER_TOTAL = navigator.hardwareConcurrency || 4;
+    this.WORKER_TOTAL = 1; // navigator.hardwareConcurrency || 4; // TODO
 
     this.WORKER_POOL = [];
 
@@ -364,7 +364,7 @@ export default class Renderer {
     for (i = 0; i < WORKER_TOTAL; i++) {
       WORKER_POOL[i].postMessage({
         messageType: "setMeshData",
-        meshData: MESH_ASSETS
+        meshAssets: MESH_ASSETS
       });
     }
 
