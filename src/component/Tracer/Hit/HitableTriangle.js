@@ -31,7 +31,7 @@ export default class HitableTriangle extends Hitable {
     this.NORMAL = vec3.fromValues();
 
     vec3.cross(this.NORMAL, this.EDGE1, this.EDGE2);
-    //this.NORMAL = vec3.normalize(this.NORMAL, this.NORMAL);
+    this.NORMAL = vec3.normalize(this.NORMAL, this.NORMAL);
     //this.NORMAL = vec3.inverse(this.NORMAL, this.NORMAL);
 
     // Material
@@ -42,7 +42,8 @@ export default class HitableTriangle extends Hitable {
 
   didHit(ray, tMin, tMax, hitRecord) {
     const RAY_ORIGIN = ray.getPositionOrigin();
-    const RAY_DIRECTION = ray.getDirectionNormalized();
+    //const RAY_DIRECTION = ray.getDirectionNormalized();
+    const RAY_DIRECTION = ray.getDirection();
 
     const EPSILON = 0.0000001;
     const VERTEX0 = this.VERTEX0;
@@ -59,9 +60,9 @@ export default class HitableTriangle extends Hitable {
     if (A > -EPSILON && A < EPSILON) return false;
 
     // One sided
-    // if (A < 0) {
-    //   return false;
-    // }
+    if (A < 0) {
+      return false;
+    }
 
     const F = 1.0 / A;
 
@@ -98,5 +99,11 @@ export default class HitableTriangle extends Hitable {
     this.NORMAL[0] = x;
     this.NORMAL[1] = y;
     this.NORMAL[2] = z;
+  }
+
+  flipNormal() {
+    this.NORMAL[0] = -this.NORMAL[0];
+    this.NORMAL[1] = -this.NORMAL[1];
+    this.NORMAL[2] = -this.NORMAL[2];
   }
 }

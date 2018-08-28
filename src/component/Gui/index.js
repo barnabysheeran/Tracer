@@ -21,8 +21,9 @@ export default class Gui extends React.Component {
           <Group
             title="Output"
             narrow={false}
-            initialIndex={0}
+            initialIndex={1}
             options={[
+              { label: "50*50", value: [50, 50] },
               { label: "200*100", value: [200, 100] },
               { label: "400*200", value: [400, 200] },
               { label: "800*400", value: [800, 400] }

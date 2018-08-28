@@ -1,6 +1,7 @@
 import bunny from "./../../../asset/mesh/bunny.json";
 
 // Meshes simplified using https://www.npmjs.com/package/obj2sc
+// obj2sc < bunny.obj > bunny.json
 
 export default class MeshLibrary {
   constructor(renderer) {
