@@ -39,9 +39,8 @@ export default class Gui extends React.Component {
               { label: "AnimTest", value: 1 },
               { label: "MarbleTest", value: 2 },
               { label: "ImageTest", value: 3 },
-              { label: "Cornell", value: 4 },
-              { label: "Bunny", value: 5 },
-              { label: "TestCamera", value: 6 }
+              { label: "Bunny", value: 4 },
+              { label: "Cornell", value: 5 }
             ]}
             onClick={this.props.onClickSetScene}
           />
