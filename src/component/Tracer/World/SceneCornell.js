@@ -7,7 +7,6 @@ import TextureConstant from "../Texture/TextureConstant";
 import MaterialLightDiffuse from "../Material/MaterialLightDiffuse";
 import MaterialLambertian from "../Material/MaterialLambertian";
 import MaterialMetal from "../Material/MaterialMetal";
-import MaterialDielectric from "../Material/MaterialDielectric";
 
 export default class SceneCornell extends Scene {
   constructor(cameraController) {

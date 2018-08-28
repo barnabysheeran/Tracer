@@ -3,11 +3,9 @@ import { vec3 } from "gl-matrix";
 import Scene from "./Scene";
 
 import TextureConstant from "../Texture/TextureConstant";
-import TextureChecker from "../Texture/TextureChecker";
-
 import MaterialMetal from "../Material/MaterialMetal";
-import MaterialDielectric from "../Material/MaterialDielectric";
-import MaterialLambertian from "../Material/MaterialLambertian";
+
+import { HSVtoRGB } from "../Util/colour";
 
 export default class SceneBunny extends Scene {
   constructor(cameraController) {
@@ -29,12 +27,10 @@ export default class SceneBunny extends Scene {
     this.reset();
 
     // Materials
-    const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
-
-    const TEXTURE_METAL_RED = new TextureConstant(
-      vec3.fromValues(1.0, 0.1, 0.1)
+    const TEXTURE_METAL_WHITE = new TextureConstant(
+      vec3.fromValues(1.0, 1.0, 1.0)
     );
-    const MATERIAL_METAL_RED = new MaterialMetal(TEXTURE_METAL_RED, 0.1);
+    const MATERIAL_METAL_WHITE = new MaterialMetal(TEXTURE_METAL_WHITE, 0.05);
 
     const TEXTURE_METAL = new TextureConstant(vec3.fromValues(0.5, 0.5, 0.5));
     const MATERIAL_METAL = new MaterialMetal(TEXTURE_METAL, 0.1);
@@ -42,7 +38,7 @@ export default class SceneBunny extends Scene {
     // Mesh
     const CELLS = this.getMeshCells(0);
     const POSITIONS = this.getMeshPositions(0);
-    const NORMALS = this.getMeshNormals(0);
+    //const NORMALS = this.getMeshNormals(0);
 
     // TODO Remove main thread renderer instance
     if (POSITIONS == undefined) {
@@ -53,37 +49,54 @@ export default class SceneBunny extends Scene {
     let p0;
     let p1;
     let p2;
-    let n;
-    let triangle;
 
     for (i = 0; i < CELLS.length; i++) {
       p0 = POSITIONS[CELLS[i][0]];
       p1 = POSITIONS[CELLS[i][1]];
       p2 = POSITIONS[CELLS[i][2]];
 
-      n = NORMALS[CELLS[i][0]];
-
-      //console.log(p0 + " " + p1 + " " + p2);
-
-      triangle = this.addTriangle(
+      this.addTriangle(
         vec3.fromValues(p0[0], p0[1], p0[2]),
         vec3.fromValues(p1[0], p1[1], p1[2]),
         vec3.fromValues(p2[0], p2[1], p2[2]),
-        MATERIAL_DIELECTRIC
+        MATERIAL_METAL_WHITE
       );
-
-      //triangle.flipNormal();
-
-      //triangle.setNormal(n[0], n[1], n[2]);
     }
 
-    this.addSphere(vec3.fromValues(-120.0, 0.0, 0.0), 30, MATERIAL_DIELECTRIC);
-    this.addSphere(vec3.fromValues(-120.0, 0.0, 0.0), -29, MATERIAL_DIELECTRIC);
+    // Colours
+    let total = 27;
+    let progressIntervalTau = (Math.PI * 2) / total;
+    let progressInterval = 1.0 / total;
 
-    this.addSphere(vec3.fromValues(80.0, 0.0, 0.0), 30, MATERIAL_METAL_RED);
+    let radius = 60.0;
+    let colour;
+    let texture;
+    let material;
+
+    for (let i = 0; i < total; i++) {
+      colour = HSVtoRGB(progressInterval * i, 0.8, 0.8);
+
+      texture = new TextureConstant(
+        vec3.fromValues(colour.r, colour.g, colour.b)
+      );
+
+      // Material
+      material = new MaterialMetal(texture, 0.1);
+
+      // Sphere
+      this.addSphere(
+        vec3.fromValues(
+          Math.sin(progressIntervalTau * i) * radius,
+          4.01,
+          Math.cos(progressIntervalTau * i) * radius
+        ),
+        4,
+        material
+      );
+    }
 
     // Floor
-    const FLOOR_PLANE_DIMENSION_HALF = 200;
+    const FLOOR_PLANE_DIMENSION_HALF = 140;
 
     this.addPlane(
       vec3.fromValues(
@@ -99,12 +112,12 @@ export default class SceneBunny extends Scene {
       vec3.fromValues(
         FLOOR_PLANE_DIMENSION_HALF,
         0.0,
-        -FLOOR_PLANE_DIMENSION_HALF
+        FLOOR_PLANE_DIMENSION_HALF
       ),
       vec3.fromValues(
         FLOOR_PLANE_DIMENSION_HALF,
         0.0,
-        FLOOR_PLANE_DIMENSION_HALF
+        -FLOOR_PLANE_DIMENSION_HALF
       ),
       MATERIAL_METAL
     );
@@ -121,8 +134,8 @@ export default class SceneBunny extends Scene {
     CAMERA_CONTROLLER.setFov(16.0);
     CAMERA_CONTROLLER.setAperture(0.5);
 
-    CAMERA_CONTROLLER.setPosition(300.0, 300.0, 300.0);
-    CAMERA_CONTROLLER.setPositionTarget(0.0, 40.0, 0.0);
+    CAMERA_CONTROLLER.setPosition(-300.0, 150.0, 300.0);
+    CAMERA_CONTROLLER.setPositionTarget(0.0, 30.0, 0.0);
   }
 
   // ________________________________________________________________ Background
