@@ -2,6 +2,7 @@ import { vec3 } from "gl-matrix";
 
 import HitableSphere from "../Hit/HitableSphere";
 import HitableTriangle from "../Hit/HitableTriangle";
+import HitablePlane from "../Hit/HitablePlane"; // OLD
 
 export default class Scene {
   constructor(cameraController) {
@@ -14,7 +15,9 @@ export default class Scene {
     this.textureImageDimensions = [];
     this.textureImageData = [];
 
-    this.meshAssets = [];
+    this.meshPositions = [];
+    this.meshNormals = [];
+    this.meshCells = [];
   }
 
   // ______________________________________________________________________ Init
@@ -48,6 +51,14 @@ export default class Scene {
   }
 
   // _____________________________________________________________________ Plane
+
+  addOldPlane(width, height, material) {
+    const PLANE = new HitablePlane(width, height, material);
+
+    this.HITABLES.push(PLANE);
+
+    return PLANE;
+  }
 
   addPlane(p0, p1, p2, p3, material) {
     const TRIANGLE_0 = this.addTriangle(p0, p1, p3, material);
@@ -120,11 +131,21 @@ export default class Scene {
 
   // _________________________________________________________________ Mesh Data
 
-  setMeshAssets(meshAssets) {
-    this.meshAssets = meshAssets;
+  setMeshes(positions, normals, cells) {
+    this.meshPositions = positions;
+    this.meshNormals = normals;
+    this.meshCells = cells;
   }
 
-  getMeshAsset(assetId) {
-    return this.meshAssets[assetId];
+  getMeshPositions(assetId) {
+    return this.meshPositions[assetId];
+  }
+
+  getMeshNormals(assetId) {
+    return this.meshNormals[assetId];
+  }
+
+  getMeshCells(assetId) {
+    return this.meshCells[assetId];
   }
 }

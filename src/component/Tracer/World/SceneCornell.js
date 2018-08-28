@@ -78,6 +78,15 @@ export default class SceneCornell extends Scene {
       MATERIAL_WHITE
     );
 
+    // TEST
+    const TEXTURE_TEST = new TextureConstant(vec3.fromValues(1.0, 1.0, 0.0));
+    const MATERIAL_TEST = new MaterialLambertian(TEXTURE_TEST);
+
+    const PI = this.addOldPlane(400, 400, MATERIAL_TEST);
+    PI.setPosition(vec3.fromValues(0, 0, -400));
+    //PI.setRotation(quat.create());
+    // END TEST
+
     // Light
     const TEXTURE_LIGHT = new TextureConstant(
       vec3.fromValues(10.0, 10.0, 10.0)
@@ -138,6 +147,6 @@ export default class SceneCornell extends Scene {
   getBackground(rayDirectionNormalized) {
     rayDirectionNormalized;
 
-    return vec3.fromValues(0, 0, 0);
+    return vec3.fromValues(0.5, 0.5, 0.5);
   }
 }

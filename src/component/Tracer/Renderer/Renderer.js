@@ -14,7 +14,7 @@ export default class Renderer {
     this.CONTEXT = canvas.getContext("2d");
 
     // Workers
-    this.WORKER_TOTAL = 1; // navigator.hardwareConcurrency || 4; // TODO
+    this.WORKER_TOTAL = navigator.hardwareConcurrency || 4; // TODO
 
     this.WORKER_POOL = [];
 
@@ -76,6 +76,9 @@ export default class Renderer {
 
     // Create World
     this.WORLD = new World(this.CAMERA_CONTROLLER);
+
+    // TODO Refactor
+    this.onMeshLibraryLoaded();
   }
 
   // _____________________________________________________________________ Start
@@ -335,9 +338,8 @@ export default class Renderer {
     const WORKER_TOTAL = this.WORKER_TOTAL;
     const WORKER_POOL = this.WORKER_POOL;
 
-    const IMAGE_LIBRARY = this.IMAGE_LIBRARY;
-    const IMAGE_DIMENSIONS = IMAGE_LIBRARY.getImageDimensions();
-    const IMAGE_DATA = IMAGE_LIBRARY.getImageData();
+    const IMAGE_DIMENSIONS = this.IMAGE_LIBRARY.getImageDimensions();
+    const IMAGE_DATA = this.IMAGE_LIBRARY.getImageData();
 
     let i;
 
@@ -357,14 +359,18 @@ export default class Renderer {
     const WORKER_TOTAL = this.WORKER_TOTAL;
     const WORKER_POOL = this.WORKER_POOL;
 
-    const MESH_ASSETS = this.MESH_LIBRARY.getAssets();
+    const POSITIONS = this.MESH_LIBRARY.getPositions();
+    const NORMALS = this.MESH_LIBRARY.getNormals();
+    const CELLS = this.MESH_LIBRARY.getCells();
 
     let i;
 
     for (i = 0; i < WORKER_TOTAL; i++) {
       WORKER_POOL[i].postMessage({
         messageType: "setMeshData",
-        meshAssets: MESH_ASSETS
+        positions: POSITIONS,
+        normals: NORMALS,
+        cells: CELLS
       });
     }
 

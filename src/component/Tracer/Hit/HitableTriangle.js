@@ -59,9 +59,9 @@ export default class HitableTriangle extends Hitable {
     if (A > -EPSILON && A < EPSILON) return false;
 
     // One sided
-    if (A < 0) {
-      return false;
-    }
+    // if (A < 0) {
+    //   return false;
+    // }
 
     const F = 1.0 / A;
 
@@ -92,5 +92,11 @@ export default class HitableTriangle extends Hitable {
 
       return true;
     } else return false; // Line intersection but not a ray intersection.
+  }
+
+  setNormal(x, y, z) {
+    this.NORMAL[0] = x;
+    this.NORMAL[1] = y;
+    this.NORMAL[2] = z;
   }
 }

@@ -1,6 +1,6 @@
-import { GltfLoader } from "gltf-loader-ts";
+import bunny from "./../../../asset/mesh/bunny.json";
 
-import bunny from "./../../../asset/mesh/bunny.gltf";
+// Meshes simplified using https://www.npmjs.com/package/obj2sc
 
 export default class MeshLibrary {
   constructor(renderer) {
@@ -11,48 +11,27 @@ export default class MeshLibrary {
     this.MESH_TOTAL = this.URLS.length;
     this.meshCurrent = 0;
 
-    this.ASSETS = [];
+    this.CELLS = [];
+    this.POSITIONS = [];
+    this.NORMALS = [];
 
-    // Start load
-    this.loadNextMesh();
-  }
-
-  // https://www.npmjs.com/package/gltf-loader-ts
-
-  // ______________________________________________________________________ Load
-
-  loadNextMesh() {
-    let loader = new GltfLoader();
-    loader
-      .load(this.URLS[this.meshCurrent])
-      .then(response => this.prefetchMesh(response));
-  }
-
-  prefetchMesh(response) {
-    this.ASSETS[this.meshCurrent] = response;
-
-    response.preFetchAll().then(response => this.onMeshLoaded(response));
-  }
-
-  onMeshLoaded(response) {
-    response;
-
-    // Next
-    this.meshCurrent++;
-    if (this.meshCurrent < this.MESH_TOTAL) {
-      this.loadNextMesh();
-    } else {
-      this.onMeshesLoaded();
-    }
-  }
-
-  onMeshesLoaded() {
-    this.RENDERER.onMeshLibraryLoaded();
+    // Bunny
+    this.CELLS[0] = bunny.cells;
+    this.POSITIONS[0] = bunny.positions;
+    this.NORMALS[0] = bunny.normals;
   }
 
   // ____________________________________________________________________ Access
 
-  getAssets() {
-    return this.ASSETS;
+  getPositions() {
+    return this.POSITIONS;
+  }
+
+  getNormals() {
+    return this.NORMALS;
+  }
+
+  getCells() {
+    return this.CELLS;
   }
 }

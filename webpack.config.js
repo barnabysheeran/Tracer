@@ -9,7 +9,7 @@ module.exports = {
         use: { loader: "babel-loader" }
       },
       {
-        test: /\.(svg|png|gif|jpg|ico|gltf)$/,
+        test: /\.(svg|png|gif|jpg|ico)$/,
         exclude: /node_modules/,
         use: {
           loader: "file-loader",

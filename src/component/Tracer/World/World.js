@@ -94,15 +94,15 @@ export default class World {
     }
   }
 
-  // ________________________________________________________________ MeshAssets
+  // ____________________________________________________________________ Meshes
 
-  setMeshAssets(meshAssets) {
+  setMeshes(positions, normals, cells) {
     const SCENES = this.SCENES;
 
     let i;
 
     for (i = 0; i < SCENES.length; i++) {
-      SCENES[i].setMeshAssets(meshAssets);
+      SCENES[i].setMeshes(positions, normals, cells);
     }
   }
 }
