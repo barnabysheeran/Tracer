@@ -11,7 +11,7 @@ export default class HitableTriangle extends Hitable {
     this.VERTEX1 = v1;
     this.VERTEX2 = v2;
 
-    // Edge
+    // Edges
     this.EDGE1 = vec3.fromValues(
       this.VERTEX1[0] - this.VERTEX0[0],
       this.VERTEX1[1] - this.VERTEX0[1],

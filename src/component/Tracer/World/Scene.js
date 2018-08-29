@@ -96,7 +96,6 @@ export default class Scene {
   // _______________________________________________________________________ BVH
 
   buildBVH() {
-    console.log("Build BVH");
     const HITABLES = this.HITABLES;
 
     let i;
