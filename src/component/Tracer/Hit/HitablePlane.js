@@ -27,6 +27,8 @@ export default class HitablePlane extends Hitable {
     rotation;
   }
 
+  // _______________________________________________________________________ Hit
+
   didHit(ray, tMin, tMax, hitRecord) {
     const POSITION = this.POSITION;
 
@@ -63,4 +65,8 @@ export default class HitablePlane extends Hitable {
 
     return true;
   }
+
+  // ______________________________________________________________________ AABB
+
+  createAABB() {}
 }

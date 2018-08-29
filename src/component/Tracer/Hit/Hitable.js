@@ -1,5 +1,9 @@
 export default class Hitable {
-  constructor() {}
+  constructor() {
+    this.AABB;
+  }
+
+  // _______________________________________________________________________ Hit
 
   didHit(ray, tMin, tMax, hitRecord) {
     ray;
@@ -7,4 +11,8 @@ export default class Hitable {
     tMax;
     hitRecord;
   }
+
+  // ______________________________________________________________________ AABB
+
+  createAABB() {}
 }

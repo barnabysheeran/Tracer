@@ -93,6 +93,20 @@ export default class Scene {
     ];
   }
 
+  // _______________________________________________________________________ BVH
+
+  buildBVH() {
+    console.log("Build BVH");
+    const HITABLES = this.HITABLES;
+
+    let i;
+
+    // Create AABBs
+    for (i = 0; i < HITABLES.length; i++) {
+      HITABLES[i].createAABB();
+    }
+  }
+
   // _________________________________________________________________ Animation
 
   setAnimationTime(time) {

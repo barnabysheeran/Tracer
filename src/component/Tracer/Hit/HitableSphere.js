@@ -24,7 +24,7 @@ export default class HitableSphere extends Hitable {
     this.RADIUS = radius;
   }
 
-  // ____________________________________________________________________ didHit
+  // _______________________________________________________________________ Hit
 
   didHit(ray, tMin, tMax, hitRecord) {
     const POSITION_CENTER = this.POSITION_CENTER;
@@ -107,4 +107,8 @@ export default class HitableSphere extends Hitable {
 
     return [U, V];
   }
+
+  // ______________________________________________________________________ AABB
+
+  createAABB() {}
 }

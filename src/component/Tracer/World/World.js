@@ -30,6 +30,7 @@ export default class World {
   setScene(sceneId) {
     this.scene = this.SCENES[sceneId];
     this.scene.init();
+    this.scene.buildBVH();
   }
 
   // ________________________________________________________________ Background

@@ -34,6 +34,8 @@ export default class HitableTriangle extends Hitable {
     this.MATERIAL = material;
   }
 
+  // _______________________________________________________________________ Hit
+
   // https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
 
   didHit(ray, tMin, tMax, hitRecord) {
@@ -82,7 +84,7 @@ export default class HitableTriangle extends Hitable {
     if (T > tMin && T < tMax) {
       hitRecord.t = T;
       hitRecord.position = ray.getPointAtParameter(T);
-      hitRecord.normal = this.NORMAL; //vec3.fromValues(NORMAL[0], NORMAL[1], NORMAL[2]);
+      hitRecord.normal = this.NORMAL;
       hitRecord.material = this.MATERIAL;
       hitRecord.u = U;
       hitRecord.v = V;
@@ -90,6 +92,12 @@ export default class HitableTriangle extends Hitable {
       return true;
     } else return false; // Line intersection but not a ray intersection.
   }
+
+  // ______________________________________________________________________ AABB
+
+  createAABB() {}
+
+  // ____________________________________________________________________ Normal
 
   setNormal(x, y, z) {
     this.NORMAL[0] = x;
