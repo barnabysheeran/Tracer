@@ -25,14 +25,10 @@ export default class HitableTriangle extends Hitable {
     );
 
     // Normal
-    // const A = vec3.fromValues(v2[0] - v0[0], v2[1] - v0[1], v2[2] - v0[2]);
-    // const B = vec3.fromValues(v1[0] - v0[0], v1[1] - v0[1], v1[2] - v0[2]);
-
     this.NORMAL = vec3.fromValues();
 
     vec3.cross(this.NORMAL, this.EDGE1, this.EDGE2);
     this.NORMAL = vec3.normalize(this.NORMAL, this.NORMAL);
-    //this.NORMAL = vec3.inverse(this.NORMAL, this.NORMAL);
 
     // Material
     this.MATERIAL = material;
