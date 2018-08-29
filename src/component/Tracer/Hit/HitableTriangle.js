@@ -1,5 +1,6 @@
 import { vec3 } from "gl-matrix";
 
+import AABB from "./AABB";
 import Hitable from "./Hitable";
 
 export default class HitableTriangle extends Hitable {
@@ -93,10 +94,6 @@ export default class HitableTriangle extends Hitable {
     } else return false; // Line intersection but not a ray intersection.
   }
 
-  // ______________________________________________________________________ AABB
-
-  createAABB() {}
-
   // ____________________________________________________________________ Normal
 
   setNormal(x, y, z) {
@@ -109,5 +106,11 @@ export default class HitableTriangle extends Hitable {
     this.NORMAL[0] = -this.NORMAL[0];
     this.NORMAL[1] = -this.NORMAL[1];
     this.NORMAL[2] = -this.NORMAL[2];
+  }
+
+  // ______________________________________________________________________ AABB
+
+  createBoundingBox() {
+    this.boundingBox = new AABB();
   }
 }

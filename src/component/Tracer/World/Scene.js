@@ -102,7 +102,7 @@ export default class Scene {
 
     // Create AABBs
     for (i = 0; i < HITABLES.length; i++) {
-      HITABLES[i].createAABB();
+      HITABLES[i].createBoundingBox();
     }
   }
 

@@ -1,6 +1,6 @@
 export default class Hitable {
   constructor() {
-    this.AABB;
+    this.boundingBox;
   }
 
   // _______________________________________________________________________ Hit
@@ -14,5 +14,5 @@ export default class Hitable {
 
   // ______________________________________________________________________ AABB
 
-  createAABB() {}
+  createBoundingBox() {}
 }

@@ -1,5 +1,6 @@
 import { vec3 } from "gl-matrix";
 
+import AABB from "./AABB";
 import Hitable from "./Hitable";
 
 export default class HitablePlane extends Hitable {
@@ -68,5 +69,7 @@ export default class HitablePlane extends Hitable {
 
   // ______________________________________________________________________ AABB
 
-  createAABB() {}
+  createBoundingBox() {
+    this.boundingBox = new AABB();
+  }
 }

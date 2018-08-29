@@ -1,34 +1,36 @@
 import { vec3 } from "gl-matrix";
 
+import AABB from "./AABB";
 import Hitable from "./Hitable";
 
 export default class HitableSphere extends Hitable {
   constructor(positionCenter, radius, material) {
     super();
 
-    this.POSITION_CENTER = positionCenter;
-    this.RADIUS = radius;
+    this.positionCenter = positionCenter;
+    this.radius = radius;
     this.MATERIAL = material;
   }
 
   // _______________________________________________________________________ Set
 
   setPositionCenter(x, y, z) {
-    const POSITION_CENTER = this.POSITION_CENTER;
+    const POSITION_CENTER = this.positionCenter;
     POSITION_CENTER[0] = x;
     POSITION_CENTER[1] = y;
     POSITION_CENTER[2] = z;
   }
 
   setRadius(radius) {
-    this.RADIUS = radius;
+    this.radius = radius;
   }
 
   // _______________________________________________________________________ Hit
 
   didHit(ray, tMin, tMax, hitRecord) {
-    const POSITION_CENTER = this.POSITION_CENTER;
-    const RADIUS = this.RADIUS;
+    const POSITION_CENTER = this.positionCenter;
+    const RADIUS = this.radius;
+
     const RAY_ORIGIN = ray.getPositionOrigin();
     const RAY_DIRECTION = ray.getDirection();
 
@@ -110,5 +112,22 @@ export default class HitableSphere extends Hitable {
 
   // ______________________________________________________________________ AABB
 
-  createAABB() {}
+  createBoundingBox() {
+    const POSITION_CENTER = this.positionCenter;
+    const RADIUS = this.radius;
+
+    let p0 = vec3.fromValues(
+      POSITION_CENTER[0] - RADIUS,
+      POSITION_CENTER[1] - RADIUS,
+      POSITION_CENTER[2] - RADIUS
+    );
+
+    let p1 = vec3.fromValues(
+      POSITION_CENTER[0] + RADIUS,
+      POSITION_CENTER[1] + RADIUS,
+      POSITION_CENTER[2] + RADIUS
+    );
+
+    this.boundingBox = new AABB(p0, p1);
+  }
 }
