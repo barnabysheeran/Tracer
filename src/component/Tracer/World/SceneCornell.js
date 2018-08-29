@@ -19,7 +19,7 @@ export default class SceneCornell extends Scene {
     this.reset();
 
     // Cornell
-    const TEXTURE_WHITE = new TextureConstant(vec3.fromValues(1.0, 0.0, 1.0));
+    const TEXTURE_WHITE = new TextureConstant(vec3.fromValues(1.0, 1.0, 1.0));
     const MATERIAL_WHITE = new MaterialLambertian(TEXTURE_WHITE);
 
     const TEXTURE_RED = new TextureConstant(vec3.fromValues(1.0, 0.0, 0.0));

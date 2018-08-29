@@ -60,9 +60,9 @@ export default class HitableTriangle extends Hitable {
     if (A > -EPSILON && A < EPSILON) return false;
 
     // One sided
-    if (A < 0) {
-      return false;
-    }
+    // if (A < 0) {
+    //   return false;
+    // }
 
     const F = 1.0 / A;
 
