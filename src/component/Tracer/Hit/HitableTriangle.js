@@ -34,6 +34,9 @@ export default class HitableTriangle extends Hitable {
 
     // Material
     this.MATERIAL = material;
+
+    // BB
+    this.createBoundingBox();
   }
 
   // _______________________________________________________________________ Hit
@@ -41,7 +44,6 @@ export default class HitableTriangle extends Hitable {
   // https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
 
   didHit(ray, tMin, tMax, hitRecord) {
-    // Statistics
     Statistics.onIntersectionTestTriangle();
 
     // Hit
@@ -94,6 +96,8 @@ export default class HitableTriangle extends Hitable {
       hitRecord.material = this.MATERIAL;
       hitRecord.u = U;
       hitRecord.v = V;
+
+      Statistics.onIntersectionTestTriangleSuccess();
 
       return true;
     } else return false; // Line intersection but not a ray intersection.

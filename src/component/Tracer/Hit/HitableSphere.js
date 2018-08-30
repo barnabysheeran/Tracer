@@ -11,6 +11,8 @@ export default class HitableSphere extends Hitable {
     this.positionCenter = positionCenter;
     this.radius = radius;
     this.MATERIAL = material;
+
+    this.createBoundingBox();
   }
 
   // _______________________________________________________________________ Set
@@ -29,7 +31,6 @@ export default class HitableSphere extends Hitable {
   // _______________________________________________________________________ Hit
 
   didHit(ray, tMin, tMax, hitRecord) {
-    // Statistics
     Statistics.onIntersectionTestSphere();
 
     // Hit
@@ -72,6 +73,8 @@ export default class HitableSphere extends Hitable {
         hitRecord.u = uv[0];
         hitRecord.v = uv[1];
 
+        Statistics.onIntersectionTestSphereSuccess();
+
         return true;
       }
 
@@ -94,6 +97,8 @@ export default class HitableSphere extends Hitable {
 
         hitRecord.u = uv[0];
         hitRecord.v = uv[1];
+
+        Statistics.onIntersectionTestSphereSuccess();
 
         return true;
       }

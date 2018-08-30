@@ -171,7 +171,14 @@ export default class Renderer {
 
     if (data.message == "statisticsPoll") {
       Statistics.addIntersectionTestsSphere(data.intersectionTestsSphere);
+      Statistics.addIntersectionTestsSphereSuccess(
+        data.intersectionTestsSphereSuccess
+      );
+
       Statistics.addIntersectionTestsTriangle(data.intersectionTestsTriangle);
+      Statistics.addIntersectionTestsTriangleSuccess(
+        data.intersectionTestsTriangleSuccess
+      );
 
       this.statisticsUpdateDisplay();
     }
@@ -428,10 +435,26 @@ export default class Renderer {
 
   statisticsUpdateDisplay() {
     this.setStatusStatistics(
-      "Tests: Sphere " +
+      "Sphere " +
         Statistics.getIntersectionTestsSphere() +
+        " " +
+        Statistics.getIntersectionTestsSphereSuccess() +
+        " " +
+        (
+          (1.0 / Statistics.getIntersectionTestsSphere()) *
+          Statistics.getIntersectionTestsSphereSuccess()
+        ).toFixed(4) +
+        "%" +
         " Triangle " +
-        Statistics.getIntersectionTestsTriangle()
+        Statistics.getIntersectionTestsTriangle() +
+        " " +
+        Statistics.getIntersectionTestsTriangleSuccess() +
+        " " +
+        (
+          (1.0 / Statistics.getIntersectionTestsTriangle()) *
+          Statistics.getIntersectionTestsTriangleSuccess()
+        ).toFixed(4) +
+        "%"
     );
   }
 

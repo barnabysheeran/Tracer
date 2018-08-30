@@ -80,7 +80,9 @@ self.addEventListener("message", e => {
         message: "statisticsPoll",
         threadId: threadId,
         intersectionTestsSphere: Statistics.getIntersectionTestsSphere(),
-        intersectionTestsTriangle: Statistics.getIntersectionTestsTriangle()
+        intersectionTestsSphereSuccess: Statistics.getIntersectionTestsSphereSuccess(),
+        intersectionTestsTriangle: Statistics.getIntersectionTestsTriangle(),
+        intersectionTestsTriangleSuccess: Statistics.getIntersectionTestsTriangleSuccess()
       });
       break;
   }

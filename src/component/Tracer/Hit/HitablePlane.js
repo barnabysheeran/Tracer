@@ -15,6 +15,8 @@ export default class HitablePlane extends Hitable {
     this.MATERIAL = material;
 
     this.POSITION = vec3.create();
+
+    this.createBoundingBox();
   }
 
   setPosition(position) {

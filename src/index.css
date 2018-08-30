@@ -13,13 +13,10 @@ body {
 
 .fullscreen {
   position: absolute;
-
   left: 0;
   top: 0;
-
   width: 100%;
   height: 100%;
-
   overflow: hidden;
 }
 
@@ -95,4 +92,5 @@ body {
 .status {
   width: 100%;
   color: #666;
+  user-select: text;
 }

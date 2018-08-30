@@ -7,6 +7,10 @@ import MaterialMetal from "../Material/MaterialMetal";
 
 import { HSVtoRGB } from "../Util/colour";
 
+// Before BVH 400*200*100AA
+// Frame complete. 234.45s
+// Sphere 391741704 776280 0.0020% Triangle 4686391496 6623152 0.0014%
+
 export default class SceneBunny extends Scene {
   constructor(cameraController) {
     super(cameraController);

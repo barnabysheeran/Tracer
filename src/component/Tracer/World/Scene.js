@@ -96,14 +96,7 @@ export default class Scene {
   // _______________________________________________________________________ BVH
 
   buildBVH() {
-    const HITABLES = this.HITABLES;
-
-    let i;
-
-    // Create AABBs
-    for (i = 0; i < HITABLES.length; i++) {
-      HITABLES[i].createBoundingBox();
-    }
+    console.log("Build BVH");
   }
 
   // _________________________________________________________________ Animation

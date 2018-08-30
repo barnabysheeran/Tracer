@@ -7,7 +7,9 @@ import MaterialMetal from "../Material/MaterialMetal";
 
 import { HSVtoRGB } from "../Util/colour";
 
-// BEfore BVH 400*200*100AA 75sec
+// Before BVH 400*200*100AA
+// Frame complete. 77.25s
+// Sphere 2127827520 2257264 0.0011% Triangle 0 0 NaN%
 
 export default class SceneBVHTest extends Scene {
   constructor(cameraController) {
