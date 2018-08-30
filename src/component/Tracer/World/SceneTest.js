@@ -32,9 +32,6 @@ export default class SceneTest extends Scene {
     this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), 0.5, MATERIAL_DIELECTRIC);
     this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), -0.45, MATERIAL_DIELECTRIC);
 
-    this.addSphere(vec3.fromValues(0.1, 0.0, 0.0), 0.2, MATERIAL_DIELECTRIC);
-    this.addSphere(vec3.fromValues(0.1, 0.0, 0.0), -0.18, MATERIAL_DIELECTRIC);
-
     // Colours
     let total = 13;
     let progressIntervalTau = (Math.PI * 2) / total;
@@ -59,7 +56,7 @@ export default class SceneTest extends Scene {
       this.addSphere(
         vec3.fromValues(
           Math.sin(progressIntervalTau * i) * radius,
-          -0.39,
+          -0.5 + 0.10001,
           Math.cos(progressIntervalTau * i) * radius
         ),
         0.1,
@@ -85,11 +82,11 @@ export default class SceneTest extends Scene {
     // Camera
     const CAMERA_CONTROLLER = this.CAMERA_CONTROLLER;
 
-    CAMERA_CONTROLLER.setFov(22.0);
-    CAMERA_CONTROLLER.setAperture(0.5);
+    CAMERA_CONTROLLER.setFov(20.0);
+    CAMERA_CONTROLLER.setAperture(0.1);
 
-    CAMERA_CONTROLLER.setPosition(3.0, 3.0, 3.0);
-    CAMERA_CONTROLLER.setPositionTarget(0.0, -0.24, 0.0);
+    CAMERA_CONTROLLER.setPosition(3.0, 2.0, 3.0);
+    CAMERA_CONTROLLER.setPositionTarget(0.0, -0.19, 0.0);
   }
 
   // ________________________________________________________________ Background

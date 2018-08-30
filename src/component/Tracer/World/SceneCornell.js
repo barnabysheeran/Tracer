@@ -78,11 +78,11 @@ export default class SceneCornell extends Scene {
     );
 
     // TEST
-    const TEXTURE_TEST = new TextureConstant(vec3.fromValues(1.0, 1.0, 0.0));
-    const MATERIAL_TEST = new MaterialLambertian(TEXTURE_TEST);
+    // const TEXTURE_TEST = new TextureConstant(vec3.fromValues(1.0, 1.0, 0.0));
+    // const MATERIAL_TEST = new MaterialLambertian(TEXTURE_TEST);
 
-    const PI = this.addOldPlane(400, 400, MATERIAL_TEST);
-    PI.setPosition(vec3.fromValues(0, 0, -400));
+    // const PI = this.addOldPlane(400, 400, MATERIAL_TEST);
+    // PI.setPosition(vec3.fromValues(0, 0, -400));
     //PI.setRotation(quat.create());
     // END TEST
 

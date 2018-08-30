@@ -22,10 +22,14 @@ export default class HitableSphere extends Hitable {
     POSITION_CENTER[0] = x;
     POSITION_CENTER[1] = y;
     POSITION_CENTER[2] = z;
+
+    this.createBoundingBox();
   }
 
   setRadius(radius) {
     this.radius = radius;
+
+    this.createBoundingBox();
   }
 
   // _______________________________________________________________________ Hit
