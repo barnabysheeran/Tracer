@@ -1,5 +1,6 @@
 import { vec3 } from "gl-matrix";
 
+import Statistics from "./../Statistics/Statistics";
 import World from "../World/World";
 import CameraController from "../Camera/CameraController";
 import Ray from "../Ray/Ray";
@@ -40,7 +41,6 @@ self.addEventListener("message", e => {
     case "shape":
       pixelWidth = data.pixelWidth;
       pixelHeight = data.pixelHeight;
-
       CAMERA_CONTROLLER.shape(pixelWidth, pixelHeight);
       break;
     case "setScene":
@@ -71,6 +71,17 @@ self.addEventListener("message", e => {
       break;
     case "render":
       render(data.timeFrameStart, data.column, data.row);
+      break;
+    case "statisticsReset":
+      Statistics.reset();
+      break;
+    case "statisticsPoll":
+      postMessage({
+        message: "statisticsPoll",
+        threadId: threadId,
+        intersectionTestsSphere: Statistics.getIntersectionTestsSphere(),
+        intersectionTestsTriangle: Statistics.getIntersectionTestsTriangle()
+      });
       break;
   }
 });

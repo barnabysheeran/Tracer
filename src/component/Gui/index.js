@@ -106,6 +106,9 @@ export default class Gui extends React.Component {
           <div className={style.row}>
             <StatusBar status={this.props.status} />
           </div>
+          <div className={style.row}>
+            <StatusBar status={this.props.statusStatistics} />
+          </div>
         </div>
       </div>
     );

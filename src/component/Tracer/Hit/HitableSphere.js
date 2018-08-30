@@ -1,5 +1,6 @@
 import { vec3 } from "gl-matrix";
 
+import Statistics from "./../Statistics/Statistics";
 import AABB from "./AABB";
 import Hitable from "./Hitable";
 
@@ -28,6 +29,10 @@ export default class HitableSphere extends Hitable {
   // _______________________________________________________________________ Hit
 
   didHit(ray, tMin, tMax, hitRecord) {
+    // Statistics
+    Statistics.onIntersectionTestSphere();
+
+    // Hit
     const POSITION_CENTER = this.positionCenter;
     const RADIUS = this.radius;
 

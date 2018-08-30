@@ -1,5 +1,6 @@
 import { vec3 } from "gl-matrix";
 
+import Statistics from "./../Statistics/Statistics";
 import AABB from "./AABB";
 import Hitable from "./Hitable";
 
@@ -40,6 +41,10 @@ export default class HitableTriangle extends Hitable {
   // https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
 
   didHit(ray, tMin, tMax, hitRecord) {
+    // Statistics
+    Statistics.onIntersectionTestTriangle();
+
+    // Hit
     const RAY_ORIGIN = ray.getPositionOrigin();
     //const RAY_DIRECTION = ray.getDirectionNormalized();
     const RAY_DIRECTION = ray.getDirection();

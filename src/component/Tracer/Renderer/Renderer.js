@@ -1,14 +1,16 @@
-import RenderWorker from "./Render.worker.js";
-
+import Statistics from "./../Statistics/Statistics";
 import ImageLibrary from "../Library/ImageLibrary.js";
 import MeshLibrary from "../Library/MeshLibrary.js";
 import World from "../World/World.js";
 import CameraController from "../Camera/CameraController.js";
 import Recorder from "../Recorder/Recorder.js";
 
+import RenderWorker from "./Render.worker.js";
+
 export default class Renderer {
-  constructor(canvas, setStatus) {
+  constructor(canvas, setStatus, setStatusStatistics) {
     this.setStatus = setStatus;
+    this.setStatusStatistics = setStatusStatistics;
 
     // Context
     this.CONTEXT = canvas.getContext("2d");
@@ -84,6 +86,9 @@ export default class Renderer {
   // _____________________________________________________________________ Start
 
   startAnimation() {
+    // Statistics
+    this.statisticsReset();
+
     // Record Time
     let d = new Date();
     this.timeRenderStart = d.getTime();
@@ -163,6 +168,13 @@ export default class Renderer {
         }
       }
     }
+
+    if (data.message == "statisticsPoll") {
+      Statistics.addIntersectionTestsSphere(data.intersectionTestsSphere);
+      Statistics.addIntersectionTestsTriangle(data.intersectionTestsTriangle);
+
+      this.statisticsUpdateDisplay();
+    }
   }
 
   drawPixel(column, row, colour) {
@@ -198,6 +210,9 @@ export default class Renderer {
   }
 
   onRenderComplete() {
+    // Statistics
+    this.statisticsPoll();
+
     // Status
     let d = new Date();
     let timeTaken = d.getTime() - this.timeRenderStart;
@@ -376,6 +391,48 @@ export default class Renderer {
 
     this.LIBRARY_MESH_LOADED = true;
     this.showLoadStatus();
+  }
+
+  // ________________________________________________________________ Statistics
+
+  statisticsReset() {
+    // Main
+    Statistics.reset();
+    this.setStatusStatistics("...");
+
+    // Workers
+    const WORKER_TOTAL = this.WORKER_TOTAL;
+    const WORKER_POOL = this.WORKER_POOL;
+
+    let i;
+
+    for (i = 0; i < WORKER_TOTAL; i++) {
+      WORKER_POOL[i].postMessage({
+        messageType: "statisticsReset"
+      });
+    }
+  }
+
+  statisticsPoll() {
+    const WORKER_TOTAL = this.WORKER_TOTAL;
+    const WORKER_POOL = this.WORKER_POOL;
+
+    let i;
+
+    for (i = 0; i < WORKER_TOTAL; i++) {
+      WORKER_POOL[i].postMessage({
+        messageType: "statisticsPoll"
+      });
+    }
+  }
+
+  statisticsUpdateDisplay() {
+    this.setStatusStatistics(
+      "Tests: Sphere " +
+        Statistics.getIntersectionTestsSphere() +
+        " Triangle " +
+        Statistics.getIntersectionTestsTriangle()
+    );
   }
 
   // ___________________________________________________________________ Loading
