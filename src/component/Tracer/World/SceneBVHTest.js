@@ -11,6 +11,10 @@ import { HSVtoRGB } from "../Util/colour";
 // Frame complete. 77.25s
 // Sphere 2127827520 2257264 0.0011% Triangle 0 0 NaN%
 
+// Naive BB
+// Frame complete. 48.99s
+// Sphere 5865741 2257182 0.3848% Triangle 0 0 NaN%
+
 export default class SceneBVHTest extends Scene {
   constructor(cameraController) {
     super(cameraController);

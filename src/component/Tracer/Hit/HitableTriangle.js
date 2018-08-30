@@ -44,6 +44,11 @@ export default class HitableTriangle extends Hitable {
   // https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
 
   didHit(ray, tMin, tMax, hitRecord) {
+    // Simple BB Hit
+    if (this.boundingBox.didHit(ray, tMin, tMax) == false) {
+      return false;
+    }
+
     Statistics.onIntersectionTestTriangle();
 
     // Hit
@@ -120,6 +125,45 @@ export default class HitableTriangle extends Hitable {
   // ______________________________________________________________________ AABB
 
   createBoundingBox() {
-    this.boundingBox = new AABB();
+    const VERTEX0 = this.VERTEX0;
+    const VERTEX1 = this.VERTEX1;
+    const VERTEX2 = this.VERTEX2;
+
+    let min = vec3.fromValues(Infinity, Infinity, Infinity);
+    let max = vec3.fromValues(-Infinity, -Infinity, -Infinity);
+
+    const X = [VERTEX0[0], VERTEX1[0], VERTEX2[0]];
+    const Y = [VERTEX0[1], VERTEX1[1], VERTEX2[1]];
+    const Z = [VERTEX0[2], VERTEX1[2], VERTEX2[2]];
+
+    let i;
+
+    for (i = 0; i < 3; i++) {
+      // X
+      if (X[i] < min[0]) {
+        min[0] = X[i];
+      }
+      if (X[i] > max[0]) {
+        max[0] = X[i];
+      }
+
+      // Y
+      if (Y[i] < min[1]) {
+        min[1] = Y[i];
+      }
+      if (Y[i] > max[1]) {
+        max[1] = Y[i];
+      }
+
+      // Z
+      if (Z[i] < min[2]) {
+        min[2] = Z[i];
+      }
+      if (Z[i] > max[2]) {
+        max[2] = Z[i];
+      }
+    }
+
+    this.boundingBox = new AABB(min, max);
   }
 }

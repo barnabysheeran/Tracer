@@ -31,6 +31,11 @@ export default class HitableSphere extends Hitable {
   // _______________________________________________________________________ Hit
 
   didHit(ray, tMin, tMax, hitRecord) {
+    // Simple BB Hit
+    if (this.boundingBox.didHit(ray, tMin, tMax) == false) {
+      return false;
+    }
+
     Statistics.onIntersectionTestSphere();
 
     // Hit

@@ -12,6 +12,10 @@ import { HSVtoRGB } from "../Util/colour";
 // Frame complete. 36.35s
 // Sphere 381258558 17828168 0.0468% Triangle 0 0 NaN%
 
+// Naive BB
+// Frame complete. 35.93s
+// Sphere 27452220 13747093 0.5008% Triangle 0 0 NaN%
+
 export default class SceneTest extends Scene {
   constructor(cameraController) {
     super(cameraController);
