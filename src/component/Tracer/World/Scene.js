@@ -13,8 +13,7 @@ export default class Scene {
     this.animationFrameMax = 0;
 
     this.HITABLES = [];
-
-    this.BVH_ROOT = new HitableNode();
+    this.bvhRoot = null;
 
     this.textureImageDimensions = [];
     this.textureImageData = [];
@@ -32,7 +31,7 @@ export default class Scene {
 
   reset() {
     this.HITABLES = [];
-    this.BVH_ROOT = new HitableNode();
+    this.BVH_ROOT = null;
   }
 
   // ____________________________________________________________________ Sphere
@@ -101,12 +100,14 @@ export default class Scene {
   // _______________________________________________________________________ BVH
 
   buildBVH() {
-    //console.log("Build BVH");
-    const BVH_ROOT = this.BVH_ROOT;
+    this.bvhRoot = new HitableNode(this.HITABLES, 0);
 
-    BVH_ROOT.populate(this.HITABLES, 0);
+    this.bvhRoot.createBoundingBox();
 
-    BVH_ROOT.createBoundingBox();
+    // //console.log("Build BVH");
+    // const BVH_ROOT = this.BVH_ROOT;
+
+    // BVH_ROOT.populate(this.HITABLES, 0);
   }
 
   // _________________________________________________________________ Animation

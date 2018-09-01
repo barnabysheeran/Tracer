@@ -1,4 +1,5 @@
 import { vec3 } from "gl-matrix";
+
 import "seedrandom";
 
 import Scene from "./Scene";

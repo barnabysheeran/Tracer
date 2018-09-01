@@ -1,21 +1,28 @@
-import Statistics from "./../Statistics/Statistics";
+import { vec3 } from "gl-matrix";
+
 import AABB from "./AABB";
 import Hitable from "./Hitable";
 
 export default class HitableNode extends Hitable {
-  constructor() {
+  constructor(hitables, depth) {
     super();
 
-    this.nodeLeft = undefined;
-    this.nodeRight = undefined;
-  }
+    //console.log("HitableNode " + depth + ". Populate " + hitables.length);
 
-  populate(hitables, depth) {
-    console.log("HitableNode " + depth + ". Populate " + hitables.length);
+    this.nodeLeft = null;
+    this.nodeRight = null;
+    this.hitables = null;
+
+    this.boundingBoxLeft = null;
+    this.boundingBoxRight = null;
 
     const ITEM_TOTAL = hitables.length;
 
     if (ITEM_TOTAL <= 1) {
+      console.log(
+        "HitableNode " + depth + " - Small group size " + hitables.length
+      );
+      this.hitables = hitables;
       return;
     }
 
@@ -46,15 +53,15 @@ export default class HitableNode extends Hitable {
     let axisRange = axisMax - axisMin;
 
     if (axisRange == 0) {
-      console.log("- NO range on axis ");
+      console.log(
+        "HitableNode " + depth + " - no range on axis " + hitables.length
+      );
+      this.hitables = hitables;
       return;
     }
 
+    // Create left/right
     const AXIS_CENTER = axisMin + (axisMax - axisMin) * 0.5;
-
-    // console.log(
-    //   "min " + axisMin + " max " + axisMax + " center " + AXIS_CENTER
-    // );
 
     let hitablesLeft = [];
     let hitablesRight = [];
@@ -69,23 +76,9 @@ export default class HitableNode extends Hitable {
       }
     }
 
-    console.log(
-      "- AXIS_ID:" +
-        AXIS_ID +
-        " AXIS_CENTER:" +
-        AXIS_CENTER +
-        " L:" +
-        hitablesLeft.length +
-        " R:" +
-        hitablesRight.length
-    );
-
     // Nodes
-    this.nodeLeft = new HitableNode();
-    this.nodeRight = new HitableNode();
-
-    this.nodeLeft.populate(hitablesLeft, depth + 1);
-    this.nodeRight.populate(hitablesRight, depth + 1);
+    this.nodeLeft = new HitableNode(hitablesLeft, depth + 1);
+    this.nodeRight = new HitableNode(hitablesRight, depth + 1);
   }
 
   didHit() {
@@ -93,8 +86,60 @@ export default class HitableNode extends Hitable {
   }
 
   createBoundingBox() {
-    // TODO This box
-    // TODO child boxes
-    //     this.boundingBox = new AABB(p0, p1);
+    const NODE_LEFT = this.nodeLeft;
+    const NODE_RIGHT = this.nodeRight;
+    const HITABLES = this.hitables;
+
+    // Left/Right
+    if (NODE_LEFT != null) {
+      NODE_LEFT.createBoundingBox();
+    }
+
+    if (NODE_RIGHT != null) {
+      NODE_RIGHT.createBoundingBox();
+    }
+
+    // Hitables
+    if (HITABLES == null) {
+      return;
+    }
+
+    let min = vec3.create(Infinity, Infinity, Infinity);
+    let max = vec3.create(-Infinity, -Infinity, -Infinity);
+
+    let bb;
+    let i;
+
+    for (i = 0; i < HITABLES.length; i++) {
+      bb = HITABLES[i].boundingBox;
+
+      // Min XYZ
+      if (bb.MIN[0] < min[0]) {
+        min[0] = bb.MIN[0];
+      }
+
+      if (bb.MIN[1] < min[1]) {
+        min[1] = bb.MIN[1];
+      }
+
+      if (bb.MIN[2] < min[2]) {
+        min[2] = bb.MIN[2];
+      }
+
+      // Max XYZ
+      if (bb.MAX[0] < max[0]) {
+        max[0] = bb.MAX[0];
+      }
+
+      if (bb.MAX[1] < max[1]) {
+        max[1] = bb.MAX[1];
+      }
+
+      if (bb.MAX[2] < max[2]) {
+        max[2] = bb.MAX[2];
+      }
+    }
+
+    this.boundingBox = new AABB(min, max);
   }
 }

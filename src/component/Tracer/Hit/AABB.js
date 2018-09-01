@@ -15,6 +15,8 @@ export default class AABB {
     this.MAX = max;
   }
 
+  // _______________________________________________________________________ Hit
+
   didHit(ray, tMin, tMax) {
     const MIN = this.MIN;
     const MAX = this.MAX;
