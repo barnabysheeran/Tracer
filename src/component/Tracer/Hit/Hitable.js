@@ -1,6 +1,6 @@
 export default class Hitable {
   constructor() {
-    this.boundingBox;
+    this.boundingBox = null;
   }
 
   // _______________________________________________________________________ Hit

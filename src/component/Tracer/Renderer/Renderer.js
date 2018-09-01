@@ -12,6 +12,8 @@ export default class Renderer {
     this.setStatus = setStatus;
     this.setStatusStatistics = setStatusStatistics;
 
+    // TODO Oprimise rendering with empty scene
+
     // Context
     this.CONTEXT = canvas.getContext("2d");
 
@@ -193,7 +195,9 @@ export default class Renderer {
     IMAGEDATA_DATA[1] = colour[1] * 255.99;
     IMAGEDATA_DATA[2] = colour[2] * 255.99;
 
-    CONTEXT.putImageData(IMAGEDATA, column, row);
+    CONTEXT.save();
+    CONTEXT.putImageData(IMAGEDATA, Math.floor(column), Math.floor(row));
+    CONTEXT.restore();
   }
 
   onFrameComplete() {

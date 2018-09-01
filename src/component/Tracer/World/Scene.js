@@ -103,11 +103,6 @@ export default class Scene {
     this.bvhRoot = new HitableNode(this.HITABLES, 0);
 
     this.bvhRoot.createBoundingBox();
-
-    // //console.log("Build BVH");
-    // const BVH_ROOT = this.BVH_ROOT;
-
-    // BVH_ROOT.populate(this.HITABLES, 0);
   }
 
   // _________________________________________________________________ Animation

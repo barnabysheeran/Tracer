@@ -7,6 +7,7 @@ import SceneImageTest from "./SceneImageTest";
 import SceneBunny from "./SceneBunny";
 import SceneBVHTest from "./SceneBVHTest";
 import SceneCornell from "./SceneCornell";
+import SceneEmpty from "./SceneEmpty";
 
 export default class World {
   constructor(cameraController) {
@@ -19,7 +20,8 @@ export default class World {
       new SceneImageTest(cameraController),
       new SceneBunny(cameraController),
       new SceneBVHTest(cameraController),
-      new SceneCornell(cameraController)
+      new SceneCornell(cameraController),
+      new SceneEmpty(cameraController)
     ];
 
     // Default
@@ -43,24 +45,28 @@ export default class World {
 
   // _______________________________________________________________________ Hit
 
+  // didHitAnything(ray, tMin, tMax, hitRecord) {
+  //   const HITABLES = this.scene.HITABLES;
+
+  //   let hitRecordTemp = new HitRecord();
+
+  //   let hit = false;
+  //   let closest = tMax;
+  //   let i;
+
+  //   for (i = 0; i < HITABLES.length; i++) {
+  //     if (HITABLES[i].didHit(ray, tMin, closest, hitRecordTemp) == true) {
+  //       hit = true;
+  //       closest = hitRecordTemp.t;
+  //       hitRecordTemp.cloneThisInto(hitRecord);
+  //     }
+  //   }
+
+  //   return hit;
+  // }
+
   didHitAnything(ray, tMin, tMax, hitRecord) {
-    const HITABLES = this.scene.HITABLES;
-
-    let hitRecordTemp = new HitRecord();
-
-    let hit = false;
-    let closest = tMax;
-    let i;
-
-    for (i = 0; i < HITABLES.length; i++) {
-      if (HITABLES[i].didHit(ray, tMin, closest, hitRecordTemp) == true) {
-        hit = true;
-        closest = hitRecordTemp.t;
-        hitRecordTemp.cloneThisInto(hitRecord);
-      }
-    }
-
-    return hit;
+    return this.scene.bvhRoot.didHit(ray, tMin, tMax, hitRecord);
   }
 
   // _________________________________________________________________ Animation
