@@ -37,6 +37,9 @@ export default class HitableTriangle extends Hitable {
 
     // BB
     this.createBoundingBox();
+
+    // Center
+    this.generatePositionCenter();
   }
 
   // _______________________________________________________________________ Hit
@@ -165,5 +168,23 @@ export default class HitableTriangle extends Hitable {
     }
 
     this.boundingBox = new AABB(min, max);
+  }
+
+  // ____________________________________________________________________ Center
+
+  generatePositionCenter() {
+    const VERTEX0 = this.VERTEX0;
+    const VERTEX1 = this.VERTEX1;
+    const VERTEX2 = this.VERTEX2;
+
+    this.positionCenter = vec3.fromValues(
+      (VERTEX0[0] + VERTEX1[0] + VERTEX2[0]) / 3.0,
+      (VERTEX0[1] + VERTEX1[1] + VERTEX2[1]) / 3.0,
+      (VERTEX0[2] + VERTEX1[2] + VERTEX2[2]) / 3.0
+    );
+  }
+
+  getPositionCenter() {
+    return this.positionCenter;
   }
 }

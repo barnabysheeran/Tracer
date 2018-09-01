@@ -149,4 +149,10 @@ export default class HitableSphere extends Hitable {
 
     this.boundingBox = new AABB(p0, p1);
   }
+
+  // ____________________________________________________________________ Access
+
+  getPositionCenter() {
+    return this.positionCenter;
+  }
 }

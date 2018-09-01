@@ -4,6 +4,8 @@ import HitableSphere from "../Hit/HitableSphere";
 import HitableTriangle from "../Hit/HitableTriangle";
 import HitablePlane from "../Hit/HitablePlane"; // OLD
 
+import HitableNode from "../Hit/HitableNode";
+
 export default class Scene {
   constructor(cameraController) {
     this.CAMERA_CONTROLLER = cameraController;
@@ -11,6 +13,8 @@ export default class Scene {
     this.animationFrameMax = 0;
 
     this.HITABLES = [];
+
+    this.BVH_ROOT = new HitableNode();
 
     this.textureImageDimensions = [];
     this.textureImageData = [];
@@ -28,6 +32,7 @@ export default class Scene {
 
   reset() {
     this.HITABLES = [];
+    this.BVH_ROOT = new HitableNode();
   }
 
   // ____________________________________________________________________ Sphere
@@ -96,7 +101,12 @@ export default class Scene {
   // _______________________________________________________________________ BVH
 
   buildBVH() {
-    console.log("Build BVH");
+    //console.log("Build BVH");
+    const BVH_ROOT = this.BVH_ROOT;
+
+    BVH_ROOT.populate(this.HITABLES, 0);
+
+    BVH_ROOT.createBoundingBox();
   }
 
   // _________________________________________________________________ Animation
