@@ -114,7 +114,7 @@ export default class HitableNode extends Hitable {
     let hit;
 
     if (this.boundingBox != null) {
-      hit = this.boundingBox.didHit(ray, tMin, tMax, hitRecord);
+      hit = BOUNDINGBOX.didHit(ray, tMin, tMax, hitRecord);
 
       if (hit == false) {
         return false;
