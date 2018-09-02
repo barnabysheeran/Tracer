@@ -407,17 +407,20 @@ export default class Renderer {
         " " +
         (
           (1.0 / Statistics.getIntersectionTestsSphere()) *
-          Statistics.getIntersectionTestsSphereSuccess()
-        ).toFixed(4) +
-        " Triangle " +
+          Statistics.getIntersectionTestsSphereSuccess() *
+          100.0
+        ).toFixed(2) +
+        "% Triangle " +
         Statistics.getIntersectionTestsTriangle() +
         " " +
         Statistics.getIntersectionTestsTriangleSuccess() +
         " " +
         (
           (1.0 / Statistics.getIntersectionTestsTriangle()) *
-          Statistics.getIntersectionTestsTriangleSuccess()
-        ).toFixed(4)
+          Statistics.getIntersectionTestsTriangleSuccess() *
+          100
+        ).toFixed(2) +
+        "%"
     );
   }
 
