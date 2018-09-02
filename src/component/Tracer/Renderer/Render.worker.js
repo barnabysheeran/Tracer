@@ -24,6 +24,7 @@ let timeFrameInterval;
 
 let colour = vec3.create();
 let colourSample = vec3.create();
+let imageDataData = new Uint8ClampedArray();
 
 let time;
 let ray;
@@ -44,6 +45,7 @@ self.addEventListener("message", e => {
     case "shape":
       pixelWidth = data.pixelWidth;
       pixelHeight = data.pixelHeight;
+      imageDataData = new Uint8ClampedArray(pixelWidth * 4);
       CAMERA_CONTROLLER.shape(pixelWidth, pixelHeight);
       break;
     case "setScene":
@@ -73,7 +75,7 @@ self.addEventListener("message", e => {
       WORLD.setMeshes(data.positions, data.normals, data.cells);
       break;
     case "render":
-      render(data.timeFrameStart, data.column, data.row);
+      render(data.timeFrameStart, data.row);
       break;
     case "statisticsReset":
       Statistics.reset();
@@ -93,45 +95,54 @@ self.addEventListener("message", e => {
 
 // ______________________________________________________________________ Render
 
-let render = function(timeFrameStart, column, row) {
-  // Reset
-  colour[0] = 0.0;
-  colour[1] = 0.0;
-  colour[2] = 0.0;
+let render = function(timeFrameStart, row) {
+  let column;
+  let index;
 
-  // Samples
-  for (s = 0; s < samplesAA; s++) {
-    u = (column + Math.random()) / pixelWidth;
-    v = (pixelHeight - row + Math.random()) / pixelHeight;
+  for (column = 0; column < pixelWidth; column++) {
+    // Index
+    index = column * 4;
 
-    time = timeFrameStart + Math.random() * timeFrameInterval;
+    // Reset
+    colour[0] = 0.0;
+    colour[1] = 0.0;
+    colour[2] = 0.0;
 
-    WORLD.setAnimationTime(time);
+    // Samples
+    for (s = 0; s < samplesAA; s++) {
+      u = (column + Math.random()) / pixelWidth;
+      v = (pixelHeight - row + Math.random()) / pixelHeight;
 
-    ray = CAMERA_CONTROLLER.getRay(u, v);
+      time = timeFrameStart + Math.random() * timeFrameInterval;
 
-    colourSample = getColour(ray, 0);
+      WORLD.setAnimationTime(time);
 
-    colour[0] += colourSample[0];
-    colour[1] += colourSample[1];
-    colour[2] += colourSample[2];
+      ray = CAMERA_CONTROLLER.getRay(u, v);
+
+      colourSample = getColour(ray, 0);
+
+      colour[0] += colourSample[0];
+      colour[1] += colourSample[1];
+      colour[2] += colourSample[2];
+    }
+
+    colour[0] /= samplesAA;
+    colour[1] /= samplesAA;
+    colour[2] /= samplesAA;
+
+    // Store
+    imageDataData[index] = Math.sqrt(colour[0]) * 255;
+    imageDataData[index + 1] = Math.sqrt(colour[1]) * 255;
+    imageDataData[index + 2] = Math.sqrt(colour[2]) * 255;
+    imageDataData[index + 3] = 255;
   }
-
-  colour[0] /= samplesAA;
-  colour[1] /= samplesAA;
-  colour[2] /= samplesAA;
-
-  colour[0] = Math.sqrt(colour[0]);
-  colour[1] = Math.sqrt(colour[1]);
-  colour[2] = Math.sqrt(colour[2]);
 
   // Done
   postMessage({
     message: "complete",
     threadId: threadId,
-    column: column,
     row: row,
-    colour: colour
+    imageDataData: imageDataData
   });
 };
 

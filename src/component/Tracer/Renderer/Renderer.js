@@ -54,32 +54,23 @@ export default class Renderer {
     this.timeFrameStart = 0.0;
     this.timeFrameInterval = 1.0;
 
-    // Reuseable imagedata
-    this.IMAGEDATA = this.CONTEXT.createImageData(1, 1);
-    this.IMAGEDATA_DATA = this.IMAGEDATA.data;
-    this.IMAGEDATA_DATA[3] = 255; // Full alpha
-
     // Var
     this.row = 0;
-    this.column = 0;
     this.isRendering = false;
 
     // Recorder
     this.saveOutput = false;
     this.RECORDER = new Recorder(canvas);
 
-    // Camera Controller
-    this.CAMERA_CONTROLLER = new CameraController();
-
     // Asset Libraries - Load on main thread
-    this.LIBRARY_IMAGE_LOADED = false;
-    this.LIBRARY_MESH_LOADED = false;
+    this.LIBRARY_IMAGE_LOADED = false; // TODO Not const
+    this.LIBRARY_MESH_LOADED = false; // TODO Not const
 
     this.IMAGE_LIBRARY = new ImageLibrary(this);
     this.MESH_LIBRARY = new MeshLibrary(this);
 
     // Create local World
-    this.WORLD = new World(this.CAMERA_CONTROLLER);
+    this.WORLD = new World(new CameraController());
 
     // TODO Refactor
     this.onMeshLibraryLoaded();
@@ -104,10 +95,6 @@ export default class Renderer {
   startFrame() {
     const WORKER_TOTAL = this.WORKER_TOTAL;
 
-    // XY
-    this.row = 0;
-    this.column = 0;
-
     // Workers
     this.workersActive = this.WORKER_TOTAL;
 
@@ -121,32 +108,20 @@ export default class Renderer {
     // Start
     let i;
 
-    for (i = 0; i < WORKER_TOTAL - 1; i++) {
-      this.startWorker(i, this.column, this.row);
-      this.nextPixel();
+    for (i = 0; i < WORKER_TOTAL; i++) {
+      this.startWorker(i, i);
     }
 
-    this.startWorker(WORKER_TOTAL - 1, this.column, this.row);
+    // Row
+    this.row = WORKER_TOTAL;
   }
 
-  startWorker(workerId, column, row) {
+  startWorker(workerId, row) {
     this.WORKER_POOL[workerId].postMessage({
       messageType: "render",
       timeFrameStart: this.timeFrameStart,
-      column: column,
       row: row
     });
-  }
-
-  nextPixel() {
-    // Next column
-    this.column++;
-
-    if (this.column >= this.PIXEL_WIDTH) {
-      // Next row
-      this.column = 0;
-      this.row++;
-    }
   }
 
   onRenderWorkerMessage(e) {
@@ -154,13 +129,11 @@ export default class Renderer {
 
     if (data.message == "complete") {
       if (this.isRendering == true) {
-        this.drawPixel(data.column, data.row, data.colour);
+        this.drawPixels(data.row, data.imageDataData);
 
         // Next
         if (this.row < this.PIXEL_HEIGHT) {
-          this.nextPixel();
-
-          this.startWorker(data.threadId, this.column, this.row);
+          this.startWorker(data.threadId, this.row++);
         } else {
           this.workersActive--;
 
@@ -186,17 +159,13 @@ export default class Renderer {
     }
   }
 
-  drawPixel(column, row, colour) {
-    const IMAGEDATA = this.IMAGEDATA;
-    const IMAGEDATA_DATA = this.IMAGEDATA_DATA;
+  drawPixels(row, imageDataData) {
     const CONTEXT = this.CONTEXT;
 
-    IMAGEDATA_DATA[0] = colour[0] * 255.99;
-    IMAGEDATA_DATA[1] = colour[1] * 255.99;
-    IMAGEDATA_DATA[2] = colour[2] * 255.99;
+    const IMAGEDATA = new ImageData(imageDataData, this.PIXEL_WIDTH, 1);
 
     CONTEXT.save();
-    CONTEXT.putImageData(IMAGEDATA, Math.floor(column), Math.floor(row));
+    CONTEXT.putImageData(IMAGEDATA, 0, row);
     CONTEXT.restore();
   }
 
@@ -248,8 +217,6 @@ export default class Renderer {
   shape(w, h) {
     this.PIXEL_WIDTH = w;
     this.PIXEL_HEIGHT = h;
-
-    this.CAMERA_CONTROLLER.shape(w, h);
 
     // Scene
     const WORKER_TOTAL = this.WORKER_TOTAL;
