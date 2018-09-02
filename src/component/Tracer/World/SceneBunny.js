@@ -15,6 +15,10 @@ import { HSVtoRGB } from "../Util/colour";
 // Frame complete. 77.50s
 // Sphere 2315929 775623 0.3349% Triangle 35160596 6668660 0.1897%
 
+// Unsorted BVH
+// Frame complete. 30.96s
+// Sphere 2501406 861578 0.3444% Triangle 43228466 9013676 0.2085%
+
 export default class SceneBunny extends Scene {
   constructor(cameraController) {
     super(cameraController);

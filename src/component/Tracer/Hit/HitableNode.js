@@ -1,13 +1,14 @@
 import { vec3 } from "gl-matrix";
 
 import AABB from "./AABB";
+import HitRecord from "./HitRecord";
 import Hitable from "./Hitable";
 
 export default class HitableNode extends Hitable {
   constructor(hitables, depth) {
     super();
 
-    console.log("HitableNode " + depth + ". Populate " + hitables.length);
+    //console.log("HitableNode " + depth + ". Populate " + hitables.length);
 
     // TODO ??
     if (hitables.length == 0) {
@@ -23,7 +24,7 @@ export default class HitableNode extends Hitable {
     const ITEM_TOTAL = hitables.length;
 
     if (ITEM_TOTAL == 1) {
-      console.log("HitableNode " + depth + " - Done " + hitables.length);
+      //console.log("HitableNode " + depth + " - Done " + hitables.length);
       this.hitable = hitables[0];
       return;
     }
@@ -94,9 +95,9 @@ export default class HitableNode extends Hitable {
       }
     }
 
-    console.log(
-      "Placing left:" + hitablesLeft.length + " right:" + hitablesRight.length
-    );
+    // console.log(
+    //   "Placing left:" + hitablesLeft.length + " right:" + hitablesRight.length
+    // );
 
     // Create nodes
     this.nodeLeft = new HitableNode(hitablesLeft, depth + 1);
@@ -111,37 +112,33 @@ export default class HitableNode extends Hitable {
     const NODE_RIGHT = this.nodeRight;
     const HITABLE = this.hitable;
 
-    let hit;
+    if (BOUNDINGBOX.didHit(ray, tMin, tMax, hitRecord) == true) {
+      if (NODE_LEFT != null && NODE_RIGHT != null) {
+        let hitRecordLeft = new HitRecord();
+        let hitRecordRight = new HitRecord();
 
-    if (this.boundingBox != null) {
-      hit = BOUNDINGBOX.didHit(ray, tMin, tMax, hitRecord);
+        let hitLeft = NODE_LEFT.didHit(ray, tMin, tMax, hitRecordLeft);
+        let hitRight = NODE_RIGHT.didHit(ray, tMin, tMax, hitRecordRight);
 
-      if (hit == false) {
-        return false;
-      }
-    }
-
-    if (NODE_LEFT != null) {
-      hit = NODE_LEFT.didHit(ray, tMin, tMax, hitRecord);
-
-      if (hit == true) {
-        return true;
-      }
-    }
-
-    if (NODE_RIGHT != null) {
-      hit = NODE_RIGHT.didHit(ray, tMin, tMax, hitRecord);
-
-      if (hit == true) {
-        return true;
-      }
-    }
-
-    if (HITABLE != null) {
-      hit = HITABLE.didHit(ray, tMin, tMax, hitRecord);
-
-      if (hit == true) {
-        return true;
+        if (hitLeft == true && hitRight == true) {
+          if (hitRecordLeft.t < hitRecordRight.t) {
+            hitRecordLeft.cloneThisInto(hitRecord);
+            return true;
+          } else {
+            hitRecordRight.cloneThisInto(hitRecord);
+            return true;
+          }
+        } else if (hitLeft == true) {
+          hitRecordLeft.cloneThisInto(hitRecord);
+          return true;
+        } else if (hitRight == true) {
+          hitRecordRight.cloneThisInto(hitRecord);
+          return true;
+        } else {
+          return false;
+        }
+      } else if (HITABLE != null) {
+        return HITABLE.didHit(ray, tMin, tMax, hitRecord);
       }
     }
 
