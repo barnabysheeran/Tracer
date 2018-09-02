@@ -2,6 +2,9 @@ import { vec3 } from "gl-matrix";
 
 import Scene from "./Scene";
 
+// 800*400*10 thread per pixel
+//
+
 export default class SceneEmpty extends Scene {
   constructor(cameraController) {
     super(cameraController);

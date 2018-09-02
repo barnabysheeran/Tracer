@@ -48,11 +48,6 @@ export default class SceneBunny extends Scene {
     const POSITIONS = this.getMeshPositions(0);
     //const NORMALS = this.getMeshNormals(0);
 
-    // TODO Remove main thread renderer instance
-    if (POSITIONS == undefined) {
-      return;
-    }
-
     let i;
     let p0;
     let p1;

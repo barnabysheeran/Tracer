@@ -12,13 +12,13 @@ export default class Renderer {
     this.setStatus = setStatus;
     this.setStatusStatistics = setStatusStatistics;
 
-    // TODO Oprimise rendering with empty scene
+    // TODO Optimise rendering with empty scene
 
     // Context
     this.CONTEXT = canvas.getContext("2d");
 
     // Workers
-    this.WORKER_TOTAL = navigator.hardwareConcurrency || 4; // TODO
+    this.WORKER_TOTAL = navigator.hardwareConcurrency || 4;
 
     this.WORKER_POOL = [];
 
@@ -78,7 +78,7 @@ export default class Renderer {
     this.IMAGE_LIBRARY = new ImageLibrary(this);
     this.MESH_LIBRARY = new MeshLibrary(this);
 
-    // Create World
+    // Create local World
     this.WORLD = new World(this.CAMERA_CONTROLLER);
 
     // TODO Refactor
@@ -265,12 +265,8 @@ export default class Renderer {
   }
 
   setScene(sceneId) {
-    const WORLD = this.WORLD;
-
-    WORLD.setScene(sceneId);
-
-    // Frame
-    this.frameMax = WORLD.getAnimationFrameMax();
+    // Animation Frames
+    this.frameMax = this.WORLD.getSceneAnimationFrameMax(sceneId);
 
     // Time
     this.timeFrameInterval = 1.0 / this.frameMax;

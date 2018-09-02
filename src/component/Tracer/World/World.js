@@ -1,5 +1,3 @@
-import HitRecord from "../Hit/HitRecord";
-
 import SceneTest from "./SceneTest";
 import SceneAnimationTest from "./SceneAnimationTest";
 import SceneMarbleTest from "./SceneMarbleTest";
@@ -111,5 +109,13 @@ export default class World {
     for (i = 0; i < SCENES.length; i++) {
       SCENES[i].setMeshes(positions, normals, cells);
     }
+  }
+
+  // ____________________________________________________________________ Access
+
+  getSceneAnimationFrameMax(sceneId) {
+    const SCENES = this.SCENES;
+
+    return SCENES[sceneId].getAnimationFrameMax();
   }
 }
