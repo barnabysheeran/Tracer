@@ -41,8 +41,7 @@ export default class Gui extends React.Component {
               { label: "ImageTest", value: 3 },
               { label: "Bunny", value: 4 },
               { label: "BVHTest", value: 5 },
-              { label: "Cornell", value: 6 },
-              { label: "Empty", value: 7 }
+              { label: "Cornell", value: 6 }
             ]}
             onClick={this.props.onClickSetScene}
           />
@@ -67,10 +66,7 @@ export default class Gui extends React.Component {
             options={[
               { label: "1", value: 1 },
               { label: "1k", value: 1000 },
-              { label: "2k", value: 2000 },
-              { label: "3k", value: 3000 },
-              { label: "4k", value: 4000 },
-              { label: "5k", value: 5000 }
+              { label: "2k", value: 2000 }
             ]}
             onClick={this.props.onClickSetBounceMax}
           />

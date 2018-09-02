@@ -8,11 +8,14 @@ export default class HitableNode extends Hitable {
   constructor(hitables, depth) {
     super();
 
+    // Left/Right
     this.nodeLeft = null;
     this.nodeRight = null;
 
+    // BB
     this.boundingBox = null;
 
+    // End node
     const ITEM_TOTAL = hitables.length;
 
     if (ITEM_TOTAL == 1) {
@@ -198,4 +201,20 @@ export default class HitableNode extends Hitable {
     //
     this.boundingBox = new AABB(min, max);
   }
+
+  // ______________________________________________________________________ Sort
+
+  // sortX(a, b) {
+  //   if (a[0] > b[0]) {
+  //     return 1;
+  //   } else if (a[0] < b[0]) {
+  //     return -1;
+  //   }
+
+  //   return 0;
+  // }
+
+  // sortY(a, b) {}
+
+  // sortZ(a, b) {}
 }
