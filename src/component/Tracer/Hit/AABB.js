@@ -1,6 +1,6 @@
 export default class AABB {
   constructor(min, max) {
-    const PADDING = 0.001;
+    const PADDING = 0.0000001;
 
     // Pad
     min[0] -= PADDING;

@@ -3,8 +3,6 @@ import SceneAnimationTest from "./SceneAnimationTest";
 import SceneMarbleTest from "./SceneMarbleTest";
 import SceneImageTest from "./SceneImageTest";
 import SceneBunny from "./SceneBunny";
-import SceneBVHTest from "./SceneBVHTest";
-import SceneCornell from "./SceneCornell";
 
 export default class World {
   constructor(cameraController) {
@@ -15,9 +13,7 @@ export default class World {
       new SceneAnimationTest(cameraController),
       new SceneMarbleTest(cameraController),
       new SceneImageTest(cameraController),
-      new SceneBunny(cameraController),
-      new SceneBVHTest(cameraController),
-      new SceneCornell(cameraController)
+      new SceneBunny(cameraController)
     ];
 
     // Default
