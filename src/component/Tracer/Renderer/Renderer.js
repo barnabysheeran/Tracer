@@ -61,8 +61,8 @@ export default class Renderer {
     this.RECORDER = new Recorder(canvas);
 
     // Asset Libraries - Load on main thread
-    this.libraryImageLoaded = false; // TODO Not const
-    this.libraryMeshLoaded = false; // TODO Not const
+    this.libraryImageLoaded = false;
+    this.libraryMeshLoaded = false;
 
     this.IMAGE_LIBRARY = new ImageLibrary(this);
     this.MESH_LIBRARY = new MeshLibrary(this);

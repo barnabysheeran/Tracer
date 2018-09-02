@@ -15,7 +15,22 @@ export default class HitableNode extends Hitable {
     // BB
     this.boundingBox = null;
 
-    // End node
+    // Sort on random axis
+    const AXIS_ID = Math.floor(Math.random() * 3);
+
+    switch (AXIS_ID) {
+      case 0:
+        hitables.sort(this.compareX);
+        break;
+      case 1:
+        hitables.sort(this.compareY);
+        break;
+      case 2:
+        hitables.sort(this.compareZ);
+        break;
+    }
+
+    // End nodes ?
     const ITEM_TOTAL = hitables.length;
 
     if (ITEM_TOTAL == 1) {
@@ -24,65 +39,25 @@ export default class HitableNode extends Hitable {
       return;
     }
 
-    // Pick random axis
-    const AXIS_ID = Math.floor(Math.random() * 3);
+    if (ITEM_TOTAL == 2) {
+      this.nodeLeft = hitables[0];
+      this.nodeRight = hitables[1];
+      return;
+    }
 
-    // Find center on axis
-    let positionOnAxis;
-    let axisMin = Infinity;
-    let axisMax = -Infinity;
+    // Split
+    let hitablesLeft = [];
+    let hitablesRight = [];
+
+    const LIST_CENTER = Math.floor(ITEM_TOTAL / 2);
 
     let i;
 
     for (i = 0; i < ITEM_TOTAL; i++) {
-      positionOnAxis = hitables[i].getPositionCenter()[AXIS_ID];
-
-      if (positionOnAxis < axisMin) {
-        axisMin = positionOnAxis;
-      }
-      if (positionOnAxis > axisMax) {
-        axisMax = positionOnAxis;
-      }
-    }
-
-    const AXIS_RANGE = axisMax - axisMin;
-    const AXIS_CENTER = axisMin + (axisMax - axisMin) * 0.5;
-
-    // Count
-    let countLeft = 0;
-    let countRight = 0;
-
-    for (i = 0; i < ITEM_TOTAL; i++) {
-      positionOnAxis = hitables[i].getPositionCenter()[AXIS_ID];
-
-      if (positionOnAxis < AXIS_CENTER) {
-        countLeft++;
+      if (i < LIST_CENTER) {
+        hitablesLeft.push(hitables[i]);
       } else {
-        countRight++;
-      }
-    }
-
-    // Subdivide left/right
-    let hitablesLeft = [];
-    let hitablesRight = [];
-
-    if (countLeft == 0 || countRight == 0 || AXIS_RANGE == 0) {
-      // Subdivide arbitrarily
-      hitablesLeft.push(hitables[0]);
-
-      for (i = 1; i < ITEM_TOTAL; i++) {
         hitablesRight.push(hitables[i]);
-      }
-    } else {
-      // Subdivide around axis center
-      for (i = 0; i < ITEM_TOTAL; i++) {
-        positionOnAxis = hitables[i].getPositionCenter()[AXIS_ID];
-
-        if (positionOnAxis < AXIS_CENTER) {
-          hitablesLeft.push(hitables[i]);
-        } else {
-          hitablesRight.push(hitables[i]);
-        }
       }
     }
 
@@ -204,17 +179,36 @@ export default class HitableNode extends Hitable {
 
   // ______________________________________________________________________ Sort
 
-  // sortX(a, b) {
-  //   if (a[0] > b[0]) {
-  //     return 1;
-  //   } else if (a[0] < b[0]) {
-  //     return -1;
-  //   }
+  compareX(a, b) {
+    const BB_A = a.boundingBox;
+    const BB_B = b.boundingBox;
 
-  //   return 0;
-  // }
+    if (BB_A.MIN[0] - BB_B.MIN[0] < 0.0) {
+      return -1;
+    } else {
+      return 1;
+    }
+  }
 
-  // sortY(a, b) {}
+  compareY(a, b) {
+    const BB_A = a.boundingBox;
+    const BB_B = b.boundingBox;
 
-  // sortZ(a, b) {}
+    if (BB_A.MIN[1] - BB_B.MIN[1] < 0.0) {
+      return -1;
+    } else {
+      return 1;
+    }
+  }
+
+  compareZ(a, b) {
+    const BB_A = a.boundingBox;
+    const BB_B = b.boundingBox;
+
+    if (BB_A.MIN[2] - BB_B.MIN[2] < 0.0) {
+      return -1;
+    } else {
+      return 1;
+    }
+  }
 }

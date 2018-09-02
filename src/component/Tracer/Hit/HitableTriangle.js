@@ -47,10 +47,10 @@ export default class HitableTriangle extends Hitable {
   // https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
 
   didHit(ray, tMin, tMax, hitRecord) {
-    // Simple BB Hit
-    // if (this.boundingBox.didHit(ray, tMin, tMax) == false) {
-    //   return false;
-    // }
+    // Bounding box hit
+    if (this.boundingBox.didHit(ray, tMin, tMax) == false) {
+      return false;
+    }
 
     Statistics.onIntersectionTestTriangle();
 

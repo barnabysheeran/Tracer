@@ -49,7 +49,7 @@ export default class World {
 
   setAnimationTime(time) {
     this.scene.setAnimationTime(time);
-    this.scene.buildBVH();
+    //this.scene.buildBVH();
   }
 
   getAnimationFrameMax() {
