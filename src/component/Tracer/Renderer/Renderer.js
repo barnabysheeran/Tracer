@@ -12,8 +12,6 @@ export default class Renderer {
     this.setStatus = setStatus;
     this.setStatusStatistics = setStatusStatistics;
 
-    // TODO Optimise rendering with empty scene
-
     // Context
     this.CONTEXT = canvas.getContext("2d");
 
@@ -63,8 +61,8 @@ export default class Renderer {
     this.RECORDER = new Recorder(canvas);
 
     // Asset Libraries - Load on main thread
-    this.LIBRARY_IMAGE_LOADED = false; // TODO Not const
-    this.LIBRARY_MESH_LOADED = false; // TODO Not const
+    this.libraryImageLoaded = false; // TODO Not const
+    this.libraryMeshLoaded = false; // TODO Not const
 
     this.IMAGE_LIBRARY = new ImageLibrary(this);
     this.MESH_LIBRARY = new MeshLibrary(this);
@@ -340,7 +338,7 @@ export default class Renderer {
       });
     }
 
-    this.LIBRARY_IMAGE_LOADED = true;
+    this.libraryImageLoaded = true;
     this.showLoadStatus();
   }
 
@@ -363,7 +361,7 @@ export default class Renderer {
       });
     }
 
-    this.LIBRARY_MESH_LOADED = true;
+    this.libraryMeshLoaded = true;
     this.showLoadStatus();
   }
 
@@ -411,7 +409,6 @@ export default class Renderer {
           (1.0 / Statistics.getIntersectionTestsSphere()) *
           Statistics.getIntersectionTestsSphereSuccess()
         ).toFixed(4) +
-        "%" +
         " Triangle " +
         Statistics.getIntersectionTestsTriangle() +
         " " +
@@ -420,15 +417,14 @@ export default class Renderer {
         (
           (1.0 / Statistics.getIntersectionTestsTriangle()) *
           Statistics.getIntersectionTestsTriangleSuccess()
-        ).toFixed(4) +
-        "%"
+        ).toFixed(4)
     );
   }
 
   // ___________________________________________________________________ Loading
 
   showLoadStatus() {
-    if (this.LIBRARY_IMAGE_LOADED == true && this.LIBRARY_MESH_LOADED) {
+    if (this.libraryImageLoaded == true && this.libraryMeshLoaded) {
       this.setStatus("Ready. " + this.WORKER_TOTAL + " workers");
     }
   }
