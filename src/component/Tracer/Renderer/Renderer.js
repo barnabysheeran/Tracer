@@ -126,20 +126,7 @@ export default class Renderer {
     let data = e.data;
 
     if (data.message == "complete") {
-      if (this.isRendering == true) {
-        this.drawPixels(data.row, data.imageDataData);
-
-        // Next
-        if (this.row < this.PIXEL_HEIGHT) {
-          this.startWorker(data.threadId, this.row++);
-        } else {
-          this.workersActive--;
-
-          if (this.workersActive == 0) {
-            this.onFrameComplete();
-          }
-        }
-      }
+      this.onRowComplete(data.threadId, data.row, data.imageDataData);
     }
 
     if (data.message == "statisticsPoll") {
@@ -154,6 +141,33 @@ export default class Renderer {
       );
 
       this.statisticsUpdateDisplay();
+    }
+  }
+
+  onRowComplete(threadId, row, imageDataData) {
+    if (this.isRendering == true) {
+      this.setStatus(
+        "Render. Frame " +
+          (this.frame + 1) +
+          " of " +
+          (this.frameMax + 1) +
+          ". " +
+          ((1.0 / this.PIXEL_HEIGHT) * this.row * 100).toFixed(2) +
+          "% complete"
+      );
+
+      this.drawPixels(row, imageDataData);
+
+      // Next
+      if (this.row < this.PIXEL_HEIGHT) {
+        this.startWorker(threadId, this.row++);
+      } else {
+        this.workersActive--;
+
+        if (this.workersActive == 0) {
+          this.onFrameComplete();
+        }
+      }
     }
   }
 
@@ -211,6 +225,8 @@ export default class Renderer {
   }
 
   // ______________________________________________________________ Set Threaded
+
+  // TODO Thread controller
 
   shape(w, h) {
     this.PIXEL_WIDTH = w;

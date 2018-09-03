@@ -21,12 +21,14 @@ export default class Gui extends React.Component {
           <Group
             title="Output"
             narrow={false}
-            initialIndex={1}
+            initialIndex={2}
             options={[
               { label: "50*50", value: [50, 50] },
+              { label: "512*512", value: [512, 512] },
               { label: "200*100", value: [200, 100] },
               { label: "400*200", value: [400, 200] },
-              { label: "800*400", value: [800, 400] }
+              { label: "800*400", value: [800, 400] },
+              { label: "1600*800", value: [1600, 800] }
             ]}
             onClick={this.props.onClickSetDimensions}
           />
@@ -39,7 +41,8 @@ export default class Gui extends React.Component {
               { label: "AnimTest", value: 1 },
               { label: "MarbleTest", value: 2 },
               { label: "ImageTest", value: 3 },
-              { label: "Bunny", value: 4 }
+              { label: "Bunny", value: 4 },
+              { label: "LightTest", value: 5 }
             ]}
             onClick={this.props.onClickSetScene}
           />
