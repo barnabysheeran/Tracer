@@ -19,6 +19,22 @@ export default class Gui extends React.Component {
       <div className={style.gui}>
         <div className={style.menu}>
           <Group
+            title="Scene"
+            classWidth={style.buttonWide}
+            initialIndex={0}
+            options={[
+              { label: "Test", value: 0 },
+              { label: "Animation Test", value: 1 },
+              { label: "Procedural Material", value: 2 },
+              { label: "Spherical Image Test", value: 3 },
+              { label: "Bunny Low Poly", value: 4 },
+              { label: "Bunny Stanford", value: 5 },
+              { label: "Light Test", value: 6 },
+              { label: "Cornell Box 1", value: 7 }
+            ]}
+            onClick={this.props.onClickSetScene}
+          />
+          <Group
             title="Output"
             classWidth={style.buttonStandard}
             initialIndex={1}
@@ -31,22 +47,7 @@ export default class Gui extends React.Component {
             ]}
             onClick={this.props.onClickSetDimensions}
           />
-          <Group
-            title="Scene"
-            classWidth={style.buttonWide}
-            initialIndex={0}
-            options={[
-              { label: "Test", value: 0 },
-              { label: "AnimTest", value: 1 },
-              { label: "MarbleTest", value: 2 },
-              { label: "ImageTest", value: 3 },
-              { label: "Bunny Low", value: 4 },
-              { label: "Bunny Stanford", value: 5 },
-              { label: "LightTest", value: 6 },
-              { label: "Cornell 1", value: 7 }
-            ]}
-            onClick={this.props.onClickSetScene}
-          />
+
           <Group
             title="AA Samples"
             classWidth={style.buttonNarrow}
