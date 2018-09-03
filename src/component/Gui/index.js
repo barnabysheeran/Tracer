@@ -20,7 +20,7 @@ export default class Gui extends React.Component {
         <div className={style.menu}>
           <Group
             title="Output"
-            narrow={false}
+            classWidth={style.buttonStandard}
             initialIndex={1}
             options={[
               { label: "512*512", value: [512, 512] },
@@ -33,7 +33,7 @@ export default class Gui extends React.Component {
           />
           <Group
             title="Scene"
-            narrow={false}
+            classWidth={style.buttonWide}
             initialIndex={0}
             options={[
               { label: "Test", value: 0 },
@@ -49,7 +49,7 @@ export default class Gui extends React.Component {
           />
           <Group
             title="AA Samples"
-            narrow={true}
+            classWidth={style.buttonNarrow}
             initialIndex={1}
             options={[
               { label: "1", value: 1 },
@@ -64,7 +64,7 @@ export default class Gui extends React.Component {
           />
           <Group
             title="Max Bounce"
-            narrow={true}
+            classWidth={style.buttonNarrow}
             initialIndex={1}
             options={[
               { label: "1", value: 1 },
@@ -75,7 +75,7 @@ export default class Gui extends React.Component {
           />
           <Group
             title="Save Output"
-            narrow={false}
+            classWidth={style.buttonStandard}
             initialIndex={0}
             options={[
               { label: "Off", value: false },
@@ -90,14 +90,22 @@ export default class Gui extends React.Component {
             <Button
               text="Clear"
               className={
-                style.button + " " + style.buttonWide + " " + style.buttonOff
+                style.button +
+                " " +
+                style.buttonStandard +
+                " " +
+                style.buttonOff
               }
               onClick={this.props.onClickClear}
             />
             <Button
               text="Start"
               className={
-                style.button + " " + style.buttonWide + " " + style.buttonOff
+                style.button +
+                " " +
+                style.buttonStandard +
+                " " +
+                style.buttonOff
               }
               onClick={this.props.onClickStart}
             />

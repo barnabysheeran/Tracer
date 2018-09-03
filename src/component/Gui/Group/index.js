@@ -26,9 +26,9 @@ export default class Group extends React.Component {
               className={
                 style.button +
                 " " +
-                (this.props.narrow === true
-                  ? style.buttonNarrow
-                  : style.buttonWide) +
+                style.noSelect +
+                " " +
+                this.props.classWidth +
                 " " +
                 (index === this.state.selectedIndex
                   ? style.buttonOn

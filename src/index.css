@@ -70,8 +70,12 @@ body {
   width: 37px;
 }
 
-.buttonWide {
+.buttonStandard {
   width: 81px;
+}
+
+.buttonWide {
+  width: 169px;
 }
 
 .buttonOn {
@@ -93,4 +97,8 @@ body {
   width: 100%;
   color: #666;
   user-select: text;
+}
+
+.noSelect {
+  user-select: none;
 }
