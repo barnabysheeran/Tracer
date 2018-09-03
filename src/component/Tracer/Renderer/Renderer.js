@@ -153,7 +153,7 @@ export default class Renderer {
           (this.frameMax + 1) +
           ". " +
           ((1.0 / this.PIXEL_HEIGHT) * this.row * 100).toFixed(2) +
-          "% complete"
+          "%"
       );
 
       this.drawPixels(row, imageDataData);

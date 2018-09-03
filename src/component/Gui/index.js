@@ -21,9 +21,8 @@ export default class Gui extends React.Component {
           <Group
             title="Output"
             narrow={false}
-            initialIndex={2}
+            initialIndex={1}
             options={[
-              { label: "50*50", value: [50, 50] },
               { label: "512*512", value: [512, 512] },
               { label: "200*100", value: [200, 100] },
               { label: "400*200", value: [400, 200] },
@@ -41,16 +40,19 @@ export default class Gui extends React.Component {
               { label: "AnimTest", value: 1 },
               { label: "MarbleTest", value: 2 },
               { label: "ImageTest", value: 3 },
-              { label: "Bunny", value: 4 },
-              { label: "LightTest", value: 5 }
+              { label: "Bunny Low", value: 4 },
+              { label: "Bunny Stanford", value: 5 },
+              { label: "LightTest", value: 6 },
+              { label: "Cornell 1", value: 7 }
             ]}
             onClick={this.props.onClickSetScene}
           />
           <Group
             title="AA Samples"
             narrow={true}
-            initialIndex={0}
+            initialIndex={1}
             options={[
+              { label: "1", value: 1 },
               { label: "10", value: 10 },
               { label: "100", value: 100 },
               { label: "500", value: 500 },

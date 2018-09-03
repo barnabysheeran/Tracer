@@ -65,8 +65,8 @@ export default class Scene {
   }
 
   addPlane(p0, p1, p2, p3, material) {
-    const TRIANGLE_0 = this.addTriangle(p0, p1, p3, material);
-    const TRIANGLE_1 = this.addTriangle(p1, p2, p3, material);
+    const TRIANGLE_0 = this.addTriangle(p0, p1, p2, material);
+    const TRIANGLE_1 = this.addTriangle(p2, p3, p0, material);
 
     return [TRIANGLE_0, TRIANGLE_1];
   }
