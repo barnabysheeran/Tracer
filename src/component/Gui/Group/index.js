@@ -20,6 +20,7 @@ export default class Group extends React.Component {
     return (
       <div className={style.row}>
         <Title text={this.props.title} />
+
         <React.Fragment>
           {this.props.options.map((option, index) => (
             <Button
