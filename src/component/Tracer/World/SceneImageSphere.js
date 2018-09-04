@@ -7,7 +7,7 @@ import TextureImage from "../Texture/TextureImage";
 import MaterialDielectric from "../Material/MaterialDielectric";
 import MaterialMetal from "../Material/MaterialMetal";
 
-export default class SceneImageTest extends Scene {
+export default class SceneImageSphere extends Scene {
   constructor(cameraController) {
     super(cameraController);
   }

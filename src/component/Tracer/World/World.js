@@ -1,12 +1,12 @@
 import SceneTest from "./SceneTest";
 import SceneAnimationTest from "./SceneAnimationTest";
 import SceneMarbleTest from "./SceneMarbleTest";
-import SceneImageTest from "./SceneImageTest";
+import SceneImageSphere from "./SceneImageSphere";
 import SceneBunny from "./SceneBunny";
 import SceneBunnyStanford from "./SceneBunnyStanford";
 import SceneLightTest from "./SceneLightTest";
 import SceneCornell from "./SceneCornell";
-import SceneTextureCoordinates from "./SceneTextureCoordinates";
+import SceneImagePlane from "./SceneImagePlane";
 
 export default class World {
   constructor(cameraController) {
@@ -16,12 +16,12 @@ export default class World {
       new SceneTest(cameraController),
       new SceneAnimationTest(cameraController),
       new SceneMarbleTest(cameraController),
-      new SceneImageTest(cameraController),
+      new SceneImageSphere(cameraController),
+      new SceneImagePlane(cameraController),
       new SceneBunny(cameraController),
       new SceneBunnyStanford(cameraController),
       new SceneLightTest(cameraController),
-      new SceneCornell(cameraController),
-      new SceneTextureCoordinates(cameraController)
+      new SceneCornell(cameraController)
     ];
 
     // Default

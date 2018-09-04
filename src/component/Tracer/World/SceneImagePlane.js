@@ -6,7 +6,7 @@ import TextureImage from "../Texture/TextureImage";
 
 import MaterialLambertian from "../Material/MaterialLambertian";
 
-export default class SceneTextureCoordinates extends Scene {
+export default class SceneImagePlane extends Scene {
   constructor(cameraController) {
     super(cameraController);
   }
