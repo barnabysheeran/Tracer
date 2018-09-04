@@ -38,7 +38,6 @@ export default class SceneBunny extends Scene {
     // Mesh
     const CELLS = this.getMeshCells(0);
     const POSITIONS = this.getMeshPositions(0);
-    //const NORMALS = this.getMeshNormals(0);
 
     let i;
     let p0;

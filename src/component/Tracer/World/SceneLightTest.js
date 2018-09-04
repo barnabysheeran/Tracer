@@ -104,6 +104,7 @@ export default class SceneLightTest extends Scene {
   // ________________________________________________________________ Background
 
   getBackground(rayDirectionNormalized) {
+    rayDirectionNormalized;
     // let t = 0.5 * (rayDirectionNormalized[1] + 1.0);
     // let white = 1.0 - t;
 

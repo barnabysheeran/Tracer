@@ -2,7 +2,7 @@ import { vec3 } from "gl-matrix";
 
 import HitableSphere from "../Hit/HitableSphere";
 import HitableTriangle from "../Hit/HitableTriangle";
-import HitablePlane from "../Hit/HitablePlane"; // OLD
+import HitablePlaneHolder from "../Hit/HitablePlaneHolder";
 
 import HitableNode from "../Hit/HitableNode";
 
@@ -56,19 +56,8 @@ export default class Scene {
 
   // _____________________________________________________________________ Plane
 
-  addOldPlane(width, height, material) {
-    const PLANE = new HitablePlane(width, height, material);
-
-    this.HITABLES.push(PLANE);
-
-    return PLANE;
-  }
-
   addPlane(p0, p1, p2, p3, material) {
-    const TRIANGLE_0 = this.addTriangle(p0, p1, p2, material);
-    const TRIANGLE_1 = this.addTriangle(p2, p3, p0, material);
-
-    return [TRIANGLE_0, TRIANGLE_1];
+    return new HitablePlaneHolder(this, p0, p1, p2, p3, material);
   }
 
   // _______________________________________________________________________ Box

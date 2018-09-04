@@ -27,8 +27,7 @@ export default class HitableTriangle extends Hitable {
     );
 
     // Normal
-    this.NORMAL = vec3.fromValues();
-
+    this.NORMAL = vec3.create();
     vec3.cross(this.NORMAL, this.EDGE1, this.EDGE2);
     this.NORMAL = vec3.normalize(this.NORMAL, this.NORMAL);
 
@@ -40,6 +39,9 @@ export default class HitableTriangle extends Hitable {
 
     // Center
     this.generatePositionCenter();
+
+    // Texture Coordinates
+    this.textureCoordinatesFlipped = false;
   }
 
   // _______________________________________________________________________ Hit
@@ -98,12 +100,19 @@ export default class HitableTriangle extends Hitable {
     const T = F * vec3.dot(EDGE2, Q);
 
     if (T > tMin && T < tMax) {
+      // Set
       hitRecord.t = T;
       hitRecord.position = ray.getPointAtParameter(T);
       hitRecord.normal = this.NORMAL;
       hitRecord.material = this.MATERIAL;
-      hitRecord.u = U;
-      hitRecord.v = V;
+
+      if (this.textureCoordinatesFlipped == true) {
+        hitRecord.u = 1.0 - U;
+        hitRecord.v = 1.0 - V;
+      } else {
+        hitRecord.u = U;
+        hitRecord.v = V;
+      }
 
       Statistics.onIntersectionTestTriangleSuccess();
 
@@ -186,5 +195,11 @@ export default class HitableTriangle extends Hitable {
 
   getPositionCenter() {
     return this.positionCenter;
+  }
+
+  // _______________________________________________________ Texture Coordinates
+
+  flipTextureCoordinates() {
+    this.textureCoordinatesFlipped = true;
   }
 }
