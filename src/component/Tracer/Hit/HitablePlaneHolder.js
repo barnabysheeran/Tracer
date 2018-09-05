@@ -9,6 +9,8 @@ export default class HitablePlaneHolder {
   }
 
   flipNormal() {
+    console.log("flip normal");
+
     this.TRIANGLE_0.flipNormal();
     this.TRIANGLE_1.flipNormal();
   }

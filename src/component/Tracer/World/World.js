@@ -5,6 +5,7 @@ import SceneImageSphere from "./SceneImageSphere";
 import SceneBunny from "./SceneBunny";
 import SceneBunnyStanford from "./SceneBunnyStanford";
 import SceneLightTest from "./SceneLightTest";
+import SceneLightTest2 from "./SceneLightTest2";
 import SceneCornell from "./SceneCornell";
 import SceneImagePlane from "./SceneImagePlane";
 
@@ -21,6 +22,7 @@ export default class World {
       new SceneBunny(cameraController),
       new SceneBunnyStanford(cameraController),
       new SceneLightTest(cameraController),
+      new SceneLightTest2(cameraController),
       new SceneCornell(cameraController)
     ];
 

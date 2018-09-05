@@ -31,10 +31,12 @@ export default class Gui extends React.Component {
               { label: "Bunny Low Poly", value: 5 },
               { label: "Bunny Stanford", value: 6 },
               { label: "Spherical Lighting", value: 7 },
-              { label: "Cornell Box 1", value: 8 }
+              { label: "Plane Lighting", value: 8 },
+              { label: "Cornell Box 1", value: 9 }
             ]}
             onClick={this.props.onClickSetScene}
           />
+
           <Group
             title="Output"
             classWidth={style.buttonStandard}
@@ -64,6 +66,7 @@ export default class Gui extends React.Component {
             ]}
             onClick={this.props.onClickSetAASamples}
           />
+
           <Group
             title="Max Bounce"
             classWidth={style.buttonNarrow}
@@ -77,6 +80,7 @@ export default class Gui extends React.Component {
             ]}
             onClick={this.props.onClickSetBounceMax}
           />
+
           <Group
             title="Save Output"
             classWidth={style.buttonStandard}
