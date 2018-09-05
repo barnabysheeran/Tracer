@@ -148,38 +148,14 @@ let render = function(timeFrameStart, row) {
 
 // ______________________________________________________________________ Colour
 
-// let getColour = function(ray, depth) {
-//   let hitRecord = new HitRecord();
-
-//   if (WORLD.didHitAnything(ray, 0.001, Infinity, hitRecord) == true) {
-//     let attenuation = vec3.create();
-//     let scattered = new Ray();
-
-//     if (
-//       depth < bounceMax &&
-//       hitRecord.material.scatter(ray, hitRecord, attenuation, scattered) == true
-//     ) {
-//       let colour = getColour(scattered, depth + 1);
-
-//       return new vec3.fromValues(
-//         attenuation[0] * colour[0],
-//         attenuation[1] * colour[1],
-//         attenuation[2] * colour[2]
-//       );
-//     } else {
-//       return vec3.create();
-//     }
-//   } else {
-//     // Background
-//     return WORLD.getBackground(ray.getDirectionNormalized());
-//   }
-// };
+let scattered = new Ray();
+let hitRecord = new HitRecord();
 
 let getColour = function(ray, depth) {
-  let hitRecord = new HitRecord();
+  //let hitRecord = new HitRecord();
 
   if (WORLD.didHitAnything(ray, 0.001, Infinity, hitRecord) == true) {
-    let scattered = new Ray();
+    //let scattered = new Ray();
 
     let attenuation = vec3.create();
 

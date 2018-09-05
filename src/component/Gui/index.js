@@ -71,7 +71,9 @@ export default class Gui extends React.Component {
             options={[
               { label: "1", value: 1 },
               { label: "1k", value: 1000 },
-              { label: "2k", value: 2000 }
+              { label: "2k", value: 2000 },
+              { label: "5k", value: 5000 },
+              { label: "10k", value: 10000 }
             ]}
             onClick={this.props.onClickSetBounceMax}
           />
