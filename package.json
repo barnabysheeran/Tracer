@@ -11,7 +11,13 @@
     "lint:js": "eslint .",
     "lint:css": "stylelint \"**/*.css\" --allow-empty-input",
     "lint": "run-s lint:*",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "testcoverage": "jest --coverage"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ]
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

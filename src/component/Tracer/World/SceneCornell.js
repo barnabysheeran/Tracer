@@ -4,7 +4,6 @@ import Scene from "./Scene";
 
 import TextureConstant from "../Texture/TextureConstant";
 import TextureSimplex from "../Texture/TextureSimplex";
-import TextureImage from "../Texture/TextureImage";
 
 import MaterialLambertian from "../Material/MaterialLambertian";
 import MaterialDielectric from "../Material/MaterialDielectric";
