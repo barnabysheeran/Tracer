@@ -11,6 +11,8 @@ export default class MaterialDielectric extends Material {
     this.INDEX_REFRACTION = indexRefraction;
   }
 
+  // ___________________________________________________________________ Scatter
+
   scatter(rayIn, hitRecord, attenuation, scattered) {
     const INDEX_REFRACTION = this.INDEX_REFRACTION;
 

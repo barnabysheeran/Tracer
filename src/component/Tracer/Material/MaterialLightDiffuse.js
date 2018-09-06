@@ -7,6 +7,8 @@ export default class MaterialLightDiffuse extends Material {
     this.ALBEDO = albedo;
   }
 
+  // ___________________________________________________________________ Scatter
+
   scatter(rayIn, hitRecord, attenuation, scattered) {
     rayIn;
     hitRecord;
@@ -15,6 +17,8 @@ export default class MaterialLightDiffuse extends Material {
 
     return false;
   }
+
+  // ___________________________________________________________________ Emitted
 
   emitted(u, v, position) {
     return this.ALBEDO.getValue(u, v, position);

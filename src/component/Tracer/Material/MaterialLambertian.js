@@ -11,6 +11,8 @@ export default class MaterialLambertian extends Material {
     this.ALBEDO = albedo;
   }
 
+  // ___________________________________________________________________ Scatter
+
   scatter(rayIn, hitRecord, attenuation, scattered) {
     rayIn;
 

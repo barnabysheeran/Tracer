@@ -12,6 +12,8 @@ export default class MaterialMetal extends Material {
     this.ROUGH = rough;
   }
 
+  // ___________________________________________________________________ Scatter
+
   scatter(rayIn, hitRecord, attenuation, scattered) {
     const ALBEDO = this.ALBEDO;
     const ROUGH = this.ROUGH;
