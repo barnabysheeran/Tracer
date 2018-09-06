@@ -8,6 +8,7 @@ import SceneLightTest from "./SceneLightTest";
 import SceneLightTest2 from "./SceneLightTest2";
 import SceneCornell from "./SceneCornell";
 import SceneImagePlane from "./SceneImagePlane";
+import SceneSubsurface from "./SceneSubsurface";
 
 export default class World {
   constructor(cameraController) {
@@ -23,7 +24,8 @@ export default class World {
       new SceneBunnyStanford(cameraController),
       new SceneLightTest(cameraController),
       new SceneLightTest2(cameraController),
-      new SceneCornell(cameraController)
+      new SceneCornell(cameraController),
+      new SceneSubsurface(cameraController)
     ];
 
     // Default
