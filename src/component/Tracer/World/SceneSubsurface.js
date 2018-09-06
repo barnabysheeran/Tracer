@@ -76,7 +76,7 @@ export default class SceneSubsurface extends Scene {
     CAMERA_CONTROLLER.setFov(20.0);
     CAMERA_CONTROLLER.setAperture(0.2);
 
-    CAMERA_CONTROLLER.setPosition(30.0, 30.0, 30.0);
+    CAMERA_CONTROLLER.setPosition(-30.0, 30.0, -30.0);
     CAMERA_CONTROLLER.setPositionTarget(0.0, 0.0, 0.0);
   }
 

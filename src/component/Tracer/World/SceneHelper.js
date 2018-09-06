@@ -27,6 +27,12 @@ export default class SceneHelper {
       MATERIAL_RED
     );
 
+    scene.addSphere(
+      vec3.fromValues(-sizeAxis, 0.0, 0.0),
+      sizeSphere * 0.5,
+      MATERIAL_RED
+    );
+
     // Y
     scene.addSphere(
       vec3.fromValues(0.0, sizeAxis, 0.0),
@@ -34,10 +40,22 @@ export default class SceneHelper {
       MATERIAL_GREEN
     );
 
+    scene.addSphere(
+      vec3.fromValues(0.0, -sizeAxis, 0.0),
+      sizeSphere * 0.5,
+      MATERIAL_GREEN
+    );
+
     // Z
     scene.addSphere(
       vec3.fromValues(0.0, 0.0, sizeAxis),
       sizeSphere,
+      MATERIAL_BLUE
+    );
+
+    scene.addSphere(
+      vec3.fromValues(0.0, 0.0, -sizeAxis),
+      sizeSphere * 0.5,
       MATERIAL_BLUE
     );
   }
