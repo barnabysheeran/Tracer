@@ -1,15 +1,18 @@
 import { vec3 } from "gl-matrix";
 
 import Scene from "./Scene";
-import SceneHelper from "./SceneHelper";
+//import SceneHelper from "./SceneHelper";
 
 import TextureImage from "../Texture/TextureImage";
 
 //import MaterialDielectric from "../Material/MaterialDielectric";
 import MaterialMetal from "../Material/MaterialMetal";
 
-import MaterialIsotropic from "../Material/MaterialIsotropic";
+//import MaterialIsotropic from "../Material/MaterialIsotropic";
 import TextureConstant from "../Texture/TextureConstant";
+import HitableConstantMedium from "../Hit/HitableConstantMedium";
+//import MaterialLambertian from "../Material/MaterialLambertian";
+import HitableSphere from "../Hit/HitableSphere";
 //import TextureConstant from "../Texture/TextureConstant";
 //import MaterialLambertian from "../Material/MaterialLambertian";
 
@@ -24,20 +27,19 @@ export default class SceneSubsurface extends Scene {
     this.reset();
 
     // Helper
-    new SceneHelper(this, 5.0, 0.2);
+    // new SceneHelper(this, 5.0, 0.2);
 
-    // Isotropic
-    const TEXTURE_ISOTROPIC = new TextureConstant(
-      vec3.fromValues(1.0, 0.0, 0.0)
-    );
+    // Volume
+    const TEXTURE_SPHERE = new TextureConstant(vec3.fromValues(0.0, 0.0, 0.0));
 
-    const MATERIAL_ISOTROPIC = new MaterialIsotropic(TEXTURE_ISOTROPIC);
+    const SPHERE = new HitableSphere(vec3.fromValues(0.0, 5.01, 0.0), 4.0);
 
-    this.addSphere(vec3.fromValues(0.0, 5.01, 0.0), 4.0, MATERIAL_ISOTROPIC);
+    this.HITABLES.push(new HitableConstantMedium(SPHERE, 0.5, TEXTURE_SPHERE));
 
     // Dielectric
-    // const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
+    // const MATERIAL_DIELECTRIC = new MaterialDielectric(1.0);
     // this.addSphere(vec3.fromValues(0.0, 5.01, 0.0), 5.0, MATERIAL_DIELECTRIC);
+    // this.addSphere(vec3.fromValues(0.0, 5.01, 0.0), -4.5, MATERIAL_DIELECTRIC);
 
     // Environment reflections
     // const TEXTURE_REFLECTION_BLOCK = new TextureConstant(1.0, 1.0, 1.0);
@@ -107,15 +109,6 @@ export default class SceneSubsurface extends Scene {
       ),
       MATERIAL_FLOOR
     );
-
-    // 'Floor'
-    // const TEXTURE_FLOOR = new TextureConstant(vec3.fromValues(0.8, 0.8, 0.8));
-
-    // this.addSphere(
-    //   vec3.fromValues(0.0, -100.5, -1.0),
-    //   100,
-    //   new MaterialMetal(TEXTURE_FLOOR, 0.5)
-    // );
   }
 
   // _________________________________________________________________ Animation
@@ -130,7 +123,7 @@ export default class SceneSubsurface extends Scene {
     CAMERA_CONTROLLER.setAperture(0.2);
 
     CAMERA_CONTROLLER.setPosition(-30.0, 30.0, -30.0);
-    CAMERA_CONTROLLER.setPositionTarget(0.0, 3.65, 0.0);
+    CAMERA_CONTROLLER.setPositionTarget(0.0, 3.7, 0.0);
   }
 
   // ________________________________________________________________ Background
