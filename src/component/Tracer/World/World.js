@@ -9,6 +9,7 @@ import SceneLightTest2 from "./SceneLightTest2";
 import SceneCornell from "./SceneCornell";
 import SceneImagePlane from "./SceneImagePlane";
 import SceneSubsurface from "./SceneSubsurface";
+import SceneTestBox from "./SceneTestBox";
 
 export default class World {
   constructor(cameraController) {
@@ -25,7 +26,8 @@ export default class World {
       new SceneLightTest(cameraController),
       new SceneLightTest2(cameraController),
       new SceneCornell(cameraController),
-      new SceneSubsurface(cameraController)
+      new SceneSubsurface(cameraController),
+      new SceneTestBox(cameraController)
     ];
 
     // Default

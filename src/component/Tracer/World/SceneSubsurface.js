@@ -3,9 +3,9 @@ import { vec3 } from "gl-matrix";
 import Scene from "./Scene";
 //import SceneHelper from "./SceneHelper";
 
-import TextureImage from "../Texture/TextureImage";
+//import TextureImage from "../Texture/TextureImage";
 
-//import MaterialDielectric from "../Material/MaterialDielectric";
+import MaterialDielectric from "../Material/MaterialDielectric";
 import MaterialMetal from "../Material/MaterialMetal";
 
 //import MaterialIsotropic from "../Material/MaterialIsotropic";
@@ -15,6 +15,8 @@ import HitableConstantMedium from "../Hit/HitableConstantMedium";
 import HitableSphere from "../Hit/HitableSphere";
 //import TextureConstant from "../Texture/TextureConstant";
 //import MaterialLambertian from "../Material/MaterialLambertian";
+
+import { HSVtoRGB } from "../Util/colour";
 
 export default class SceneSubsurface extends Scene {
   constructor(cameraController) {
@@ -30,16 +32,66 @@ export default class SceneSubsurface extends Scene {
     // new SceneHelper(this, 5.0, 0.2);
 
     // Volume
-    const TEXTURE_SPHERE = new TextureConstant(vec3.fromValues(0.0, 0.0, 0.0));
+    // const TEXTURE_SPHERE = new TextureConstant(vec3.fromValues(0.0, 0.0, 0.0));
 
-    const SPHERE = new HitableSphere(vec3.fromValues(0.0, 5.01, 0.0), 4.0);
+    // const SPHERE = new HitableSphere(vec3.fromValues(0.0, 5.01, 0.0), 1.0);
 
-    this.HITABLES.push(new HitableConstantMedium(SPHERE, 0.5, TEXTURE_SPHERE));
+    // this.HITABLES.push(new HitableConstantMedium(SPHERE, 1.0, TEXTURE_SPHERE));
+
+    // Volumes
+    const TOTAL = 7;
+    const RADIUS_MIN = 2.0;
+    const RADIUS_INCREMENT = (5.0 - RADIUS_MIN) / TOTAL;
+
+    const PROGRESS_INTERVAL = 1.0 / TOTAL;
+
+    const DENSITY_MIN = 0.01;
+    const DENSITY_MAX = 0.15;
+    const DENSITY_INTERVAL = (DENSITY_MAX - DENSITY_MIN) / TOTAL;
+
+    let colour;
+    let texture;
+    let sphere;
+
+    let i;
+
+    for (i = 0; i < TOTAL; i++) {
+      colour = HSVtoRGB(PROGRESS_INTERVAL * i, 0.8, 0.8);
+
+      texture = new TextureConstant(
+        vec3.fromValues(colour.r, colour.g, colour.b)
+      );
+
+      sphere = new HitableSphere(
+        vec3.fromValues(0.0, 5.01, 0.0),
+        RADIUS_MIN + RADIUS_INCREMENT * i
+      );
+
+      this.HITABLES.push(
+        new HitableConstantMedium(
+          sphere,
+          DENSITY_MAX - DENSITY_INTERVAL * i,
+          texture
+        )
+      );
+    }
 
     // Dielectric
-    // const MATERIAL_DIELECTRIC = new MaterialDielectric(1.0);
-    // this.addSphere(vec3.fromValues(0.0, 5.01, 0.0), 5.0, MATERIAL_DIELECTRIC);
-    // this.addSphere(vec3.fromValues(0.0, 5.01, 0.0), -4.5, MATERIAL_DIELECTRIC);
+    const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
+
+    this.addSphere(vec3.fromValues(10.02, 5.01, 0.0), 5.0, MATERIAL_DIELECTRIC);
+    this.addSphere(
+      vec3.fromValues(10.02, 5.01, 0.0),
+      -4.5,
+      MATERIAL_DIELECTRIC
+    );
+
+    this.addSphere(vec3.fromValues(0.0, 5.01, 10.02), 5.0, MATERIAL_DIELECTRIC);
+    this.addSphere(
+      vec3.fromValues(0.0, 5.01, 10.02),
+      -4.5,
+      MATERIAL_DIELECTRIC
+    );
 
     // Environment reflections
     // const TEXTURE_REFLECTION_BLOCK = new TextureConstant(1.0, 1.0, 1.0);
@@ -75,10 +127,13 @@ export default class SceneSubsurface extends Scene {
     // }
 
     // Floor Plane
-    const TEXTURE_FLOOR = new TextureImage(
-      this.getTextureImageDimensions(3),
-      this.getTextureImageData(3)
-    );
+    // const TEXTURE_FLOOR = new TextureImage(
+    //   this.getTextureImageDimensions(3),
+    //   this.getTextureImageData(3)
+    // );
+
+    const TEXTURE_FLOOR = new TextureConstant(vec3.fromValues(1.0, 1.0, 1.0));
+
     const MATERIAL_FLOOR = new MaterialMetal(TEXTURE_FLOOR, 0.1);
 
     const DIMENSIONS_FLOOR = 8.0;
@@ -123,7 +178,7 @@ export default class SceneSubsurface extends Scene {
     CAMERA_CONTROLLER.setAperture(0.2);
 
     CAMERA_CONTROLLER.setPosition(-30.0, 30.0, -30.0);
-    CAMERA_CONTROLLER.setPositionTarget(0.0, 3.7, 0.0);
+    CAMERA_CONTROLLER.setPositionTarget(0.0, 5.3, 0.0);
   }
 
   // ________________________________________________________________ Background

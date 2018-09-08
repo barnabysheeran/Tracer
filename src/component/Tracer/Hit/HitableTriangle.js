@@ -9,36 +9,22 @@ export default class HitableTriangle extends Hitable {
     super();
 
     // Vertex
-    this.VERTEX0 = v0;
-    this.VERTEX1 = v1;
-    this.VERTEX2 = v2;
+    this.VERTEX0 = null;
+    this.VERTEX1 = null;
+    this.VERTEX2 = null;
 
     // Edges
-    this.EDGE1 = vec3.fromValues(
-      this.VERTEX1[0] - this.VERTEX0[0],
-      this.VERTEX1[1] - this.VERTEX0[1],
-      this.VERTEX1[2] - this.VERTEX0[2]
-    );
-
-    this.EDGE2 = vec3.fromValues(
-      this.VERTEX2[0] - this.VERTEX0[0],
-      this.VERTEX2[1] - this.VERTEX0[1],
-      this.VERTEX2[2] - this.VERTEX0[2]
-    );
+    this.EDGE1 = null;
+    this.EDGE2 = null;
 
     // Normal
     this.NORMAL = vec3.create();
-    vec3.cross(this.NORMAL, this.EDGE1, this.EDGE2);
-    this.NORMAL = vec3.normalize(this.NORMAL, this.NORMAL);
+
+    // Set Vertex, build edges, center and normal
+    this.setVertex(v0, v1, v2);
 
     // Material
     this.MATERIAL = material;
-
-    // BB
-    this.createBoundingBox();
-
-    // Center
-    this.generatePositionCenter();
 
     // Texture Coordinates
     this.textureCoordinatesFlipped = false;
@@ -58,7 +44,6 @@ export default class HitableTriangle extends Hitable {
 
     // Hit
     const RAY_ORIGIN = ray.getPositionOrigin();
-    //const RAY_DIRECTION = ray.getDirectionNormalized();
     const RAY_DIRECTION = ray.getDirection();
 
     const EPSILON = 0.0000001;
@@ -67,15 +52,13 @@ export default class HitableTriangle extends Hitable {
     const EDGE1 = this.EDGE1;
     const EDGE2 = this.EDGE2;
 
-    // const NORMAL = this.NORMAL;
-
     const H = vec3.create();
     vec3.cross(H, RAY_DIRECTION, EDGE2);
 
     const A = vec3.dot(EDGE1, H);
     if (A > -EPSILON && A < EPSILON) return false;
 
-    // One sided
+    // One sided // TODO Pass as param
     if (A < 0) {
       return false;
     }
@@ -120,18 +103,36 @@ export default class HitableTriangle extends Hitable {
     } else return false; // Line intersection but not a ray intersection.
   }
 
-  // ____________________________________________________________________ Normal
+  // ____________________________________________________________________ Vertex
 
-  setNormal(x, y, z) {
-    this.NORMAL[0] = x;
-    this.NORMAL[1] = y;
-    this.NORMAL[2] = z;
-  }
+  setVertex(v0, v1, v2) {
+    // Vertex
+    this.VERTEX0 = v0;
+    this.VERTEX1 = v1;
+    this.VERTEX2 = v2;
 
-  flipNormal() {
-    this.NORMAL[0] = -this.NORMAL[0];
-    this.NORMAL[1] = -this.NORMAL[1];
-    this.NORMAL[2] = -this.NORMAL[2];
+    // Edges
+    this.EDGE1 = vec3.fromValues(
+      this.VERTEX1[0] - this.VERTEX0[0],
+      this.VERTEX1[1] - this.VERTEX0[1],
+      this.VERTEX1[2] - this.VERTEX0[2]
+    );
+
+    this.EDGE2 = vec3.fromValues(
+      this.VERTEX2[0] - this.VERTEX0[0],
+      this.VERTEX2[1] - this.VERTEX0[1],
+      this.VERTEX2[2] - this.VERTEX0[2]
+    );
+
+    // Generate Normal
+    vec3.cross(this.NORMAL, this.EDGE1, this.EDGE2);
+    this.NORMAL = vec3.normalize(this.NORMAL, this.NORMAL);
+
+    // BB
+    this.createBoundingBox();
+
+    // Center
+    this.generatePositionCenter();
   }
 
   // ______________________________________________________________________ AABB

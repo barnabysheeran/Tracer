@@ -5,6 +5,7 @@ import HitableTriangle from "../Hit/HitableTriangle";
 import HitablePlaneHolder from "../Hit/HitablePlaneHolder";
 
 import HitableNode from "../Hit/HitableNode";
+import HitableBox from "../Hit/HitableBox";
 
 export default class Scene {
   constructor(cameraController) {
@@ -62,28 +63,8 @@ export default class Scene {
 
   // _______________________________________________________________________ Box
 
-  addBox(p0, p1, p2, p3, p4, p5, p6, p7, material) {
-    const PLANE_0 = this.addPlane(p0, p1, p2, p3, material); // TODO
-    const PLANE_1 = this.addPlane(p0, p1, p2, p3, material); // TODO
-    const PLANE_2 = this.addPlane(p0, p1, p2, p3, material); // TODO
-    const PLANE_3 = this.addPlane(p0, p1, p2, p3, material); // TODO
-    const PLANE_4 = this.addPlane(p0, p1, p2, p3, material); // TODO
-    const PLANE_5 = this.addPlane(p0, p1, p2, p3, material); // TODO
-
-    return [
-      PLANE_0[0],
-      PLANE_0[1],
-      PLANE_1[0],
-      PLANE_1[1],
-      PLANE_2[0],
-      PLANE_2[1],
-      PLANE_3[0],
-      PLANE_3[1],
-      PLANE_4[0],
-      PLANE_4[1],
-      PLANE_5[0],
-      PLANE_5[1]
-    ];
+  addBox(width, height, depth, material) {
+    return new HitableBox(this, width, height, depth, material);
   }
 
   // _______________________________________________________________________ BVH
