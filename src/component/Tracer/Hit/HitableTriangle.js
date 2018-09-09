@@ -200,7 +200,7 @@ export default class HitableTriangle extends Hitable {
 
   // _______________________________________________________ Texture Coordinates
 
-  flipTextureCoordinates() {
-    this.textureCoordinatesFlipped = true;
+  flipTextureCoordinates(flip) {
+    this.textureCoordinatesFlipped = flip;
   }
 }

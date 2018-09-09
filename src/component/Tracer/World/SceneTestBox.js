@@ -1,9 +1,9 @@
-import { vec3 } from "gl-matrix";
+import { vec3, quat } from "gl-matrix";
 
 import Scene from "./Scene";
 import SceneHelper from "./SceneHelper";
 
-import TextureConstant from "../Texture/TextureConstant";
+import TextureImage from "../Texture/TextureImage";
 
 import MaterialMetal from "../Material/MaterialMetal";
 
@@ -21,13 +21,20 @@ export default class SceneTestBox extends Scene {
     new SceneHelper(this, 5.0, 0.2);
 
     // Box
-    const TEXTURE_BOX = new TextureConstant(vec3.fromValues(1.0, 0.5, 0.5));
+    const TEXTURE_BOX = new TextureImage(
+      this.getTextureImageDimensions(2),
+      this.getTextureImageData(2)
+    );
+
     const MATERIAL_BOX = new MaterialMetal(TEXTURE_BOX, 0.1);
 
     const BOX = this.addBox(5.0, 5.0, 5.0, MATERIAL_BOX);
 
-    // TODO setPosition();
-    // TODO setRotation();
+    const ROTATION = quat.create();
+    quat.fromEuler(ROTATION, 45.0, 45.0, 45.0);
+
+    BOX.setRotation(ROTATION);
+    //BOX.setPosition(vec3.fromValues(5.0, 0.0, 0.0));
 
     // Floor
   }
@@ -43,7 +50,7 @@ export default class SceneTestBox extends Scene {
     CAMERA_CONTROLLER.setFov(17.0);
     CAMERA_CONTROLLER.setAperture(0.2);
 
-    CAMERA_CONTROLLER.setPosition(-30.0, 30.0, -30.0);
+    CAMERA_CONTROLLER.setPosition(30.0, 30.0, 0.0);
     CAMERA_CONTROLLER.setPositionTarget(0.0, 0.0, 0.0);
   }
 

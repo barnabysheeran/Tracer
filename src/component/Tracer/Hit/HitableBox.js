@@ -18,10 +18,10 @@ export default class HitableBox extends Hitable {
     this.V_3 = vec3.fromValues(-WIDTH_HALF, HEIGHT_HALF, -DEPTH_HALF);
 
     // Untranslated Positions Bottom
-    this.V_4 = vec3.fromValues(0.0, -HEIGHT_HALF, 0.0);
-    this.V_5 = vec3.fromValues(0.0, -HEIGHT_HALF, 0.0);
-    this.V_6 = vec3.fromValues(0.0, -HEIGHT_HALF, 0.0);
-    this.V_7 = vec3.fromValues(0.0, -HEIGHT_HALF, 0.0);
+    this.V_4 = vec3.fromValues(-WIDTH_HALF, -HEIGHT_HALF, DEPTH_HALF);
+    this.V_5 = vec3.fromValues(WIDTH_HALF, -HEIGHT_HALF, DEPTH_HALF);
+    this.V_6 = vec3.fromValues(WIDTH_HALF, -HEIGHT_HALF, -DEPTH_HALF);
+    this.V_7 = vec3.fromValues(-WIDTH_HALF, -HEIGHT_HALF, -DEPTH_HALF);
 
     // Rotation
     this.ROTATION = quat.create();
@@ -35,11 +35,12 @@ export default class HitableBox extends Hitable {
     const P_TEMP = vec3.create();
 
     let i;
+
     for (i = 0; i < 12; i++) {
       this.TRIANGLES[i] = scene.addTriangle(P_TEMP, P_TEMP, P_TEMP, material);
     }
 
-    // Set triangle positions and create BB
+    // Set triangle positions
     this.update();
   }
 
@@ -61,6 +62,8 @@ export default class HitableBox extends Hitable {
 
   update() {
     const TRIANGLES = this.TRIANGLES;
+    const POSITION = this.POSITION;
+    const ROTATION = this.ROTATION;
 
     const VP_0 = vec3.clone(this.V_0);
     const VP_1 = vec3.clone(this.V_1);
@@ -72,48 +75,59 @@ export default class HitableBox extends Hitable {
     const VP_6 = vec3.clone(this.V_6);
     const VP_7 = vec3.clone(this.V_7);
 
-    // TODO Rotate
+    // Rotate
+    vec3.transformQuat(VP_0, VP_0, ROTATION);
+    vec3.transformQuat(VP_1, VP_1, ROTATION);
+    vec3.transformQuat(VP_2, VP_2, ROTATION);
+    vec3.transformQuat(VP_3, VP_3, ROTATION);
 
-    // TODO Translate
+    vec3.transformQuat(VP_4, VP_4, ROTATION);
+    vec3.transformQuat(VP_5, VP_5, ROTATION);
+    vec3.transformQuat(VP_6, VP_6, ROTATION);
+    vec3.transformQuat(VP_7, VP_7, ROTATION);
 
-    // Set Triangles Top
-    this.TRIANGLES[0].setVertex(VP_0, VP_1, VP_3);
-    this.TRIANGLES[1].setVertex(VP_2, VP_3, VP_1);
-    this.TRIANGLES[1].flipTextureCoordinates();
+    // Translate
+    vec3.add(VP_0, VP_0, POSITION);
+    vec3.add(VP_1, VP_1, POSITION);
+    vec3.add(VP_2, VP_2, POSITION);
+    vec3.add(VP_3, VP_3, POSITION);
 
-    // TODO Create BB ?
+    vec3.add(VP_4, VP_4, POSITION);
+    vec3.add(VP_5, VP_5, POSITION);
+    vec3.add(VP_6, VP_6, POSITION);
+    vec3.add(VP_7, VP_7, POSITION);
 
-    // Go through triangles and change their position
-    // // Planes
-    // const PLANE_TOP = new HitablePlaneHolder();
-    // const PLANE_BOTTOM = new HitablePlaneHolder();
-    // const PLANE_LEFT = new HitablePlaneHolder();
-    // const PLANE_RIGHT = new HitablePlaneHolder();
-    // const PLANE_FRONT = new HitablePlaneHolder();
-    // const PLANE_BACK = new HitablePlaneHolder();
-    // this.TRIANGLES = [];
-    // // Bottom
-    // this.TRIANGLES.push(
-    //   new HitableTriangle(this.p0, this.p1, this.p2, material)
-    // );
-    // this.TRIANGLES.push(
-    //   new HitableTriangle(this.p0, this.p1, this.p2, material)
-    // );
-    // // Left
-    // this.TRIANGLES.push(
-    //   new HitableTriangle(this.p0, this.p1, this.p2, material)
-    // );
-    // this.TRIANGLES.push(
-    //   new HitableTriangle(this.p0, this.p1, this.p2, material)
-    // );
-    // // Right
-    // let i;
-    // for (i = 0; i < this.TRIANGLES.length; i++) {
-    //   scene.addTriangle(this.TRIANGLES[i]);
-    // }
-    // // Rotation
-    // // Position
-    // // BB
+    // Top
+    TRIANGLES[0].setVertex(VP_0, VP_1, VP_3);
+    TRIANGLES[1].setVertex(VP_2, VP_3, VP_1);
+    TRIANGLES[1].flipTextureCoordinates(true);
+
+    // Front
+    TRIANGLES[2].setVertex(VP_4, VP_5, VP_0);
+    TRIANGLES[3].setVertex(VP_1, VP_0, VP_5);
+    TRIANGLES[3].flipTextureCoordinates(true);
+
+    // Left
+    TRIANGLES[4].setVertex(VP_7, VP_4, VP_3);
+    TRIANGLES[5].setVertex(VP_0, VP_3, VP_4);
+    TRIANGLES[5].flipTextureCoordinates(true);
+
+    // Right
+    TRIANGLES[6].setVertex(VP_5, VP_6, VP_1);
+    TRIANGLES[7].setVertex(VP_2, VP_1, VP_6);
+    TRIANGLES[7].flipTextureCoordinates(true);
+
+    // Back
+    TRIANGLES[8].setVertex(VP_6, VP_7, VP_2);
+    TRIANGLES[9].setVertex(VP_3, VP_2, VP_7);
+    TRIANGLES[9].flipTextureCoordinates(true);
+
+    // Bottom
+    TRIANGLES[10].setVertex(VP_4, VP_7, VP_5);
+    TRIANGLES[11].setVertex(VP_6, VP_5, VP_7);
+    TRIANGLES[11].flipTextureCoordinates(true);
+
+    // TODO Create BB for Constant Medium
   }
 
   // _______________________________________________________________________ Hit
@@ -123,5 +137,7 @@ export default class HitableBox extends Hitable {
     tMin;
     tMax;
     hitRecord;
+
+    // TODO BB hit for Constant Medium
   }
 }
