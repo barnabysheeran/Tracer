@@ -56,6 +56,8 @@ export default class HitableBox extends Hitable {
 
   setRotation(rotation) {
     this.ROTATION = rotation;
+
+    this.update();
   }
 
   // ____________________________________________________________________ Update

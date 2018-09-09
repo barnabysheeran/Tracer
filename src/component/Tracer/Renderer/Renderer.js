@@ -100,8 +100,11 @@ export default class Renderer {
     this.timeFrameStart = this.frame * this.timeFrameInterval;
 
     this.setStatus(
-      "Render. Frame " + (this.frame + 1) + " of " + (this.frameMax + 1)
+      "Render. Frame " + (this.frame + 1) + " of " + this.frameMax
     );
+
+    // Build BVH
+    this.buildBVH();
 
     // Start
     let i;
@@ -150,7 +153,7 @@ export default class Renderer {
         "Render. Frame " +
           (this.frame + 1) +
           " of " +
-          (this.frameMax + 1) +
+          this.frameMax +
           ". " +
           ((1.0 / this.PIXEL_HEIGHT) * this.row * 100).toFixed(2) +
           "%"
@@ -263,6 +266,19 @@ export default class Renderer {
         messageType: "setScene",
         sceneId: sceneId,
         timeFrameInterval: this.timeFrameInterval
+      });
+    }
+  }
+
+  buildBVH() {
+    const WORKER_TOTAL = this.WORKER_TOTAL;
+    const WORKER_POOL = this.WORKER_POOL;
+
+    let i;
+
+    for (i = 0; i < WORKER_TOTAL; i++) {
+      WORKER_POOL[i].postMessage({
+        messageType: "buildBVH"
       });
     }
   }

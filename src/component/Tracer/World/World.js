@@ -10,6 +10,7 @@ import SceneCornell from "./SceneCornell";
 import SceneImagePlane from "./SceneImagePlane";
 import SceneSubsurface from "./SceneSubsurface";
 import SceneTestBox from "./SceneTestBox";
+import SceneTestEnvironment from "./SceneTestEnvironment";
 
 export default class World {
   constructor(cameraController) {
@@ -27,7 +28,8 @@ export default class World {
       new SceneLightTest2(cameraController),
       new SceneCornell(cameraController),
       new SceneSubsurface(cameraController),
-      new SceneTestBox(cameraController)
+      new SceneTestBox(cameraController),
+      new SceneTestEnvironment(cameraController)
     ];
 
     // Default
@@ -40,6 +42,11 @@ export default class World {
   setScene(sceneId) {
     this.scene = this.SCENES[sceneId];
     this.scene.init();
+  }
+
+  // _______________________________________________________________________ BVH
+
+  buildBVH() {
     this.scene.buildBVH();
   }
 
@@ -59,7 +66,6 @@ export default class World {
 
   setAnimationTime(time) {
     this.scene.setAnimationTime(time);
-    //this.scene.buildBVH();
   }
 
   getAnimationFrameMax() {

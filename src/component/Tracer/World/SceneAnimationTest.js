@@ -14,6 +14,7 @@ export default class SceneAnimationTest extends Scene {
   constructor(cameraController) {
     super(cameraController);
 
+    // Animation
     this.animationFrameMax = 13;
 
     // Center

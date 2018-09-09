@@ -50,6 +50,7 @@ self.addEventListener("message", e => {
       break;
     case "setScene":
       WORLD.setScene(data.sceneId);
+      WORLD.buildBVH();
       timeFrameInterval = data.timeFrameInterval;
       break;
     case "setSamplesAA":
@@ -79,6 +80,9 @@ self.addEventListener("message", e => {
       break;
     case "statisticsReset":
       Statistics.reset();
+      break;
+    case "buildBVH":
+      WORLD.buildBVH();
       break;
     case "statisticsPoll":
       postMessage({
