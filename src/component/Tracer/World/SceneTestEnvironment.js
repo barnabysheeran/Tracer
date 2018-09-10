@@ -12,8 +12,7 @@ export default class SceneTestEnvironment extends Scene {
   constructor(cameraController) {
     super(cameraController);
 
-    // Animation
-    this.animationFrameMax = 250;
+    this.animationFrameMax = 200;
   }
 
   // ______________________________________________________________________ Init
@@ -22,11 +21,13 @@ export default class SceneTestEnvironment extends Scene {
     this.reset();
 
     // Material Metal
-    const TEXTURE_METAL = new TextureConstant(vec3.fromValues(1.0, 1.0, 1.0));
+    const TEXTURE_METAL = new TextureConstant(vec3.fromValues(0.9, 0.9, 0.9));
     const MATERIAL_METAL = new MaterialMetal(TEXTURE_METAL, 0.0);
 
     // Sphere
     this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), 44.0, MATERIAL_METAL);
+    this.addSphere(vec3.fromValues(58.0, 0.0, 0.0), 11.0, MATERIAL_METAL);
+    this.addSphere(vec3.fromValues(0.0, 0.0, 134.0), 88.0, MATERIAL_METAL);
 
     // Environment
     const ENVIRONMENT_TEXTURE = new TextureImage(
@@ -50,11 +51,12 @@ export default class SceneTestEnvironment extends Scene {
 
     const TAU = Math.PI * 2.0;
     const RADIUS = 100.0;
+    const ROTATION = (1.0 / 250) * 129;
 
     CAMERA_CONTROLLER.setPosition(
-      Math.cos(time * TAU) * RADIUS,
+      Math.cos((ROTATION + time) * TAU) * RADIUS,
       0.0,
-      Math.sin(time * TAU) * RADIUS
+      Math.sin((ROTATION + time) * TAU) * RADIUS
     );
     CAMERA_CONTROLLER.setPositionTarget(0.0, 0.0, 0.0);
   }
