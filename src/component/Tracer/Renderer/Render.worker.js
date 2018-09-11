@@ -3,7 +3,6 @@ import { vec3 } from "gl-matrix";
 import "seedrandom"; // TODO Remove with BVH find best split
 Math.seedrandom("thread");
 
-import Statistics from "./../Statistics/Statistics";
 import World from "../World/World";
 import CameraController from "../Camera/CameraController";
 import Ray from "../Ray/Ray";
@@ -65,9 +64,6 @@ self.addEventListener("message", e => {
     case "setFov":
       CAMERA_CONTROLLER.setFov(data.fov);
       break;
-    case "setCameraPositionById":
-      CAMERA_CONTROLLER.setPositionsById(data.positionId);
-      break;
     case "setTextureImageData":
       WORLD.setTextureImageDimensions(data.imageDimensions);
       WORLD.setTextureImageData(data.imageData);
@@ -75,24 +71,11 @@ self.addEventListener("message", e => {
     case "setMeshData":
       WORLD.setMeshes(data.positions, data.normals, data.cells);
       break;
-    case "render":
-      render(data.timeFrameStart, data.row);
-      break;
-    case "statisticsReset":
-      Statistics.reset();
-      break;
     case "buildBVH":
       WORLD.buildBVH();
       break;
-    case "statisticsPoll":
-      postMessage({
-        message: "statisticsPoll",
-        threadId: threadId,
-        intersectionTestsSphere: Statistics.getIntersectionTestsSphere(),
-        intersectionTestsSphereSuccess: Statistics.getIntersectionTestsSphereSuccess(),
-        intersectionTestsTriangle: Statistics.getIntersectionTestsTriangle(),
-        intersectionTestsTriangleSuccess: Statistics.getIntersectionTestsTriangleSuccess()
-      });
+    case "render":
+      render(data.timeFrameStart, data.row);
       break;
   }
 });
@@ -151,6 +134,9 @@ let render = function(timeFrameStart, row) {
 };
 
 // ______________________________________________________________________ Colour
+
+// TODO setTimeout escape call stack ?
+// https://www.toptal.com/javascript/interview-questions
 
 let scattered = new Ray();
 let hitRecord = new HitRecord();

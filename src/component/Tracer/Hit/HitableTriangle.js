@@ -1,6 +1,5 @@
 import { vec3 } from "gl-matrix";
 
-import Statistics from "./../Statistics/Statistics";
 import AABB from "./AABB";
 import Hitable from "./Hitable";
 
@@ -39,8 +38,6 @@ export default class HitableTriangle extends Hitable {
     if (this.boundingBox.didHit(ray, tMin, tMax) == false) {
       return false;
     }
-
-    Statistics.onIntersectionTestTriangle();
 
     // Hit
     const RAY_ORIGIN = ray.getPositionOrigin();
@@ -96,8 +93,6 @@ export default class HitableTriangle extends Hitable {
         hitRecord.u = U;
         hitRecord.v = V;
       }
-
-      Statistics.onIntersectionTestTriangleSuccess();
 
       return true;
     } else return false; // Line intersection but not a ray intersection.

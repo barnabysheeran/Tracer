@@ -1,41 +1,20 @@
-import Statistics from "./../Statistics/Statistics";
 import ImageLibrary from "../Library/ImageLibrary.js";
 import MeshLibrary from "../Library/MeshLibrary.js";
 import World from "../World/World.js";
 import CameraController from "../Camera/CameraController.js";
 import Recorder from "../Recorder/Recorder.js";
 
-import RenderWorker from "./Render.worker.js";
+import Workers from "./Workers";
 
 export default class Renderer {
-  constructor(canvas, setStatus, setStatusStatistics) {
+  constructor(canvas, setStatus) {
     this.setStatus = setStatus;
-    this.setStatusStatistics = setStatusStatistics;
 
     // Context
     this.CONTEXT = canvas.getContext("2d");
 
     // Workers
-    this.WORKER_TOTAL = navigator.hardwareConcurrency || 4;
-
-    this.WORKER_POOL = [];
-
-    this.workersActive;
-
-    let renderWorker;
-
-    for (let i = 0; i < this.WORKER_TOTAL; i++) {
-      renderWorker = new RenderWorker();
-
-      // Init
-      renderWorker.postMessage({ messageType: "init", threadId: i });
-
-      // Receive
-      renderWorker.onmessage = this.onRenderWorkerMessage.bind(this);
-
-      // Store
-      this.WORKER_POOL[i] = renderWorker;
-    }
+    this.WORKERS = new Workers(this);
 
     // Dimensions
     this.PIXEL_WIDTH = -1;
@@ -44,17 +23,15 @@ export default class Renderer {
     // Time
     this.timeRenderStart = 0;
 
+    // Rows
+    this.rowsComplete = 0;
+
     // Frames
     this.frame = 0;
     this.frameMax = 0;
 
     // Time
-    this.timeFrameStart = 0.0;
     this.timeFrameInterval = 1.0;
-
-    // Var
-    this.row = 0;
-    this.isRendering = false;
 
     // Recorder
     this.saveOutput = false;
@@ -70,118 +47,46 @@ export default class Renderer {
     // Create local World
     this.WORLD = new World(new CameraController());
 
-    // TODO Refactor
+    // TODO Refactor away, meshes are included in source
     this.onMeshLibraryLoaded();
+
+    // Status
+    this.setStatusReady();
   }
 
-  // _____________________________________________________________________ Start
+  // ____________________________________________________________________ Render
 
   startAnimation() {
-    // Statistics
-    this.statisticsReset();
-
-    // Record Time
+    // Render Time
     let d = new Date();
     this.timeRenderStart = d.getTime();
 
     // Start
     this.frame = 0;
-    this.isRendering = true;
+    this.rowsComplete = 0;
+
     this.startFrame();
   }
 
   startFrame() {
-    const WORKER_TOTAL = this.WORKER_TOTAL;
+    // Status
+    this.setStatusRendering();
 
     // Workers
-    this.workersActive = this.WORKER_TOTAL;
-
-    // Time
-    this.timeFrameStart = this.frame * this.timeFrameInterval;
-
-    this.setStatus(
-      "Render. Frame " + (this.frame + 1) + " of " + this.frameMax
-    );
-
-    // Build BVH
-    this.buildBVH();
-
-    // Start
-    let i;
-
-    for (i = 0; i < WORKER_TOTAL; i++) {
-      this.startWorker(i, i);
-    }
-
-    // Row
-    this.row = WORKER_TOTAL;
-  }
-
-  startWorker(workerId, row) {
-    this.WORKER_POOL[workerId].postMessage({
-      messageType: "render",
-      timeFrameStart: this.timeFrameStart,
-      row: row
-    });
-  }
-
-  onRenderWorkerMessage(e) {
-    let data = e.data;
-
-    if (data.message == "complete") {
-      this.onRowComplete(data.threadId, data.row, data.imageDataData);
-    }
-
-    if (data.message == "statisticsPoll") {
-      Statistics.addIntersectionTestsSphere(data.intersectionTestsSphere);
-      Statistics.addIntersectionTestsSphereSuccess(
-        data.intersectionTestsSphereSuccess
-      );
-
-      Statistics.addIntersectionTestsTriangle(data.intersectionTestsTriangle);
-      Statistics.addIntersectionTestsTriangleSuccess(
-        data.intersectionTestsTriangleSuccess
-      );
-
-      this.statisticsUpdateDisplay();
-    }
-  }
-
-  onRowComplete(threadId, row, imageDataData) {
-    if (this.isRendering == true) {
-      this.setStatus(
-        "Render. Frame " +
-          (this.frame + 1) +
-          " of " +
-          this.frameMax +
-          ". " +
-          ((1.0 / this.PIXEL_HEIGHT) * this.row * 100).toFixed(2) +
-          "%"
-      );
-
-      this.drawPixels(row, imageDataData);
-
-      // Next
-      if (this.row < this.PIXEL_HEIGHT) {
-        this.startWorker(threadId, this.row++);
-      } else {
-        this.workersActive--;
-
-        if (this.workersActive == 0) {
-          this.onFrameComplete();
-        }
-      }
-    }
+    this.WORKERS.startFrame(this.frame * this.timeFrameInterval);
   }
 
   drawPixels(row, imageDataData) {
-    const CONTEXT = this.CONTEXT;
+    // Count
+    this.rowsComplete++;
+    this.setStatusRendering();
 
-    const IMAGEDATA = new ImageData(imageDataData, this.PIXEL_WIDTH, 1);
-
-    CONTEXT.save();
-    CONTEXT.putImageData(IMAGEDATA, 0, row);
-    CONTEXT.restore();
+    // Draw
+    this.CONTEXT.putImageData(
+      new ImageData(imageDataData, this.PIXEL_WIDTH, 1),
+      0,
+      row
+    );
   }
 
   onFrameComplete() {
@@ -193,10 +98,6 @@ export default class Renderer {
     // Frame
     this.frame++;
 
-    // Time
-    this.timeFrameStart = this.frame * this.timeFrameInterval;
-    //this.timeFrameEnd = (this.frame + 1) * this.timeFrameInterval;
-
     if (this.frame >= this.frameMax) {
       this.onRenderComplete();
     } else {
@@ -205,16 +106,7 @@ export default class Renderer {
   }
 
   onRenderComplete() {
-    // Statistics
-    this.statisticsPoll();
-
-    // Status
-    let d = new Date();
-    let timeTaken = d.getTime() - this.timeRenderStart;
-    this.setStatus("Frame complete. " + (timeTaken / 1000).toFixed(2) + "s");
-
-    // Done
-    this.isRendering = false;
+    this.setStatusComplete();
   }
 
   // _____________________________________________________________________ Clear
@@ -224,29 +116,14 @@ export default class Renderer {
     CONTEXT.fillStyle = "#000000";
     CONTEXT.fillRect(0, 0, this.PIXEL_WIDTH, this.PIXEL_HEIGHT);
 
-    this.isRendering = false;
+    // Workers
+    this.WORKERS.clear();
+
+    // Status
+    this.setStatusReady();
   }
 
-  // ______________________________________________________________ Set Threaded
-
-  // TODO Thread controller
-
-  shape(w, h) {
-    this.PIXEL_WIDTH = w;
-    this.PIXEL_HEIGHT = h;
-
-    // Scene
-    const WORKER_TOTAL = this.WORKER_TOTAL;
-    const WORKER_POOL = this.WORKER_POOL;
-
-    for (let i = 0; i < WORKER_TOTAL; i++) {
-      WORKER_POOL[i].postMessage({
-        messageType: "shape",
-        pixelWidth: w,
-        pixelHeight: h
-      });
-    }
-  }
+  // _____________________________________________________________________ Scene
 
   setScene(sceneId) {
     // Animation Frames
@@ -256,217 +133,98 @@ export default class Renderer {
     this.timeFrameInterval = 1.0 / this.frameMax;
 
     // Workers
-    const WORKER_TOTAL = this.WORKER_TOTAL;
-    const WORKER_POOL = this.WORKER_POOL;
-
-    let i;
-
-    for (i = 0; i < WORKER_TOTAL; i++) {
-      WORKER_POOL[i].postMessage({
-        messageType: "setScene",
-        sceneId: sceneId,
-        timeFrameInterval: this.timeFrameInterval
-      });
-    }
+    this.WORKERS.setScene(sceneId, this.timeFrameInterval);
   }
 
-  buildBVH() {
-    const WORKER_TOTAL = this.WORKER_TOTAL;
-    const WORKER_POOL = this.WORKER_POOL;
+  // _____________________________________________________________________ Shape
 
-    let i;
+  shape(w, h) {
+    this.PIXEL_WIDTH = w;
+    this.PIXEL_HEIGHT = h;
 
-    for (i = 0; i < WORKER_TOTAL; i++) {
-      WORKER_POOL[i].postMessage({
-        messageType: "buildBVH"
-      });
-    }
+    this.WORKERS.shape(w, h);
   }
+
+  // __________________________________________________________________ Settings
 
   setAASamples(samples) {
-    const WORKER_TOTAL = this.WORKER_TOTAL;
-    const WORKER_POOL = this.WORKER_POOL;
-
-    let i;
-
-    for (i = 0; i < WORKER_TOTAL; i++) {
-      WORKER_POOL[i].postMessage({
-        messageType: "setSamplesAA",
-        samples: samples
-      });
-    }
+    this.WORKERS.setAASamples(samples);
   }
 
   setBounceMax(bounceMax) {
-    const WORKER_TOTAL = this.WORKER_TOTAL;
-    const WORKER_POOL = this.WORKER_POOL;
-
-    let i;
-
-    for (i = 0; i < WORKER_TOTAL; i++) {
-      WORKER_POOL[i].postMessage({
-        messageType: "setBounceMax",
-        bounceMax: bounceMax
-      });
-    }
+    this.WORKERS.setBounceMax(bounceMax);
   }
 
   setAperture(aperture) {
-    const WORKER_TOTAL = this.WORKER_TOTAL;
-    const WORKER_POOL = this.WORKER_POOL;
-
-    let i;
-
-    for (i = 0; i < WORKER_TOTAL; i++) {
-      WORKER_POOL[i].postMessage({
-        messageType: "setAperture",
-        aperture: aperture
-      });
-    }
+    this.WORKERS.setAperture(aperture);
   }
 
   setFov(fov) {
-    const WORKER_TOTAL = this.WORKER_TOTAL;
-    const WORKER_POOL = this.WORKER_POOL;
-
-    let i;
-
-    for (i = 0; i < WORKER_TOTAL; i++) {
-      WORKER_POOL[i].postMessage({
-        messageType: "setFov",
-        fov: fov
-      });
-    }
+    this.WORKERS.setFov(fov);
   }
-
-  setCameraPositionById(positionId) {
-    const WORKER_TOTAL = this.WORKER_TOTAL;
-    const WORKER_POOL = this.WORKER_POOL;
-
-    let i;
-
-    for (i = 0; i < WORKER_TOTAL; i++) {
-      WORKER_POOL[i].postMessage({
-        messageType: "setCameraPositionById",
-        positionId: positionId
-      });
-    }
-  }
-
-  onImageLibraryLoaded() {
-    const WORKER_TOTAL = this.WORKER_TOTAL;
-    const WORKER_POOL = this.WORKER_POOL;
-
-    const IMAGE_DIMENSIONS = this.IMAGE_LIBRARY.getImageDimensions();
-    const IMAGE_DATA = this.IMAGE_LIBRARY.getImageData();
-
-    let i;
-
-    for (i = 0; i < WORKER_TOTAL; i++) {
-      WORKER_POOL[i].postMessage({
-        messageType: "setTextureImageData",
-        imageDimensions: IMAGE_DIMENSIONS,
-        imageData: IMAGE_DATA
-      });
-    }
-
-    this.libraryImageLoaded = true;
-    this.showLoadStatus();
-  }
-
-  onMeshLibraryLoaded() {
-    const WORKER_TOTAL = this.WORKER_TOTAL;
-    const WORKER_POOL = this.WORKER_POOL;
-
-    const POSITIONS = this.MESH_LIBRARY.getPositions();
-    const NORMALS = this.MESH_LIBRARY.getNormals();
-    const CELLS = this.MESH_LIBRARY.getCells();
-
-    let i;
-
-    for (i = 0; i < WORKER_TOTAL; i++) {
-      WORKER_POOL[i].postMessage({
-        messageType: "setMeshData",
-        positions: POSITIONS,
-        normals: NORMALS,
-        cells: CELLS
-      });
-    }
-
-    this.libraryMeshLoaded = true;
-    this.showLoadStatus();
-  }
-
-  // ________________________________________________________________ Statistics
-
-  statisticsReset() {
-    // Main
-    Statistics.reset();
-    this.setStatusStatistics("...");
-
-    // Workers
-    const WORKER_TOTAL = this.WORKER_TOTAL;
-    const WORKER_POOL = this.WORKER_POOL;
-
-    let i;
-
-    for (i = 0; i < WORKER_TOTAL; i++) {
-      WORKER_POOL[i].postMessage({
-        messageType: "statisticsReset"
-      });
-    }
-  }
-
-  statisticsPoll() {
-    const WORKER_TOTAL = this.WORKER_TOTAL;
-    const WORKER_POOL = this.WORKER_POOL;
-
-    let i;
-
-    for (i = 0; i < WORKER_TOTAL; i++) {
-      WORKER_POOL[i].postMessage({
-        messageType: "statisticsPoll"
-      });
-    }
-  }
-
-  statisticsUpdateDisplay() {
-    this.setStatusStatistics(
-      "Sphere " +
-        Statistics.getIntersectionTestsSphere() +
-        " " +
-        Statistics.getIntersectionTestsSphereSuccess() +
-        " " +
-        (
-          (1.0 / Statistics.getIntersectionTestsSphere()) *
-          Statistics.getIntersectionTestsSphereSuccess() *
-          100.0
-        ).toFixed(2) +
-        "% Triangle " +
-        Statistics.getIntersectionTestsTriangle() +
-        " " +
-        Statistics.getIntersectionTestsTriangleSuccess() +
-        " " +
-        (
-          (1.0 / Statistics.getIntersectionTestsTriangle()) *
-          Statistics.getIntersectionTestsTriangleSuccess() *
-          100
-        ).toFixed(2) +
-        "%"
-    );
-  }
-
-  // ___________________________________________________________________ Loading
-
-  showLoadStatus() {
-    if (this.libraryImageLoaded == true && this.libraryMeshLoaded) {
-      this.setStatus("Ready. " + this.WORKER_TOTAL + " workers");
-    }
-  }
-
-  // _______________________________________________________________________ Set
 
   setSaveOutput(save) {
     this.saveOutput = save;
+  }
+
+  // ____________________________________________________________________ Assets
+
+  onImageLibraryLoaded() {
+    this.WORKERS.onImageLibraryLoaded(
+      this.IMAGE_LIBRARY.getImageDimensions(),
+      this.IMAGE_LIBRARY.getImageData()
+    );
+
+    this.libraryImageLoaded = true;
+    this.setStatusReady();
+  }
+
+  // TODO Remove, meshes are included in source
+  onMeshLibraryLoaded() {
+    const MESH_LIBRARY = this.MESH_LIBRARY;
+
+    this.WORKERS.onMeshLibraryLoaded(
+      MESH_LIBRARY.getPositions(),
+      MESH_LIBRARY.getNormals(),
+      MESH_LIBRARY.getCells()
+    );
+
+    this.libraryMeshLoaded = true;
+    this.setStatusReady();
+  }
+
+  // ____________________________________________________________________ Status
+
+  setStatusReady() {
+    if (this.libraryImageLoaded == true && this.libraryMeshLoaded == true) {
+      this.setStatus("Ready. " + this.WORKERS.getWorkerTotal() + " workers");
+    } else {
+      this.setStatus("Loading ...");
+    }
+  }
+
+  setStatusRendering() {
+    let complete =
+      ((this.rowsComplete / this.PIXEL_HEIGHT) * 100.0).toFixed(2) + "%";
+
+    if (this.frameMax > 0) {
+      this.setStatus(
+        "Render. Frame " +
+          (this.frame + 1) +
+          " of " +
+          this.frameMax +
+          ". " +
+          complete
+      );
+    } else {
+      this.setStatus("Render. " + complete);
+    }
+  }
+
+  setStatusComplete() {
+    let d = new Date();
+    let timeTaken = d.getTime() - this.timeRenderStart;
+
+    this.setStatus("Render. Complete " + (timeTaken / 1000).toFixed(2) + "s");
   }
 }

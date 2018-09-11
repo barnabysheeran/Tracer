@@ -1,6 +1,5 @@
 import { vec3 } from "gl-matrix";
 
-import Statistics from "./../Statistics/Statistics";
 import AABB from "./AABB";
 import Hitable from "./Hitable";
 
@@ -39,8 +38,6 @@ export default class HitableSphere extends Hitable {
     if (this.boundingBox.didHit(ray, tMin, tMax) == false) {
       return false;
     }
-
-    Statistics.onIntersectionTestSphere();
 
     // Hit
     const POSITION_CENTER = this.positionCenter;
@@ -82,8 +79,6 @@ export default class HitableSphere extends Hitable {
         hitRecord.u = uv[0];
         hitRecord.v = uv[1];
 
-        Statistics.onIntersectionTestSphereSuccess();
-
         return true;
       }
 
@@ -106,8 +101,6 @@ export default class HitableSphere extends Hitable {
 
         hitRecord.u = uv[0];
         hitRecord.v = uv[1];
-
-        Statistics.onIntersectionTestSphereSuccess();
 
         return true;
       }
