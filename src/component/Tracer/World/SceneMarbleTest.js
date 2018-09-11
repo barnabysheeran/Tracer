@@ -1,7 +1,5 @@
 import { vec3 } from "gl-matrix";
 
-import "seedrandom";
-
 import Scene from "./Scene";
 
 import TextureConstant from "../Texture/TextureConstant";
@@ -25,8 +23,6 @@ export default class SceneMarbleTest extends Scene {
     const MATERIAL_SIMPLEX = new MaterialLambertian(TEXTURE_SIMPLEX);
 
     this.addSphere(vec3.fromValues(0.0, 0.0, 0.0), 0.5, MATERIAL_SIMPLEX);
-
-    Math.seedrandom("darkness");
 
     let i;
 

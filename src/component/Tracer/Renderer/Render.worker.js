@@ -1,6 +1,6 @@
 import { vec3 } from "gl-matrix";
 
-import "seedrandom"; // TODO Remove with BVH find best split
+import "seedrandom";
 Math.seedrandom("thread");
 
 import World from "../World/World";

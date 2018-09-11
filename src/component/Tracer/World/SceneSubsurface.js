@@ -28,6 +28,8 @@ export default class SceneSubsurface extends Scene {
   init() {
     this.reset();
 
+    //Math.seedrandom("thread");
+
     // Helper
     // new SceneHelper(this, 5.0, 0.2);
 

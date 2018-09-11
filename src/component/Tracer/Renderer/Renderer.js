@@ -61,16 +61,19 @@ export default class Renderer {
     let d = new Date();
     this.timeRenderStart = d.getTime();
 
-    // Start
+    // Frame
     this.frame = 0;
-    this.rowsComplete = 0;
 
+    // Start
     this.startFrame();
   }
 
   startFrame() {
     // Status
     this.setStatusRendering();
+
+    // Rows
+    this.rowsComplete = 0;
 
     // Workers
     this.WORKERS.startFrame(this.frame * this.timeFrameInterval);
