@@ -118,9 +118,14 @@ let render = function(timeFrameStart, row) {
     colour[2] /= samplesAA;
 
     // Store
-    imageDataData[index] = Math.sqrt(colour[0]) * 255;
-    imageDataData[index + 1] = Math.sqrt(colour[1]) * 255;
-    imageDataData[index + 2] = Math.sqrt(colour[2]) * 255;
+    // imageDataData[index] = Math.sqrt(colour[0]) * 255;
+    // imageDataData[index + 1] = Math.sqrt(colour[1]) * 255;
+    // imageDataData[index + 2] = Math.sqrt(colour[2]) * 255;
+    // imageDataData[index + 3] = 255;
+
+    imageDataData[index] = colour[0] * 255;
+    imageDataData[index + 1] = colour[1] * 255;
+    imageDataData[index + 2] = colour[2] * 255;
     imageDataData[index + 3] = 255;
   }
 

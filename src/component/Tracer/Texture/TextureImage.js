@@ -34,9 +34,9 @@ export default class TextureImage extends Texture {
 
     const INDEX = 4 * i + 4 * PIXELS_X * j;
 
-    const R = Math.floor(TEXTURE_IMAGE_DATA[INDEX]) / 255.0;
-    const G = Math.floor(TEXTURE_IMAGE_DATA[INDEX + 1]) / 255.0;
-    const B = Math.floor(TEXTURE_IMAGE_DATA[INDEX + 2]) / 255.0;
+    const R = TEXTURE_IMAGE_DATA[INDEX] / 255.0;
+    const G = TEXTURE_IMAGE_DATA[INDEX + 1] / 255.0;
+    const B = TEXTURE_IMAGE_DATA[INDEX + 2] / 255.0;
 
     return vec3.fromValues(R, G, B);
   }
