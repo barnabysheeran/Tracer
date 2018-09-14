@@ -7,8 +7,9 @@ import Recorder from "../Recorder/Recorder.js";
 import Workers from "./Workers";
 
 export default class Renderer {
-  constructor(canvas, setStatus) {
+  constructor(canvas, setStatus, setStatistics) {
     this.setStatus = setStatus;
+    this.setStatistics = setStatistics;
 
     // Context
     this.CONTEXT = canvas.getContext("2d");
@@ -129,6 +130,9 @@ export default class Renderer {
   // _____________________________________________________________________ Scene
 
   setScene(sceneId) {
+    // World TODO Remove duplicate WORLD from renderer, communicate first worker
+    this.WORLD.setScene(sceneId);
+
     // Animation Frames
     this.frameMax = this.WORLD.getSceneAnimationFrameMax(sceneId);
 
@@ -137,6 +141,9 @@ export default class Renderer {
 
     // Workers
     this.WORKERS.setScene(sceneId, this.timeFrameInterval);
+
+    // Status
+    this.setStatusStatistics();
   }
 
   // _____________________________________________________________________ Shape
@@ -173,9 +180,16 @@ export default class Renderer {
   // ____________________________________________________________________ Assets
 
   onImageLibraryLoaded() {
+    const IMAGE_LIBRARY = this.IMAGE_LIBRARY;
+
+    // TODO Remove with World removal
+    this.WORLD.setTextureImageDimensions(IMAGE_LIBRARY.getImageDimensions());
+    this.WORLD.setTextureImageData(IMAGE_LIBRARY.getImageData());
+
+    // Workers
     this.WORKERS.onImageLibraryLoaded(
-      this.IMAGE_LIBRARY.getImageDimensions(),
-      this.IMAGE_LIBRARY.getImageData()
+      IMAGE_LIBRARY.getImageDimensions(),
+      IMAGE_LIBRARY.getImageData()
     );
 
     this.libraryImageLoaded = true;
@@ -186,6 +200,14 @@ export default class Renderer {
   onMeshLibraryLoaded() {
     const MESH_LIBRARY = this.MESH_LIBRARY;
 
+    // TODO Remove with World removal
+    this.WORLD.setMeshes(
+      MESH_LIBRARY.getPositions(),
+      MESH_LIBRARY.getNormals(),
+      MESH_LIBRARY.getCells()
+    );
+
+    // Workers
     this.WORKERS.onMeshLibraryLoaded(
       MESH_LIBRARY.getPositions(),
       MESH_LIBRARY.getNormals(),
@@ -229,5 +251,12 @@ export default class Renderer {
     let timeTaken = d.getTime() - this.timeRenderStart;
 
     this.setStatus("Render. Complete " + (timeTaken / 1000).toFixed(2) + "s");
+  }
+
+  // ________________________________________________________________ Statistics
+
+  setStatusStatistics() {
+    // World TODO Remove duplicate WORLD from renderer, communicate first worker
+    this.setStatistics("Triangles: " + this.WORLD.scene.countTriangles);
   }
 }

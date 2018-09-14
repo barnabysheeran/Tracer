@@ -22,6 +22,8 @@ export default class Scene {
     this.meshPositions = [];
     this.meshNormals = [];
     this.meshCells = [];
+
+    this.countTriangles = 0;
   }
 
   // ______________________________________________________________________ Init
@@ -33,6 +35,10 @@ export default class Scene {
   reset() {
     this.HITABLES = [];
     this.BVH_ROOT = null;
+
+    this.countTriangles = 0;
+    // TODO Count Spheres
+    // TODO Count other things
   }
 
   // ____________________________________________________________________ Sphere
@@ -52,18 +58,24 @@ export default class Scene {
 
     this.HITABLES.push(TRIANGLE);
 
+    this.countTriangles++;
+
     return TRIANGLE;
   }
 
   // _____________________________________________________________________ Plane
 
   addPlane(p0, p1, p2, p3, material) {
+    this.countTriangles += 2;
+
     return new HitablePlaneHolder(this, p0, p1, p2, p3, material);
   }
 
   // _______________________________________________________________________ Box
 
   addBox(width, height, depth, material) {
+    this.countTriangles += 12;
+
     return new HitableBox(this, width, height, depth, material);
   }
 

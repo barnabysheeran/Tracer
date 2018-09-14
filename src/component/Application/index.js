@@ -14,7 +14,7 @@ export default class Application extends React.Component {
     // State
     this.state = {
       status: "Initialised",
-      statusStatistics: "..."
+      statistics: "..."
     };
 
     // Scope
@@ -28,7 +28,7 @@ export default class Application extends React.Component {
     this.onClickStart = this.onClickStart.bind(this);
 
     this.setStatus = this.setStatus.bind(this);
-    this.setStatusStatistics = this.setStatusStatistics.bind(this);
+    this.setStatistics = this.setStatistics.bind(this);
   }
 
   // _______________________________________________________________ Interaction
@@ -65,8 +65,8 @@ export default class Application extends React.Component {
     this.setState({ status: status });
   }
 
-  setStatusStatistics(statusStatistics) {
-    this.setState({ statusStatistics: statusStatistics });
+  setStatistics(statistics) {
+    this.setState({ statistics: statistics });
   }
 
   // ____________________________________________________________________ Render
@@ -83,12 +83,12 @@ export default class Application extends React.Component {
           onClickClear={this.onClickClear}
           onClickStart={this.onClickStart}
           status={this.state.status}
-          statusStatistics={this.state.statusStatistics}
+          statistics={this.state.statistics}
         />
         <Tracer
           ref={ref => (this.TRACER = ref)}
           setStatus={this.setStatus}
-          setStatusStatistics={this.setStatusStatistics}
+          setStatistics={this.setStatistics}
         />
       </div>
     );

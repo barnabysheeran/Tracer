@@ -1,4 +1,4 @@
-import { vec3, quat } from "gl-matrix";
+import { vec3 } from "gl-matrix";
 
 import Scene from "./Scene";
 //import SceneHelper from "./SceneHelper";
@@ -7,16 +7,16 @@ import TextureImage from "../Texture/TextureImage";
 import TextureConstant from "../Texture/TextureConstant";
 
 import MaterialMetal from "../Material/MaterialMetal";
+//import MaterialDialectric from "../Material/MaterialDielectric";
 //import MaterialLambertian from "../Material/MaterialLambertian";
 
-import EnvironmentSpherical from "../Environment/EnvironmentSpherical";
+import EnvironmentSpherical from "./../Environment/EnvironmentSpherical";
+//import HitableSphere from "./../Hit/HitableSphere";
+//import HitableConstantMedium from "./../Hit/HitableConstantMedium";
 
 export default class SceneTestBox extends Scene {
   constructor(cameraController) {
     super(cameraController);
-
-    // Animation
-    this.animationFrameMax = 200;
   }
 
   // ______________________________________________________________________ Init
@@ -27,34 +27,78 @@ export default class SceneTestBox extends Scene {
     // Helper
     //new SceneHelper(this, 5.0, 0.2);
 
-    // Material Image
-    // const TEXTURE_IMAGE = new TextureImage(
-    //   this.getTextureImageDimensions(5),
-    //   this.getTextureImageData(5)
-    // );
-
-    // const MATERIAL_IMAGE = new MaterialLambertian(TEXTURE_IMAGE);
+    // Material Glass
+    // const MATERIAL_DIELECTRIC = new MaterialDialectric(1.5);
 
     // Material Metal
-    const TEXTURE_METAL = new TextureConstant(vec3.fromValues(1.0, 1.0, 1.0));
+    const TEXTURE_METAL = new TextureConstant(vec3.fromValues(0.5, 0.5, 0.5));
 
     const MATERIAL_METAL = new MaterialMetal(TEXTURE_METAL, 0.0);
 
-    // Quat
-    let rotation = quat.create();
+    // Box positions
+    this.POSITIONS = [];
+    this.BOXES = [];
 
-    // Box
-    this.BOX = this.addBox(50.0, 50.0, 50.0, MATERIAL_METAL);
+    const ROW = 5;
+    const TOTAL = ROW * ROW * ROW;
+    const SPACING = 10;
+    const OFFSET = -(SPACING * (ROW * 0.5) - SPACING * 0.5);
+    const SIZE = 8;
 
-    quat.fromEuler(rotation, 0.0, 0.0, 0.0);
-    this.BOX.setRotation(rotation);
+    let box;
+    let position;
+    let x = 0;
+    let y = 0;
+    let z = 0;
+    let i;
 
-    this.BOX.setPosition(vec3.fromValues(0.0, 0.0, 0.0));
+    for (i = 0; i < TOTAL; i++) {
+      box = this.addBox(SIZE, SIZE, SIZE, MATERIAL_METAL);
 
-    // Environment
+      position = vec3.fromValues(
+        OFFSET + x * SPACING,
+        OFFSET + y * SPACING,
+        OFFSET + z * SPACING
+      );
+
+      box.setPosition(position);
+
+      this.POSITIONS.push(position);
+      this.BOXES.push(box);
+
+      // Next
+      x++;
+
+      if (x >= ROW) {
+        x = 0;
+        y++;
+        if (y >= ROW) {
+          y = 0;
+          z++;
+          if (z >= ROW) {
+            z = 0;
+          }
+        }
+      }
+    }
+
+    // Environemt Fog
+    // let TEXTURE_FOG = new TextureConstant(vec3.fromValues(0.0, 0.0, 0.0));
+
+    // let SPHERE_FOG = new HitableSphere(
+    //   vec3.fromValues(0.0, 0.0, 0.0),
+    //   500,
+    //   null
+    // );
+
+    // this.HITABLES.push(
+    //   new HitableConstantMedium(SPHERE_FOG, 0.0005, TEXTURE_FOG)
+    // );
+
+    // Environment Image
     const ENVIRONMENT_TEXTURE = new TextureImage(
-      this.getTextureImageDimensions(4),
-      this.getTextureImageData(4)
+      this.getTextureImageDimensions(5),
+      this.getTextureImageData(5)
     );
 
     this.ENVIRONMENT = new EnvironmentSpherical(ENVIRONMENT_TEXTURE);
@@ -63,10 +107,11 @@ export default class SceneTestBox extends Scene {
   // _________________________________________________________________ Animation
 
   setAnimationTime(time) {
+    time;
     // Box
-    let rotation = quat.create();
-    quat.fromEuler(rotation, time * 360.0, time * 360.0, time * 360.0);
-    this.BOX.setRotation(rotation);
+    // let rotation = quat.create();
+    // quat.fromEuler(rotation, time * 360.0, time * 360.0, time * 360.0);
+    // this.BOX.setRotation(rotation);
 
     // Camera
     const CAMERA_CONTROLLER = this.CAMERA_CONTROLLER;

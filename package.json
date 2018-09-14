@@ -37,7 +37,6 @@
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-test-renderer": "^16.4.2",
-    "seedrandom": "^2.4.4",
     "simplex-noise": "^2.4.0",
     "style-loader": "^0.21.0",
     "stylelint": "^9.2.1",

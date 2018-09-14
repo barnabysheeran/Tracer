@@ -13,6 +13,7 @@ export default class Tracer extends React.Component {
 
     // Scope
     this.setStatus = this.setStatus.bind(this);
+    this.setStatistics = this.setStatistics.bind(this);
   }
 
   // _________________________________________________________________ Reference
@@ -25,7 +26,11 @@ export default class Tracer extends React.Component {
 
   componentDidMount() {
     // Renderer
-    this.RENDERER = new Renderer(this.CANVAS, this.setStatus);
+    this.RENDERER = new Renderer(
+      this.CANVAS,
+      this.setStatus,
+      this.setStatistics
+    );
     this.setDimensions([200, 100]);
     this.RENDERER.clear();
   }
@@ -61,8 +66,14 @@ export default class Tracer extends React.Component {
     this.RENDERER.startAnimation();
   }
 
+  // ____________________________________________________________________ Status
+
   setStatus(status) {
     this.props.setStatus(status);
+  }
+
+  setStatistics(status) {
+    this.props.setStatistics(status);
   }
 
   // _____________________________________________________________________ Shape

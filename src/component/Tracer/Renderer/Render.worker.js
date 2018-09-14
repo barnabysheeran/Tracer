@@ -1,7 +1,6 @@
 import { vec3 } from "gl-matrix";
 
-import "seedrandom";
-Math.seedrandom("thread");
+import { initRNG, reSeedRNG } from "../Util/Random";
 
 import World from "../World/World";
 import CameraController from "../Camera/CameraController";
@@ -11,6 +10,11 @@ import HitRecord from "../Hit/HitRecord";
 const CAMERA_CONTROLLER = new CameraController();
 const WORLD = new World(CAMERA_CONTROLLER);
 
+// Init seeded RNG
+let rngSeed = 65749269;
+initRNG(rngSeed);
+
+// Settings
 let threadId = -1;
 
 let samplesAA = 10;
@@ -21,6 +25,7 @@ let pixelHeight = -1;
 
 let timeFrameInterval;
 
+// Colour
 let colour = vec3.create();
 let colourSample = vec3.create();
 let imageDataData = new Uint8ClampedArray();
@@ -71,6 +76,9 @@ self.addEventListener("message", e => {
     case "setMeshData":
       WORLD.setMeshes(data.positions, data.normals, data.cells);
       break;
+    case "seedRNG":
+      reSeedRNG(rngSeed);
+      break;
     case "buildBVH":
       WORLD.buildBVH();
       break;
@@ -85,6 +93,9 @@ self.addEventListener("message", e => {
 let render = function(timeFrameStart, row) {
   let column;
   let index;
+
+  // seed("thread", { global: true });
+  // console.log("Random:" + Math.random());
 
   for (column = 0; column < pixelWidth; column++) {
     // Index
