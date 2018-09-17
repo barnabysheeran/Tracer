@@ -2,8 +2,11 @@ import { vec3 } from "gl-matrix";
 
 import Scene from "./Scene";
 
+import TextureImage from "../Texture/TextureImage";
 import TextureConstant from "../Texture/TextureConstant";
 import MaterialMetal from "../Material/MaterialMetal";
+
+import EnvironmentSpherical from "../Environment/EnvironmentSpherical";
 
 import { HSVtoRGB } from "../Util/colour";
 
@@ -32,7 +35,7 @@ export default class SceneBunny extends Scene {
     );
     const MATERIAL_METAL_WHITE = new MaterialMetal(TEXTURE_METAL_WHITE, 0.05);
 
-    const TEXTURE_METAL = new TextureConstant(vec3.fromValues(0.5, 0.5, 0.5));
+    const TEXTURE_METAL = new TextureConstant(vec3.fromValues(0.9, 0.9, 0.9));
     const MATERIAL_METAL = new MaterialMetal(TEXTURE_METAL, 0.1);
 
     // Mesh
@@ -115,6 +118,14 @@ export default class SceneBunny extends Scene {
       ),
       MATERIAL_METAL
     );
+
+    // Environment
+    const ENVIRONMENT_TEXTURE = new TextureImage(
+      this.getTextureImageDimensions(5),
+      this.getTextureImageData(5)
+    );
+
+    this.ENVIRONMENT = new EnvironmentSpherical(ENVIRONMENT_TEXTURE);
   }
 
   // _________________________________________________________________ Animation
@@ -135,9 +146,11 @@ export default class SceneBunny extends Scene {
   // ________________________________________________________________ Background
 
   getBackground(rayDirectionNormalized) {
-    let t = 0.5 * (rayDirectionNormalized[1] + 1.0);
-    let white = 1.0 - t;
+    return this.ENVIRONMENT.getColour(rayDirectionNormalized);
 
-    return vec3.fromValues(white + 0.5 * t, white + 0.7 * t, white + 1.0 * t);
+    // let t = 0.5 * (rayDirectionNormalized[1] + 1.0);
+    // let white = 1.0 - t;
+
+    // return vec3.fromValues(white + 0.5 * t, white + 0.7 * t, white + 1.0 * t);
   }
 }

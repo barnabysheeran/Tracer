@@ -93,7 +93,7 @@ export default class SceneLightTest2 extends Scene {
     this.addPlane(pXZ, pX, p0, pZ, MATERIAL_LIGHT_GREEN); // Up
 
     const DOWN = this.addPlane(pXZ, pX, p0, pZ, MATERIAL_LIGHT_GREEN); // Down
-    DOWN.flipNormal();
+    //DOWN.flipNormal();
 
     // Floor Sphere
     const TEXTURE_CHECKER_BLACK = new TextureConstant(

@@ -24,6 +24,7 @@ export default class Scene {
     this.meshCells = [];
 
     this.countTriangles = 0;
+    this.countSpheres = 0;
   }
 
   // ______________________________________________________________________ Init
@@ -37,6 +38,8 @@ export default class Scene {
     this.BVH_ROOT = null;
 
     this.countTriangles = 0;
+    this.countSpheres = 0;
+
     // TODO Count Spheres
     // TODO Count other things
   }
@@ -47,6 +50,8 @@ export default class Scene {
     const SPHERE = new HitableSphere(position, radius, material);
 
     this.HITABLES.push(SPHERE);
+
+    this.countSpheres++;
 
     return SPHERE;
   }
