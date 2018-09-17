@@ -38,18 +38,14 @@ export default class Renderer {
     this.saveOutput = false;
     this.RECORDER = new Recorder(canvas);
 
-    // Asset Libraries - Load on main thread
+    // Image Library - Load on main thread
     this.libraryImageLoaded = false;
-    this.libraryMeshLoaded = false;
 
     this.IMAGE_LIBRARY = new ImageLibrary(this);
     this.MESH_LIBRARY = new MeshLibrary(this);
 
     // Create local World
     this.WORLD = new World(new CameraController());
-
-    // TODO Refactor away, meshes are included in source
-    this.onMeshLibraryLoaded();
 
     // Status
     this.setStatusReady();
@@ -192,36 +188,17 @@ export default class Renderer {
       IMAGE_LIBRARY.getImageData()
     );
 
+    this.WORKERS.init();
+
     this.libraryImageLoaded = true;
     this.setStatusReady();
-  }
-
-  // TODO Remove, meshes are included in source
-  onMeshLibraryLoaded() {
-    const MESH_LIBRARY = this.MESH_LIBRARY;
-
-    // TODO Remove with World removal
-    this.WORLD.setMeshes(
-      MESH_LIBRARY.getPositions(),
-      MESH_LIBRARY.getNormals(),
-      MESH_LIBRARY.getCells()
-    );
-
-    // Workers
-    this.WORKERS.onMeshLibraryLoaded(
-      MESH_LIBRARY.getPositions(),
-      MESH_LIBRARY.getNormals(),
-      MESH_LIBRARY.getCells()
-    );
-
-    this.libraryMeshLoaded = true;
-    this.setStatusReady();
+    this.setStatusStatistics();
   }
 
   // ____________________________________________________________________ Status
 
   setStatusReady() {
-    if (this.libraryImageLoaded == true && this.libraryMeshLoaded == true) {
+    if (this.libraryImageLoaded == true) {
       this.setStatus("Ready. " + this.WORKERS.getWorkerTotal() + " workers");
     } else {
       this.setStatus("Loading ...");

@@ -1,15 +1,15 @@
-import testA from "./../../../asset/texture/TextureTestA.png";
-import skymap from "./../../../asset/texture/skymap.jpg";
-import testSquare from "./../../../asset/texture/testSquare.png";
-import baseSquare from "./../../../asset/texture/baseSquare.png";
-import storageRoom from "./../../../asset/texture/storageroom.jpg";
-import tech from "./../../../asset/texture/tech.png";
+import grid from "./../../../asset/texture/grid.png";
+// import skymap from "./../../../asset/texture/skymap.jpg";
+// import testSquare from "./../../../asset/texture/testSquare.png";
+// import baseSquare from "./../../../asset/texture/baseSquare.png";
+// import storageRoom from "./../../../asset/texture/storageroom.jpg";
+// import tech from "./../../../asset/texture/tech.png";
 
 export default class ImageLibrary {
   constructor(renderer) {
     this.RENDERER = renderer;
 
-    this.URLS = [testA, skymap, testSquare, baseSquare, storageRoom, tech];
+    this.URLS = [grid];
 
     this.IMAGE_TOTAL = this.URLS.length;
     this.imageCurrent = 0;

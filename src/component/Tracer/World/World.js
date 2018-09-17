@@ -1,36 +1,38 @@
-import SceneTest from "./SceneTest";
-import SceneAnimationTest from "./SceneAnimationTest";
-import SceneMarbleTest from "./SceneMarbleTest";
-import SceneImageSphere from "./SceneImageSphere";
-import SceneBunny from "./SceneBunny";
-import SceneBunnyStanford from "./SceneBunnyStanford";
-import SceneLightTest from "./SceneLightTest";
-import SceneLightTest2 from "./SceneLightTest2";
-import SceneCornell from "./SceneCornell";
-import SceneImagePlane from "./SceneImagePlane";
-import SceneSubsurface from "./SceneSubsurface";
-import SceneTestBox from "./SceneTestBox";
-import SceneTestEnvironment from "./SceneTestEnvironment";
+import SceneExample from "./Scenes/Example";
+
+// import SceneTest from "./SceneTest";
+// import SceneAnimationTest from "./SceneAnimationTest";
+// import SceneMarbleTest from "./SceneMarbleTest";
+// import SceneImageSphere from "./SceneImageSphere";
+// import SceneBunny from "./SceneBunny";
+// import SceneBunnyStanford from "./SceneBunnyStanford";
+// import SceneLightTest from "./SceneLightTest";
+// import SceneLightTest2 from "./SceneLightTest2";
+// import SceneCornell from "./SceneCornell";
+// import SceneImagePlane from "./SceneImagePlane";
+// import SceneSubsurface from "./SceneSubsurface";
+// import SceneTestBox from "./SceneTestBox";
+// import SceneTestEnvironment from "./SceneTestEnvironment";
 
 export default class World {
   constructor(cameraController) {
     this.CAMERA_CONTROLLER = cameraController;
 
-    this.SCENES = [
-      new SceneTest(cameraController),
-      new SceneAnimationTest(cameraController),
-      new SceneMarbleTest(cameraController),
-      new SceneImageSphere(cameraController),
-      new SceneImagePlane(cameraController),
-      new SceneBunny(cameraController),
-      new SceneBunnyStanford(cameraController),
-      new SceneLightTest(cameraController),
-      new SceneLightTest2(cameraController),
-      new SceneCornell(cameraController),
-      new SceneSubsurface(cameraController),
-      new SceneTestBox(cameraController),
-      new SceneTestEnvironment(cameraController)
-    ];
+    this.SCENES = [new SceneExample(cameraController)];
+
+    // new SceneTest(cameraController),
+    // new SceneAnimationTest(cameraController),
+    // new SceneMarbleTest(cameraController),
+    // new SceneImageSphere(cameraController),
+    // new SceneImagePlane(cameraController),
+    // new SceneBunny(cameraController),
+    // new SceneBunnyStanford(cameraController),
+    // new SceneLightTest(cameraController),
+    // new SceneLightTest2(cameraController),
+    // new SceneCornell(cameraController),
+    // new SceneSubsurface(cameraController),
+    // new SceneTestBox(cameraController),
+    // new SceneTestEnvironment(cameraController)
 
     // Default
     this.scene;
@@ -41,6 +43,10 @@ export default class World {
 
   setScene(sceneId) {
     this.scene = this.SCENES[sceneId];
+    this.scene.init();
+  }
+
+  initScene() {
     this.scene.init();
   }
 

@@ -56,6 +56,11 @@ body {
   float: left;
 }
 
+.buttonBlock {
+  width: 396px;
+  float: left;
+}
+
 .button {
   display: block;
   height: 20px;

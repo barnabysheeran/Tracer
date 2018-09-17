@@ -50,6 +50,21 @@ export default class Workers {
     }
   }
 
+  // ______________________________________________________________________ Init
+
+  init() {
+    const WORKER_TOTAL = this.WORKER_TOTAL;
+    const WORKER_POOL = this.WORKER_POOL;
+
+    let i;
+
+    for (i = 0; i < WORKER_TOTAL; i++) {
+      WORKER_POOL[i].postMessage({
+        messageType: "initScene"
+      });
+    }
+  }
+
   // ____________________________________________________________________ Render
 
   startFrame(timeFrameStart) {

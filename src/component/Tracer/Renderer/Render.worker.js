@@ -82,6 +82,9 @@ self.addEventListener("message", e => {
     case "buildBVH":
       WORLD.buildBVH();
       break;
+    case "initScene":
+      WORLD.initScene();
+      break;
     case "render":
       render(data.timeFrameStart, data.row);
       break;
