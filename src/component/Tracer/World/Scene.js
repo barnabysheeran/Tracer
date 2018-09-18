@@ -6,6 +6,7 @@ import HitablePlaneHolder from "../Hit/HitablePlaneHolder";
 
 import HitableNode from "../Hit/HitableNode";
 import HitableBox from "../Hit/HitableBox";
+import SceneHelper from "./Helper/SceneHelper";
 
 export default class Scene {
   constructor(cameraController) {
@@ -40,13 +41,13 @@ export default class Scene {
     this.countTriangles = 0;
     this.countSpheres = 0;
 
-    // TODO Count Spheres
     // TODO Count other things
   }
 
   // ____________________________________________________________________ Sphere
 
   addSphere(position, radius, material) {
+    // TODO Move position to seperate method to match other primitives
     const SPHERE = new HitableSphere(position, radius, material);
 
     this.HITABLES.push(SPHERE);
@@ -70,10 +71,10 @@ export default class Scene {
 
   // _____________________________________________________________________ Plane
 
-  addPlane(p0, p1, p2, p3, material) {
+  addPlane(width, height, material) {
     this.countTriangles += 2;
 
-    return new HitablePlaneHolder(this, p0, p1, p2, p3, material);
+    return new HitablePlaneHolder(this, width, height, material);
   }
 
   // _______________________________________________________________________ Box
@@ -82,6 +83,14 @@ export default class Scene {
     this.countTriangles += 12;
 
     return new HitableBox(this, width, height, depth, material);
+  }
+
+  // ______________________________________________________________ Scene helper
+
+  addSceneHelper(sizeAxis = 10, sizeSphere = 1) {
+    this.countSpheres += 6;
+
+    return new SceneHelper(this, sizeAxis, sizeSphere);
   }
 
   // _______________________________________________________________________ BVH

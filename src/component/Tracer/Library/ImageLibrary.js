@@ -1,4 +1,6 @@
 import grid from "./../../../asset/texture/grid.png";
+import devSquare from "./../../../asset/texture/devSquare.png";
+
 // import skymap from "./../../../asset/texture/skymap.jpg";
 // import testSquare from "./../../../asset/texture/testSquare.png";
 // import baseSquare from "./../../../asset/texture/baseSquare.png";
@@ -9,7 +11,7 @@ export default class ImageLibrary {
   constructor(renderer) {
     this.RENDERER = renderer;
 
-    this.URLS = [grid];
+    this.URLS = [grid, devSquare];
 
     this.IMAGE_TOTAL = this.URLS.length;
     this.imageCurrent = 0;

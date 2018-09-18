@@ -23,19 +23,8 @@ export default class Gui extends React.Component {
             classWidth={style.buttonWide}
             initialIndex={0}
             options={[
-              { label: "Example", value: 0 }
-              // { label: "Animation Test", value: 1 },
-              // { label: "Procedural Material", value: 2 },
-              // { label: "Image Sphere", value: 3 },
-              // { label: "Image Plane", value: 4 },
-              // { label: "Bunny Low Poly", value: 5 },
-              // { label: "Bunny Stanford", value: 6 },
-              // { label: "Spherical Lighting", value: 7 },
-              // { label: "Plane Lighting", value: 8 },
-              // { label: "Cornell Box 1", value: 9 },
-              // { label: "Subsurface", value: 10 },
-              // { label: "TestBox", value: 11 },
-              // { label: "Test Environment", value: 12 }
+              { label: "Example A", value: 0 },
+              { label: "Example B", value: 1 }
             ]}
             onClick={this.props.onClickSetScene}
           />

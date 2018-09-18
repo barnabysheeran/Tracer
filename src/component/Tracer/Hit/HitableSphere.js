@@ -16,7 +16,7 @@ export default class HitableSphere extends Hitable {
 
   // _______________________________________________________________________ Set
 
-  setPositionCenter(x, y, z) {
+  setPosition(x, y, z) {
     const POSITION_CENTER = this.positionCenter;
     POSITION_CENTER[0] = x;
     POSITION_CENTER[1] = y;
