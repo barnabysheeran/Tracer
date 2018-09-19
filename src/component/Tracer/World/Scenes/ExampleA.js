@@ -8,7 +8,6 @@ import TextureConstant from "../../Texture/TextureConstant";
 import MaterialDielectric from "../../Material/MaterialDielectric";
 import MaterialMetal from "../../Material/MaterialMetal";
 import MaterialLightDiffuse from "../../Material/MaterialLightDiffuse";
-import MaterialLambertian from "../../Material/MaterialLambertian";
 
 import EnvironmentSpherical from "../../Environment/EnvironmentSpherical";
 
@@ -30,19 +29,19 @@ export default class SceneExampleA extends Scene {
 
     // A
     this.addSphere(vec3.fromValues(0.0, 0.5, 0.0), 0.5, MATERIAL_DIELECTRIC);
-    this.addSphere(vec3.fromValues(0.0, 0.5, 0.0), -0.48, MATERIAL_DIELECTRIC);
+    this.addSphere(vec3.fromValues(0.0, 0.5, 0.0), -0.45, MATERIAL_DIELECTRIC);
 
     // B
     this.addSphere(vec3.fromValues(-1.05, 0.5, 0.0), 0.5, MATERIAL_DIELECTRIC);
-    this.addSphere(
-      vec3.fromValues(-1.05, 0.5, 0.0),
-      -0.48,
-      MATERIAL_DIELECTRIC
-    );
+    // this.addSphere(
+    //   vec3.fromValues(-1.05, 0.5, 0.0),
+    //   -0.45,
+    //   MATERIAL_DIELECTRIC
+    // );
 
     // C
     this.addSphere(vec3.fromValues(0.0, 0.5, 1.05), 0.5, MATERIAL_DIELECTRIC);
-    this.addSphere(vec3.fromValues(0.0, 0.5, 1.05), -0.48, MATERIAL_DIELECTRIC);
+    //this.addSphere(vec3.fromValues(0.0, 0.5, 1.05), -0.45, MATERIAL_DIELECTRIC);
 
     // Metal
     let total = 13;
@@ -64,6 +63,16 @@ export default class SceneExampleA extends Scene {
         material
       );
     }
+
+    // Volume Sphere
+    const TEXTURE_VOLUME = new TextureConstant(vec3.fromValues(1.0, 0.0, 0.0));
+
+    this.addVolumeSphere(
+      vec3.fromValues(0.0, 0.5, 0.0),
+      0.25,
+      TEXTURE_VOLUME,
+      0.5
+    );
 
     // Lights
     const SCALAR_LIGHT = 10.0;
@@ -98,33 +107,25 @@ export default class SceneExampleA extends Scene {
       )
     );
 
-    // Texture Image
-    const TEXTURE_TEST_A = new TextureImage(
-      this.getTextureImageDimensions(0),
-      this.getTextureImageData(0)
-    );
-
-    const MATERIAL_IMAGE_A = new MaterialLambertian(TEXTURE_TEST_A, 0.0);
-
     // Floor and walls
     const TEXTURE_WALL = new TextureConstant(vec3.fromValues(0.8, 0.8, 0.8));
-    const MATERIAL_WALL = new MaterialMetal(TEXTURE_WALL, 0.5);
+    const MATERIAL_WALL = new MaterialMetal(TEXTURE_WALL, 0.0);
 
     const TEXTURE_FLOOR = new TextureConstant(vec3.fromValues(0.8, 0.8, 0.8));
     const MATERIAL_FLOOR = new MaterialMetal(TEXTURE_FLOOR, 0.5);
 
     // Wall A
-    const WALL_A = this.addPlane(6, 6, MATERIAL_WALL);
+    const WALL_A = this.addPlane(3, 3, MATERIAL_WALL);
     WALL_A.setRotationEuler(0.0, 90.0, 0.0);
-    WALL_A.setPosition(-3.0, 3.0, 0.0);
+    WALL_A.setPosition(-1.5, 1.5, 0.0);
 
     // Wall B
-    const WALL_B = this.addPlane(6, 6, MATERIAL_IMAGE_A);
+    const WALL_B = this.addPlane(3, 3, MATERIAL_WALL);
     WALL_B.setRotationEuler(0.0, 180.0, 0.0);
-    WALL_B.setPosition(0.0, 3.0, 3.0);
+    WALL_B.setPosition(0.0, 1.5, 1.5);
 
     // Floor
-    const FLOOR = this.addPlane(6, 6, MATERIAL_FLOOR);
+    const FLOOR = this.addPlane(3, 3, MATERIAL_FLOOR);
     FLOOR.setRotationEuler(-90.0, 90.0, 0.0);
 
     // Environment

@@ -1,7 +1,5 @@
 import { vec3 } from "gl-matrix";
 
-import { initRNG, reSeedRNG } from "../Util/Random";
-
 import World from "../World/World";
 import CameraController from "../Camera/CameraController";
 import Ray from "../Ray/Ray";
@@ -9,10 +7,6 @@ import HitRecord from "../Hit/HitRecord";
 
 const CAMERA_CONTROLLER = new CameraController();
 const WORLD = new World(CAMERA_CONTROLLER);
-
-// Init seeded RNG
-let rngSeed = 65749269;
-initRNG(rngSeed);
 
 // Settings
 let threadId = -1;
@@ -76,9 +70,6 @@ self.addEventListener("message", e => {
     case "setMeshData":
       WORLD.setMeshes(data.positions, data.normals, data.cells);
       break;
-    case "seedRNG":
-      reSeedRNG(rngSeed);
-      break;
     case "buildBVH":
       WORLD.buildBVH();
       break;
@@ -137,9 +128,9 @@ let render = function(timeFrameStart, row) {
     // imageDataData[index + 2] = Math.sqrt(colour[2]) * 255;
     // imageDataData[index + 3] = 255;
 
-    imageDataData[index] = colour[0] * 255;
-    imageDataData[index + 1] = colour[1] * 255;
-    imageDataData[index + 2] = colour[2] * 255;
+    imageDataData[index] = colour[0] * 255.99;
+    imageDataData[index + 1] = colour[1] * 255.99;
+    imageDataData[index + 2] = colour[2] * 255.99;
     imageDataData[index + 3] = 255;
   }
 
@@ -157,14 +148,14 @@ let render = function(timeFrameStart, row) {
 // TODO setTimeout escape call stack ?
 // https://www.toptal.com/javascript/interview-questions
 
-let scattered = new Ray();
-let hitRecord = new HitRecord();
+// let scattered = new Ray();
+// let hitRecord = new HitRecord();
 
 let getColour = function(ray, depth) {
-  //let hitRecord = new HitRecord();
+  let hitRecord = new HitRecord();
 
   if (WORLD.didHitAnything(ray, 0.001, Infinity, hitRecord) == true) {
-    //let scattered = new Ray();
+    let scattered = new Ray();
 
     let attenuation = vec3.create();
 

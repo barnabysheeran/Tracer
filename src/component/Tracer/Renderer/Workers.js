@@ -76,8 +76,7 @@ export default class Workers {
     // Rendering
     this.isRendering = true;
 
-    // Re-seed RNG & Build BVH
-    this.seedRNG();
+    // Build BVH
     this.buildBVH();
 
     // Workers
@@ -129,21 +128,6 @@ export default class Workers {
     this.isRendering = false;
   }
 
-  // _______________________________________________________________________ RNG
-
-  seedRNG() {
-    const WORKER_TOTAL = this.WORKER_TOTAL;
-    const WORKER_POOL = this.WORKER_POOL;
-
-    let i;
-
-    for (i = 0; i < WORKER_TOTAL; i++) {
-      WORKER_POOL[i].postMessage({
-        messageType: "seedRNG"
-      });
-    }
-  }
-
   // _______________________________________________________________________ BVH
 
   buildBVH() {
@@ -164,9 +148,6 @@ export default class Workers {
   setScene(sceneId, timeFrameInterval) {
     // Time
     this.timeFrameInterval = timeFrameInterval;
-
-    // Re-seed RNG
-    this.seedRNG();
 
     // Workers
     const WORKER_TOTAL = this.WORKER_TOTAL;

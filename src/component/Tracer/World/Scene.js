@@ -6,6 +6,8 @@ import HitablePlaneHolder from "../Hit/HitablePlaneHolder";
 
 import HitableNode from "../Hit/HitableNode";
 import HitableBox from "../Hit/HitableBox";
+import HitableConstantMedium from "../Hit/HitableConstantMedium";
+
 import SceneHelper from "./Helper/SceneHelper";
 
 export default class Scene {
@@ -26,6 +28,7 @@ export default class Scene {
 
     this.countTriangles = 0;
     this.countSpheres = 0;
+    this.countVolumeSpheres = 0;
   }
 
   // ______________________________________________________________________ Init
@@ -40,8 +43,7 @@ export default class Scene {
 
     this.countTriangles = 0;
     this.countSpheres = 0;
-
-    // TODO Count other things
+    this.countVolumeSpheres = 0;
   }
 
   // ____________________________________________________________________ Sphere
@@ -75,6 +77,22 @@ export default class Scene {
     this.countTriangles += 2;
 
     return new HitablePlaneHolder(this, width, height, material);
+  }
+
+  // ____________________________________________________________________ Volume
+
+  addVolumeSphere(position, radius, texture, density) {
+    const MEDIUM = new HitableConstantMedium(
+      new HitableSphere(position, radius),
+      density,
+      texture
+    );
+
+    this.HITABLES.push(MEDIUM);
+
+    this.countVolumeSpheres++;
+
+    return MEDIUM;
   }
 
   // _______________________________________________________________________ Box

@@ -2,8 +2,8 @@ import { vec3 } from "gl-matrix";
 
 import Scene from "../Scene";
 
-import TextureImage from "../../Texture/TextureImage";
 import TextureConstant from "../../Texture/TextureConstant";
+import TextureChecker from "./../../Texture/TextureChecker";
 
 import MaterialDielectric from "../../Material/MaterialDielectric";
 import MaterialLambertian from "../../Material/MaterialLambertian";
@@ -26,13 +26,6 @@ export default class SceneExampleB extends Scene {
     const BOX_HEIGHT = 150;
     const BOX_WIDTH = 150;
     const BOX_DEPTH = 150;
-
-    const TEXTURE_TEST_A = new TextureImage(
-      this.getTextureImageDimensions(0),
-      this.getTextureImageData(0)
-    );
-
-    const MATERIAL_IMAGE_A = new MaterialLambertian(TEXTURE_TEST_A);
 
     // Materials
     const TEXTURE_WHITE = new TextureConstant(vec3.fromValues(1.0, 1.0, 1.0));
@@ -68,7 +61,7 @@ export default class SceneExampleB extends Scene {
     BACK.setPosition(0.0, 0.0, BOX_DEPTH * -0.5);
 
     // Light
-    const SCALAR_LIGHT = 10.0;
+    const SCALAR_LIGHT = 1000000.0;
 
     this.addSphere(
       vec3.fromValues(1.0, 1.0, 1.0),
@@ -80,6 +73,55 @@ export default class SceneExampleB extends Scene {
       )
     );
 
+    // Light Red
+    //const SCALAR_LIGHT = 1000.0;
+
+    const TEXTURE_LIGHT_RED = new TextureConstant(
+      vec3.fromValues(SCALAR_LIGHT, 0.0, 0.0)
+    );
+
+    const MATERIAL_LIGHT_RED = new MaterialLightDiffuse(TEXTURE_LIGHT_RED);
+
+    this.addSphere(vec3.fromValues(-10, -0.0, 0.0), 2.0, MATERIAL_LIGHT_RED);
+
+    // Light Green
+    const TEXTURE_LIGHT_GREEN = new TextureConstant(
+      vec3.fromValues(0.0, SCALAR_LIGHT, 0.0)
+    );
+
+    const MATERIAL_LIGHT_GREEN = new MaterialLightDiffuse(TEXTURE_LIGHT_GREEN);
+
+    this.addSphere(vec3.fromValues(0.0, -0.0, 0.0), 2.0, MATERIAL_LIGHT_GREEN);
+
+    // Light Blue
+    const TEXTURE_LIGHT_BLUE = new TextureConstant(
+      vec3.fromValues(0.0, 0.0, SCALAR_LIGHT)
+    );
+
+    const MATERIAL_LIGHT_BLUE = new MaterialLightDiffuse(TEXTURE_LIGHT_BLUE);
+
+    this.addSphere(vec3.fromValues(10.0, -0.0, 0.0), 2.0, MATERIAL_LIGHT_BLUE);
+
+    // Floor Plane
+    const TEXTURE_CHECKER_BLACK = new TextureConstant(
+      vec3.fromValues(0.0, 0.0, 0.0)
+    );
+    const TEXTURE_CHECKER_WHITE = new TextureConstant(
+      vec3.fromValues(1.0, 1.0, 1.0)
+    );
+
+    const TEXTURE_CHECKER = new TextureChecker(
+      TEXTURE_CHECKER_BLACK,
+      TEXTURE_CHECKER_WHITE,
+      2.0
+    );
+
+    const MATERIAL_CHECKER = new MaterialLambertian(TEXTURE_CHECKER);
+
+    const FLOOR_TEST = this.addPlane(100.0, 100.0, MATERIAL_CHECKER);
+    FLOOR_TEST.setPosition(0.0, 0.0, -20.0);
+    // FLOOR.setRotationEuler(-90.0, 0.0, 0.0);
+
     // Dialectic
     const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
 
@@ -88,7 +130,12 @@ export default class SceneExampleB extends Scene {
       25.0,
       MATERIAL_DIELECTRIC
     );
-    //this.addSphere(vec3.fromValues(0.0, 0.5, 0.0), -0.48, MATERIAL_DIELECTRIC);
+
+    this.addSphere(
+      vec3.fromValues(0.0, BOX_DEPTH * -0.5 + 25.0, 0.0),
+      -23.0,
+      MATERIAL_DIELECTRIC
+    );
   }
 
   // _________________________________________________________________ Animation

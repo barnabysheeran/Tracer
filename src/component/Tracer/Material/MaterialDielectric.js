@@ -17,7 +17,8 @@ export default class MaterialDielectric extends Material {
     const INDEX_REFRACTION = this.INDEX_REFRACTION;
 
     let outwardNormal = vec3.create();
-    let reflected = reflect(rayIn.getDirectionNormalized(), hitRecord.normal);
+    //let reflected = reflect(rayIn.getDirectionNormalized(), hitRecord.normal);
+    let reflected = reflect(rayIn.getDirection(), hitRecord.normal);
     let refracted = vec3.create();
 
     let niOverNt;
@@ -37,8 +38,7 @@ export default class MaterialDielectric extends Material {
       niOverNt = INDEX_REFRACTION;
 
       cosine =
-        (INDEX_REFRACTION *
-          vec3.dot(rayIn.getDirectionNormalized(), hitRecord.normal)) /
+        (INDEX_REFRACTION * vec3.dot(rayIn.getDirection(), hitRecord.normal)) /
         vec3.length(rayIn.getDirection());
     } else {
       outwardNormal[0] = hitRecord.normal[0];
@@ -48,7 +48,7 @@ export default class MaterialDielectric extends Material {
       niOverNt = 1.0 - INDEX_REFRACTION;
 
       cosine =
-        -vec3.dot(rayIn.getDirectionNormalized(), hitRecord.normal) /
+        -vec3.dot(rayIn.getDirection(), hitRecord.normal) /
         vec3.length(rayIn.getDirection());
     }
 
