@@ -36,8 +36,6 @@ export default class Gui extends React.Component {
             classWidth={style.buttonStandard}
             initialIndex={1}
             options={[
-              { label: "512*512", value: [512, 512] },
-              { label: "200*100", value: [200, 100] },
               { label: "400*200", value: [400, 200] },
               { label: "800*400", value: [800, 400] },
               { label: "1600*800", value: [1600, 800] }

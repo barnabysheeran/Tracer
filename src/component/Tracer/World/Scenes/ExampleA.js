@@ -27,21 +27,52 @@ export default class SceneExampleA extends Scene {
     // Dialectic
     const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
 
+    const TEXTURE_VOLUME_A = new TextureConstant(
+      vec3.fromValues(1.0, 1.0, 0.0)
+    );
+    const TEXTURE_VOLUME_B = new TextureConstant(
+      vec3.fromValues(0.0, 1.0, 1.0)
+    );
+    const TEXTURE_VOLUME_C = new TextureConstant(
+      vec3.fromValues(1.0, 0.0, 1.0)
+    );
+
     // A
     this.addSphere(vec3.fromValues(0.0, 0.5, 0.0), 0.5, MATERIAL_DIELECTRIC);
     this.addSphere(vec3.fromValues(0.0, 0.5, 0.0), -0.45, MATERIAL_DIELECTRIC);
 
+    this.addVolumeSphere(
+      vec3.fromValues(0.0, 0.5, 0.0),
+      0.25,
+      TEXTURE_VOLUME_A,
+      0.2
+    );
+
     // B
     this.addSphere(vec3.fromValues(-1.05, 0.5, 0.0), 0.5, MATERIAL_DIELECTRIC);
-    // this.addSphere(
-    //   vec3.fromValues(-1.05, 0.5, 0.0),
-    //   -0.45,
-    //   MATERIAL_DIELECTRIC
-    // );
+    this.addSphere(
+      vec3.fromValues(-1.05, 0.5, 0.0),
+      -0.45,
+      MATERIAL_DIELECTRIC
+    );
+
+    this.addVolumeSphere(
+      vec3.fromValues(-1.05, 0.5, 0.0),
+      0.25,
+      TEXTURE_VOLUME_B,
+      0.2
+    );
 
     // C
     this.addSphere(vec3.fromValues(0.0, 0.5, 1.05), 0.5, MATERIAL_DIELECTRIC);
-    //this.addSphere(vec3.fromValues(0.0, 0.5, 1.05), -0.45, MATERIAL_DIELECTRIC);
+    this.addSphere(vec3.fromValues(0.0, 0.5, 1.05), -0.45, MATERIAL_DIELECTRIC);
+
+    this.addVolumeSphere(
+      vec3.fromValues(0.0, 0.5, 1.05),
+      0.25,
+      TEXTURE_VOLUME_C,
+      0.2
+    );
 
     // Metal
     let total = 13;
@@ -64,74 +95,91 @@ export default class SceneExampleA extends Scene {
       );
     }
 
-    // Volume Sphere
-    const TEXTURE_VOLUME = new TextureConstant(vec3.fromValues(1.0, 0.0, 0.0));
-
-    this.addVolumeSphere(
-      vec3.fromValues(0.0, 0.5, 0.0),
-      0.25,
-      TEXTURE_VOLUME,
-      0.5
-    );
-
     // Lights
-    const SCALAR_LIGHT = 10.0;
+    let scalarLight = 1.0;
 
-    this.addSphere(
-      vec3.fromValues(-4.5, 5.0, -10.0),
-      1.0,
-      new MaterialLightDiffuse(
-        new TextureConstant(
-          vec3.fromValues(SCALAR_LIGHT, SCALAR_LIGHT, SCALAR_LIGHT)
-        )
+    total = 29;
+
+    let progressInterval = 1.0 / total;
+    let progress;
+
+    let materialLight = new MaterialLightDiffuse(
+      new TextureConstant(
+        vec3.fromValues(scalarLight, scalarLight, scalarLight)
       )
     );
 
-    this.addSphere(
-      vec3.fromValues(0.0, 5.0, -10.0),
-      1.0,
-      new MaterialLightDiffuse(
-        new TextureConstant(
-          vec3.fromValues(SCALAR_LIGHT, SCALAR_LIGHT, SCALAR_LIGHT)
-        )
-      )
-    );
+    for (let i = 0; i < total; i++) {
+      progress = progressInterval * i;
+      radius = 3.0 * progress;
 
-    this.addSphere(
-      vec3.fromValues(4.5, 5.0, -10.0),
-      1.0,
-      new MaterialLightDiffuse(
-        new TextureConstant(
-          vec3.fromValues(SCALAR_LIGHT, SCALAR_LIGHT, SCALAR_LIGHT)
-        )
-      )
-    );
+      // Sphere
+      this.addSphere(
+        vec3.fromValues(
+          Math.sin(progress * 3.0 * Math.PI) * radius,
+          1.8 + 1.0 * progress,
+          Math.cos(progress * 3.0 * Math.PI) * radius
+        ),
+        0.02 + 0.1 * progress,
+        materialLight
+      );
+    }
+
+    // this.addSphere(
+    //   vec3.fromValues(-4.5, 5.0, -10.0),
+    //   1.0,
+    //   new MaterialLightDiffuse(
+    //     new TextureConstant(
+    //       vec3.fromValues(SCALAR_LIGHT, SCALAR_LIGHT, SCALAR_LIGHT)
+    //     )
+    //   )
+    // );
+
+    // this.addSphere(
+    //   vec3.fromValues(0.0, 5.0, -10.0),
+    //   1.0,
+    //   new MaterialLightDiffuse(
+    //     new TextureConstant(
+    //       vec3.fromValues(SCALAR_LIGHT, SCALAR_LIGHT, SCALAR_LIGHT)
+    //     )
+    //   )
+    // );
+
+    // this.addSphere(
+    //   vec3.fromValues(4.5, 5.0, -10.0),
+    //   1.0,
+    //   new MaterialLightDiffuse(
+    //     new TextureConstant(
+    //       vec3.fromValues(SCALAR_LIGHT, SCALAR_LIGHT, SCALAR_LIGHT)
+    //     )
+    //   )
+    // );
 
     // Floor and walls
-    const TEXTURE_WALL = new TextureConstant(vec3.fromValues(0.8, 0.8, 0.8));
-    const MATERIAL_WALL = new MaterialMetal(TEXTURE_WALL, 0.0);
-
     const TEXTURE_FLOOR = new TextureConstant(vec3.fromValues(0.8, 0.8, 0.8));
-    const MATERIAL_FLOOR = new MaterialMetal(TEXTURE_FLOOR, 0.5);
+    const MATERIAL_FLOOR = new MaterialMetal(TEXTURE_FLOOR, 0.1);
+
+    const BOX_SIZE = 4;
+    const BOX_SIZE_HALF = BOX_SIZE * 0.5;
 
     // Wall A
-    const WALL_A = this.addPlane(3, 3, MATERIAL_WALL);
+    const WALL_A = this.addPlane(BOX_SIZE, BOX_SIZE, MATERIAL_FLOOR);
     WALL_A.setRotationEuler(0.0, 90.0, 0.0);
-    WALL_A.setPosition(-1.5, 1.5, 0.0);
+    WALL_A.setPosition(-BOX_SIZE_HALF, BOX_SIZE_HALF, 0.0);
 
     // Wall B
-    const WALL_B = this.addPlane(3, 3, MATERIAL_WALL);
+    const WALL_B = this.addPlane(BOX_SIZE, BOX_SIZE, MATERIAL_FLOOR);
     WALL_B.setRotationEuler(0.0, 180.0, 0.0);
-    WALL_B.setPosition(0.0, 1.5, 1.5);
+    WALL_B.setPosition(0.0, BOX_SIZE_HALF, BOX_SIZE_HALF);
 
     // Floor
-    const FLOOR = this.addPlane(3, 3, MATERIAL_FLOOR);
+    const FLOOR = this.addPlane(BOX_SIZE, BOX_SIZE, MATERIAL_FLOOR);
     FLOOR.setRotationEuler(-90.0, 90.0, 0.0);
 
     // Environment
     const ENVIRONMENT_TEXTURE = new TextureImage(
-      this.getTextureImageDimensions(0),
-      this.getTextureImageData(0)
+      this.getTextureImageDimensions(2),
+      this.getTextureImageData(2)
     );
 
     this.ENVIRONMENT = new EnvironmentSpherical(ENVIRONMENT_TEXTURE);
@@ -146,10 +194,10 @@ export default class SceneExampleA extends Scene {
     const CAMERA_CONTROLLER = this.CAMERA_CONTROLLER;
 
     CAMERA_CONTROLLER.setFov(28.0);
-    CAMERA_CONTROLLER.setAperture(0.0);
+    CAMERA_CONTROLLER.setAperture(0.05);
 
-    CAMERA_CONTROLLER.setPosition(3.0, 3.0, -3.0);
-    CAMERA_CONTROLLER.setPositionTarget(0.0, 0.6, 0.0);
+    CAMERA_CONTROLLER.setPosition(3.0, 1.2, -3.0);
+    CAMERA_CONTROLLER.setPositionTarget(0.0, 0.7, 0.0);
   }
 
   // ________________________________________________________________ Background

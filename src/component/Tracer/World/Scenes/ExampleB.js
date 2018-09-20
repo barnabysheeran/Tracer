@@ -3,8 +3,8 @@ import { vec3 } from "gl-matrix";
 import Scene from "../Scene";
 
 import TextureConstant from "../../Texture/TextureConstant";
-import TextureChecker from "./../../Texture/TextureChecker";
 
+import MaterialMetal from "../../Material/MaterialMetal";
 import MaterialDielectric from "../../Material/MaterialDielectric";
 import MaterialLambertian from "../../Material/MaterialLambertian";
 import MaterialLightDiffuse from "../../Material/MaterialLightDiffuse";
@@ -28,11 +28,13 @@ export default class SceneExampleB extends Scene {
     const BOX_DEPTH = 150;
 
     // Materials
-    const TEXTURE_WHITE = new TextureConstant(vec3.fromValues(1.0, 1.0, 1.0));
+    const TEXTURE_WHITE = new TextureConstant(
+      vec3.fromValues(0.99, 0.99, 0.99)
+    );
     const TEXTURE_RED = new TextureConstant(vec3.fromValues(1.0, 0.0, 0.0));
     const TEXTURE_GREEN = new TextureConstant(vec3.fromValues(0.0, 1.0, 0.0));
 
-    const MATERIAL_WHITE = new MaterialLambertian(TEXTURE_WHITE);
+    const MATERIAL_WHITE = new MaterialMetal(TEXTURE_WHITE);
     const MATERIAL_RED = new MaterialLambertian(TEXTURE_RED);
     const MATERIAL_GREEN = new MaterialLambertian(TEXTURE_GREEN);
 
@@ -60,67 +62,44 @@ export default class SceneExampleB extends Scene {
     const BACK = this.addPlane(BOX_WIDTH, BOX_HEIGHT, MATERIAL_WHITE);
     BACK.setPosition(0.0, 0.0, BOX_DEPTH * -0.5);
 
-    // Light
-    const SCALAR_LIGHT = 1000000.0;
+    // Light Sphere
+    const SCALAR_LIGHT = 100.0;
 
-    this.addSphere(
-      vec3.fromValues(1.0, 1.0, 1.0),
-      1.0,
-      new MaterialLightDiffuse(
-        new TextureConstant(
-          vec3.fromValues(SCALAR_LIGHT, SCALAR_LIGHT, SCALAR_LIGHT)
-        )
+    const MATERIAL_LIGHT = new MaterialLightDiffuse(
+      new TextureConstant(
+        vec3.fromValues(SCALAR_LIGHT, SCALAR_LIGHT, SCALAR_LIGHT)
       )
     );
 
-    // Light Red
-    //const SCALAR_LIGHT = 1000.0;
+    this.addSphere(vec3.fromValues(1.0, 1.0, 1.0), 1.0, MATERIAL_LIGHT);
 
-    const TEXTURE_LIGHT_RED = new TextureConstant(
-      vec3.fromValues(SCALAR_LIGHT, 0.0, 0.0)
+    // Light Roof
+    const ROOF_LIGHT = this.addPlane(
+      BOX_WIDTH * 0.6,
+      BOX_DEPTH * 0.6,
+      MATERIAL_LIGHT
     );
-
-    const MATERIAL_LIGHT_RED = new MaterialLightDiffuse(TEXTURE_LIGHT_RED);
-
-    this.addSphere(vec3.fromValues(-10, -0.0, 0.0), 2.0, MATERIAL_LIGHT_RED);
-
-    // Light Green
-    const TEXTURE_LIGHT_GREEN = new TextureConstant(
-      vec3.fromValues(0.0, SCALAR_LIGHT, 0.0)
-    );
-
-    const MATERIAL_LIGHT_GREEN = new MaterialLightDiffuse(TEXTURE_LIGHT_GREEN);
-
-    this.addSphere(vec3.fromValues(0.0, -0.0, 0.0), 2.0, MATERIAL_LIGHT_GREEN);
-
-    // Light Blue
-    const TEXTURE_LIGHT_BLUE = new TextureConstant(
-      vec3.fromValues(0.0, 0.0, SCALAR_LIGHT)
-    );
-
-    const MATERIAL_LIGHT_BLUE = new MaterialLightDiffuse(TEXTURE_LIGHT_BLUE);
-
-    this.addSphere(vec3.fromValues(10.0, -0.0, 0.0), 2.0, MATERIAL_LIGHT_BLUE);
+    //ROOF_LIGHT.setPosition(0.0, BOX_HEIGHT * -0.49, 0.0);
+    ROOF_LIGHT.setRotationEuler(90.0, 0.0, 0.0);
 
     // Floor Plane
-    const TEXTURE_CHECKER_BLACK = new TextureConstant(
-      vec3.fromValues(0.0, 0.0, 0.0)
-    );
-    const TEXTURE_CHECKER_WHITE = new TextureConstant(
-      vec3.fromValues(1.0, 1.0, 1.0)
-    );
+    // const TEXTURE_CHECKER_BLACK = new TextureConstant(
+    //   vec3.fromValues(0.0, 0.0, 0.0)
+    // );
+    // const TEXTURE_CHECKER_WHITE = new TextureConstant(
+    //   vec3.fromValues(1.0, 1.0, 1.0)
+    // );
 
-    const TEXTURE_CHECKER = new TextureChecker(
-      TEXTURE_CHECKER_BLACK,
-      TEXTURE_CHECKER_WHITE,
-      2.0
-    );
+    // const TEXTURE_CHECKER = new TextureChecker(
+    //   TEXTURE_CHECKER_BLACK,
+    //   TEXTURE_CHECKER_WHITE,
+    //   2.0
+    // );
 
-    const MATERIAL_CHECKER = new MaterialLambertian(TEXTURE_CHECKER);
+    // const MATERIAL_CHECKER = new MaterialLambertian(TEXTURE_CHECKER);
 
-    const FLOOR_TEST = this.addPlane(100.0, 100.0, MATERIAL_CHECKER);
-    FLOOR_TEST.setPosition(0.0, 0.0, -20.0);
-    // FLOOR.setRotationEuler(-90.0, 0.0, 0.0);
+    // const FLOOR_TEST = this.addPlane(100.0, 100.0, MATERIAL_CHECKER);
+    // FLOOR_TEST.setPosition(0.0, 0.0, -20.0);
 
     // Dialectic
     const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);

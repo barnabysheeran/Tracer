@@ -31,7 +31,7 @@ export default class Tracer extends React.Component {
       this.setStatus,
       this.setStatistics
     );
-    this.setDimensions([200, 100]);
+    this.setDimensions([800, 400]);
     this.RENDERER.clear();
   }
 

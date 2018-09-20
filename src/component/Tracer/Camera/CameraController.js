@@ -54,41 +54,6 @@ export default class CameraController {
     this.update();
   }
 
-  // TODO Remove ?
-  // setPositionsById(positionId) {
-  //   switch (positionId) {
-  //     case 0:
-  //       this.position[0] = 3.0;
-  //       this.position[1] = 3.0;
-  //       this.position[2] = 2.0;
-
-  //       this.positionTarget[0] = 0.0;
-  //       this.positionTarget[1] = 0.0;
-  //       this.positionTarget[2] = 0.0;
-  //       break;
-  //     case 1:
-  //       this.position[0] = 0.5;
-  //       this.position[1] = 5.0;
-  //       this.position[2] = 0.0;
-
-  //       this.positionTarget[0] = 0.0;
-  //       this.positionTarget[1] = 0.0;
-  //       this.positionTarget[2] = 0.0;
-  //       break;
-  //     case 2:
-  //       this.position[0] = 3.0;
-  //       this.position[1] = 3.0;
-  //       this.position[2] = 2.0;
-
-  //       this.positionTarget[0] = 0.0;
-  //       this.positionTarget[1] = -0.24;
-  //       this.positionTarget[2] = 0.0;
-  //       break;
-  //   }
-
-  //   this.update();
-  // }
-
   setPosition(x, y, z) {
     this.position[0] = x;
     this.position[1] = y;

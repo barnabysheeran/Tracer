@@ -1,7 +1,9 @@
 import { vec3 } from "gl-matrix";
 
 export default class Material {
-  constructor() {}
+  constructor() {
+    this.EMITTED_BASE = vec3.fromValues(0.0, 0.0, 0.0);
+  }
 
   scatter(rayIn, hitRecord, attenuation, scattered) {
     rayIn;
@@ -15,6 +17,6 @@ export default class Material {
     v;
     position;
 
-    return vec3.fromValues(0.0, 0.0, 0.0);
+    return this.EMITTED_BASE;
   }
 }

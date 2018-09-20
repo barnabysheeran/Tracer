@@ -56,9 +56,9 @@ export default class HitableTriangle extends Hitable {
     if (A > -EPSILON && A < EPSILON) return false;
 
     // One sided // TODO Pass as param
-    if (A < 0) {
-      return false;
-    }
+    // if (A < 0) {
+    //   return false;
+    // }
 
     const F = 1.0 / A;
 
@@ -121,7 +121,7 @@ export default class HitableTriangle extends Hitable {
 
     // Generate Normal
     vec3.cross(this.NORMAL, this.EDGE1, this.EDGE2);
-    this.NORMAL = vec3.normalize(this.NORMAL, this.NORMAL);
+    vec3.normalize(this.NORMAL, this.NORMAL);
 
     // BB
     this.createBoundingBox();

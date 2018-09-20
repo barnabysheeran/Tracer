@@ -238,7 +238,9 @@ export default class Renderer {
       "Triangles: " +
         this.WORLD.scene.countTriangles +
         " Spheres: " +
-        this.WORLD.scene.countSpheres
+        this.WORLD.scene.countSpheres +
+        " Volume Spheres: " +
+        this.WORLD.scene.countVolumeSpheres
     );
   }
 }
