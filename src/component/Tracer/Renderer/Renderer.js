@@ -235,12 +235,12 @@ export default class Renderer {
   setStatusStatistics() {
     // World TODO Remove duplicate WORLD from renderer, communicate first worker
     this.setStatistics(
-      "Triangles: " +
-        this.WORLD.scene.countTriangles +
-        " Spheres: " +
+      this.WORLD.scene.countTriangles +
+        " Triangles. " +
         this.WORLD.scene.countSpheres +
-        " Volume Spheres: " +
-        this.WORLD.scene.countVolumeSpheres
+        " Spheres. " +
+        this.WORLD.scene.countVolumeSpheres +
+        " Volumes"
     );
   }
 }
