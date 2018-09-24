@@ -10,6 +10,7 @@ import MaterialMetal from "../../Material/MaterialMetal";
 import MaterialLightDiffuse from "../../Material/MaterialLightDiffuse";
 
 import EnvironmentSpherical from "../../Environment/EnvironmentSpherical";
+import ColourRGBA from "../../Colour/ColourRGBA";
 
 export default class SceneExampleA extends Scene {
   constructor(cameraController) {
@@ -28,13 +29,16 @@ export default class SceneExampleA extends Scene {
     const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
 
     const TEXTURE_VOLUME_A = new TextureConstant(
-      vec3.fromValues(1.0, 1.0, 0.0)
+      //vec3.fromValues(1.0, 1.0, 0.0)
+      new ColourRGBA(1.0, 1.0, 1.0, 1.0)
     );
     const TEXTURE_VOLUME_B = new TextureConstant(
-      vec3.fromValues(0.0, 1.0, 1.0)
+      //vec3.fromValues(0.0, 1.0, 1.0)
+      new ColourRGBA(0.0, 1.0, 1.0, 1.0)
     );
     const TEXTURE_VOLUME_C = new TextureConstant(
-      vec3.fromValues(1.0, 0.0, 1.0)
+      //vec3.fromValues(1.0, 0.0, 1.0)
+      new ColourRGBA(1.0, 0.0, 1.0, 1.0)
     );
 
     // A
@@ -79,7 +83,8 @@ export default class SceneExampleA extends Scene {
     let progressIntervalTau = (Math.PI * 2) / total;
 
     let radius = 0.5;
-    let texture = new TextureConstant(vec3.fromValues(0.95, 0.95, 0.95));
+    //let texture = new TextureConstant(vec3.fromValues(0.95, 0.95, 0.95));
+    let texture = new TextureConstant(new ColourRGBA(0.95, 0.95, 0.95, 1.0));
     let material = new MaterialMetal(texture, 0.1);
 
     for (let i = 0; i < total; i++) {
@@ -105,7 +110,8 @@ export default class SceneExampleA extends Scene {
 
     let materialLight = new MaterialLightDiffuse(
       new TextureConstant(
-        vec3.fromValues(scalarLight, scalarLight, scalarLight)
+        //vec3.fromValues(scalarLight, scalarLight, scalarLight)
+        new ColourRGBA(scalarLight, scalarLight, scalarLight, 1.0)
       )
     );
 
@@ -156,7 +162,11 @@ export default class SceneExampleA extends Scene {
     // );
 
     // Floor and walls
-    const TEXTURE_FLOOR = new TextureConstant(vec3.fromValues(0.8, 0.8, 0.8));
+    //const TEXTURE_FLOOR = new TextureConstant(vec3.fromValues(0.8, 0.8, 0.8));
+    const TEXTURE_FLOOR = new TextureConstant(
+      new ColourRGBA(0.8, 0.8, 0.8, 1.0)
+    );
+
     const MATERIAL_FLOOR = new MaterialMetal(TEXTURE_FLOOR, 0.1);
 
     const BOX_SIZE = 4;

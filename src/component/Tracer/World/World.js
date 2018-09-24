@@ -2,6 +2,7 @@ import SceneExampleA from "./Scenes/ExampleA";
 import SceneExampleB from "./Scenes/ExampleB";
 import SceneLightTest from "./Scenes/LightTest";
 import SceneLightTest2 from "./Scenes/LightTest2";
+import SceneTextTest from "./Scenes/TextTest";
 
 export default class World {
   constructor(cameraController) {
@@ -11,7 +12,8 @@ export default class World {
       new SceneExampleA(cameraController),
       new SceneExampleB(cameraController),
       new SceneLightTest(cameraController),
-      new SceneLightTest2(cameraController)
+      new SceneLightTest2(cameraController),
+      new SceneTextTest(cameraController)
     ];
 
     // Default

@@ -3,6 +3,7 @@ import { vec3 } from "gl-matrix";
 import SimplexNoise from "simplex-noise";
 
 import Texture from "./Texture";
+import ColourRGBA from "../Colour/ColourRGBA";
 
 export default class TextureSimplex extends Texture {
   constructor(scalar) {
@@ -22,7 +23,7 @@ export default class TextureSimplex extends Texture {
     const MARBLE =
       0.5 * (1 + Math.sin(this.SCALAR + position[2] + 10.0 * TURB));
 
-    return vec3.fromValues(MARBLE, MARBLE, MARBLE);
+    return new ColourRGBA(MARBLE, MARBLE, MARBLE, 1.0);
   }
 
   // ________________________________________________________________ Turbulence

@@ -4,6 +4,7 @@ import World from "../World/World";
 import CameraController from "../Camera/CameraController";
 import Ray from "../Ray/Ray";
 import HitRecord from "../Hit/HitRecord";
+import ColourRGBA from "../Colour/ColourRGBA";
 
 const CAMERA_CONTROLLER = new CameraController();
 const WORLD = new World(CAMERA_CONTROLLER);
@@ -113,9 +114,13 @@ let render = function(timeFrameStart, row) {
 
       colourSample = getColour(ray, 0);
 
-      colour[0] += colourSample[0];
-      colour[1] += colourSample[1];
-      colour[2] += colourSample[2];
+      // colour[0] += colourSample[0];
+      // colour[1] += colourSample[1];
+      // colour[2] += colourSample[2];
+
+      colour[0] += colourSample.R;
+      colour[1] += colourSample.G;
+      colour[2] += colourSample.B;
     }
 
     colour[0] /= samplesAA;
@@ -131,7 +136,7 @@ let render = function(timeFrameStart, row) {
     imageDataData[index] = colour[0] * 255.99;
     imageDataData[index + 1] = colour[1] * 255.99;
     imageDataData[index + 2] = colour[2] * 255.99;
-    imageDataData[index + 3] = 255;
+    imageDataData[index + 3] = 255; // TODO Use Alpha ?
   }
 
   // Done
@@ -157,7 +162,7 @@ let getColour = function(ray, depth) {
   if (WORLD.didHitAnything(ray, 0.001, Infinity, hitRecord) == true) {
     let scattered = new Ray();
 
-    let attenuation = vec3.create();
+    let attenuation = new ColourRGBA(0.0, 0.0, 0.0, 1.0);
 
     let emitted = hitRecord.material.emitted(
       hitRecord.u,
@@ -171,10 +176,11 @@ let getColour = function(ray, depth) {
     ) {
       let colour = getColour(scattered, depth + 1);
 
-      return new vec3.fromValues(
-        emitted[0] + attenuation[0] * colour[0],
-        emitted[1] + attenuation[1] * colour[1],
-        emitted[2] + attenuation[2] * colour[2]
+      return new ColourRGBA(
+        emitted.R + attenuation.R * colour.R,
+        emitted.G + attenuation.G * colour.G,
+        emitted.B + attenuation.B * colour.B,
+        1.0
       );
     } else {
       return emitted;

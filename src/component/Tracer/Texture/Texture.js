@@ -1,4 +1,4 @@
-import { vec3 } from "gl-matrix";
+import ColourRGBA from "../Colour/ColourRGBA";
 
 export default class Texture {
   constructor() {}
@@ -8,6 +8,6 @@ export default class Texture {
     v;
     p;
 
-    return vec3.create();
+    return new ColourRGBA(0.0, 0.0, 0.0, 0.0);
   }
 }

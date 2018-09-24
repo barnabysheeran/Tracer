@@ -18,9 +18,10 @@ export default class MaterialMetal extends Material {
     const ALBEDO = this.ALBEDO;
     const ROUGH = this.ROUGH;
 
+    // TODO Add Alpha test
+
     // Reflected
-    //let reflected = reflect(rayIn.getDirectionNormalized(), hitRecord.normal); // ?
-    let reflected = reflect(rayIn.getDirection(), hitRecord.normal); // ?
+    let reflected = reflect(rayIn.getDirection(), hitRecord.normal);
 
     // Rough
     let roughness = getRandominUnitSphere();
@@ -45,9 +46,17 @@ export default class MaterialMetal extends Material {
     // Attenuation
     const VALUE = ALBEDO.getValue(hitRecord.u, hitRecord.v, hitRecord.position);
 
-    attenuation[0] = VALUE[0];
-    attenuation[1] = VALUE[1];
-    attenuation[2] = VALUE[2];
+    //console.log("VALUE " + VALUE.R + " " + VALUE.G + " " + VALUE.B);
+
+    // attenuation[0] = VALUE[0];
+    // attenuation[1] = VALUE[1];
+    // attenuation[2] = VALUE[2];
+
+    attenuation.R = VALUE.R;
+    attenuation.G = VALUE.G;
+    attenuation.B = VALUE.B;
+
+    // TODO Only set ray if test is passed ?
 
     if (vec3.dot(scattered.getDirection(), hitRecord.normal) > 0) {
       return true;

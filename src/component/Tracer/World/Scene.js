@@ -1,14 +1,15 @@
 import { vec3 } from "gl-matrix";
 
+import HitableNode from "../Hit/HitableNode";
 import HitableSphere from "../Hit/HitableSphere";
 import HitableTriangle from "../Hit/HitableTriangle";
 import HitablePlaneHolder from "../Hit/HitablePlaneHolder";
-
-import HitableNode from "../Hit/HitableNode";
 import HitableBox from "../Hit/HitableBox";
 import HitableConstantMedium from "../Hit/HitableConstantMedium";
+import HitableText from "../Hit/HitableText";
 
 import SceneHelper from "./Helper/SceneHelper";
+import ColourRGBA from "../Colour/ColourRGBA";
 
 export default class Scene {
   constructor(cameraController) {
@@ -79,6 +80,14 @@ export default class Scene {
     return new HitablePlaneHolder(this, width, height, material);
   }
 
+  // _______________________________________________________________________ Box
+
+  addBox(width, height, depth, material) {
+    this.countTriangles += 12;
+
+    return new HitableBox(this, width, height, depth, material);
+  }
+
   // ____________________________________________________________________ Volume
 
   addVolumeSphere(position, radius, texture, density) {
@@ -95,12 +104,12 @@ export default class Scene {
     return MEDIUM;
   }
 
-  // _______________________________________________________________________ Box
+  // ______________________________________________________________________ Text
 
-  addBox(width, height, depth, material) {
-    this.countTriangles += 12;
+  addText(width, height, material) {
+    this.countTriangles += 2; // TODO Increase to4 with backfacing
 
-    return new HitableBox(this, width, height, depth, material);
+    return new HitablePlaneHolder(this, width, height, material);
   }
 
   // ______________________________________________________________ Scene helper
@@ -134,7 +143,7 @@ export default class Scene {
   getBackground(rayDirectionNormalized) {
     rayDirectionNormalized;
 
-    return vec3.fromValues(0.5, 0.5, 0.5);
+    return ColourRGBA(0.5, 0.5, 0.5, 1.0);
   }
 
   // __________________________________________________________ TextureImageData
