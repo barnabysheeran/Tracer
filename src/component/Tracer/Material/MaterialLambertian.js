@@ -16,28 +16,6 @@ export default class MaterialLambertian extends Material {
   scatter(rayIn, hitRecord, attenuation, scattered) {
     rayIn;
 
-    // // Attenuation
-    // const VALUE = this.ALBEDO.getValue(
-    //   hitRecord.u,
-    //   hitRecord.v,
-    //   hitRecord.position
-    // );
-
-    // // Alpha test
-    // if (VALUE.A < 0.1) {
-    //   console.log(VALUE.A);
-    //   return false;
-    // }
-
-    // attenuation.R = VALUE.R;
-    // attenuation.G = VALUE.G;
-    // attenuation.B = VALUE.B;
-
-    // // Alpha
-    // // if (Math.random() < VALUE.A) { // TODO Check
-    // //   return false;
-    // // }
-
     // Rough
     let roughness = getRandominUnitSphere();
 
@@ -64,14 +42,10 @@ export default class MaterialLambertian extends Material {
       hitRecord.position
     );
 
-    attenuation.R = VALUE.R;
-    attenuation.G = VALUE.G;
-    attenuation.B = VALUE.B;
+    attenuation[0] = VALUE[0];
+    attenuation[1] = VALUE[1];
+    attenuation[2] = VALUE[2];
 
-    if (VALUE.A < 0.01) {
-      return false;
-    } else {
-      return true;
-    }
+    return true;
   }
 }

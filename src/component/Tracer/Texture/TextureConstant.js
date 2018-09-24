@@ -1,13 +1,10 @@
 import Texture from "./Texture";
 
 export default class TextureConstant extends Texture {
-  constructor(colourRGBA) {
+  constructor(colour) {
     super();
 
-    console.log("TextureConstant. ");
-    console.log(colourRGBA);
-
-    this.COLOUR_RGBA = colourRGBA;
+    this.COLOUR = colour;
   }
 
   getValue(u, v, position) {
@@ -15,6 +12,6 @@ export default class TextureConstant extends Texture {
     v;
     position;
 
-    return this.COLOUR_RGBA;
+    return this.COLOUR;
   }
 }

@@ -32,9 +32,9 @@ export default class MaterialIsotropic extends Material {
       hitRecord.position
     );
 
-    attenuation.R = C.R;
-    attenuation.G = C.G;
-    attenuation.B = C.B;
+    attenuation[0] = C[0];
+    attenuation[1] = C[1];
+    attenuation[2] = C[2];
 
     return true;
   }

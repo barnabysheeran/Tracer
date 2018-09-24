@@ -1,5 +1,5 @@
 import Texture from "./Texture";
-import ColourRGBA from "../Colour/ColourRGBA";
+import { vec3 } from "gl-matrix";
 
 export default class TextureImage extends Texture {
   constructor(dimensions, data) {
@@ -34,16 +34,10 @@ export default class TextureImage extends Texture {
 
     const INDEX = 4 * i + 4 * PIXELS_X * j;
 
-    // const R = TEXTURE_IMAGE_DATA[INDEX] / 255.0;
-    // const G = TEXTURE_IMAGE_DATA[INDEX + 1] / 255.0;
-    // const B = TEXTURE_IMAGE_DATA[INDEX + 2] / 255.0;
-    // const A = TEXTURE_IMAGE_DATA[INDEX + 3] / 255.0;
+    const R = TEXTURE_IMAGE_DATA[INDEX] / 255.0;
+    const G = TEXTURE_IMAGE_DATA[INDEX + 1] / 255.0;
+    const B = TEXTURE_IMAGE_DATA[INDEX + 2] / 255.0;
 
-    return new ColourRGBA(
-      TEXTURE_IMAGE_DATA[INDEX] / 255.0,
-      TEXTURE_IMAGE_DATA[INDEX + 1] / 255.0,
-      TEXTURE_IMAGE_DATA[INDEX + 2] / 255.0,
-      TEXTURE_IMAGE_DATA[INDEX + 3] / 255.0
-    );
+    return vec3.fromValues(R, G, B);
   }
 }

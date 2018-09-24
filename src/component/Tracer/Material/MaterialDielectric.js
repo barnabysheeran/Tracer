@@ -26,9 +26,9 @@ export default class MaterialDielectric extends Material {
     let cosine;
 
     // Attenuation
-    attenuation.R = 1.0;
-    attenuation.G = 1.0;
-    attenuation.B = 1.0;
+    attenuation[0] = 1.0;
+    attenuation[1] = 1.0;
+    attenuation[2] = 1.0;
 
     if (vec3.dot(rayIn.getDirection(), hitRecord.normal) > 0) {
       outwardNormal[0] = -hitRecord.normal[0];
