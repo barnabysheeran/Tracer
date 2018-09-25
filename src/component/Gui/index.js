@@ -62,13 +62,14 @@ export default class Gui extends React.Component {
           <Group
             title="Max Bounce"
             classWidth={style.buttonNarrow}
-            initialIndex={1}
+            initialIndex={5}
             options={[
               { label: "1", value: 1 },
-              { label: "1k", value: 1000 },
-              { label: "2k", value: 2000 },
-              { label: "5k", value: 5000 },
-              { label: "10k", value: 10000 }
+              { label: "2", value: 2 },
+              { label: "3", value: 3 },
+              { label: "4", value: 4 },
+              { label: "5", value: 5 },
+              { label: "50", value: 50 }
             ]}
             onClick={this.props.onClickSetBounceMax}
           />

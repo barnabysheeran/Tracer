@@ -13,6 +13,7 @@ export default class Renderer {
 
     // Context
     this.CONTEXT = canvas.getContext("2d");
+    this.CONTEXT.imageSmoothingEnabled = false;
 
     // Workers
     this.WORKERS = new Workers(this);
