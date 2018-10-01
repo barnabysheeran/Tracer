@@ -6,7 +6,7 @@ Online: [http://steppinrazor.net/tracer/](http://steppinrazor.net/tracer/)
 
 ![Example A](/output/example_a.png "Example A")
 
-![Example B](/output/example_b.jpg "Example B")
+![Example B](/output/example_b.png "Example B")
 
 Original [Mesh](https://www.thingiverse.com/thing:151081)
 
