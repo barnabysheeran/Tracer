@@ -4,9 +4,9 @@ WiP. JavaScript multi-threaded CPU Path Ray Tracer
 
 Online: [http://steppinrazor.net/tracer/](http://steppinrazor.net/tracer/)
 
-![alt text](https://github.com/barnabysheeran/Tracer/output/example_a.jpg "Example A")
+![Example A](https://github.com/barnabysheeran/Tracer/output/example_a.png "Example A")
 
-![alt text](https://github.com/barnabysheeran/Tracer/output/example_a.jpg "Example B")
+![Example B](https://github.com/barnabysheeran/Tracer/output/example_a.jpg "Example B")
 
 Thank you - '[Ray Tracing in One Weekend](https://www.amazon.co.uk/Ray-Tracing-Weekend-Minibooks-Book-ebook/dp/B01B5AODD8)', '[Ray Tracing The Next Week](https://www.amazon.co.uk/gp/product/B01CO7PQ8C)', '[Scratchapixel](https://www.scratchapixel.com)'.
 
