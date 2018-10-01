@@ -34,3 +34,18 @@ export function HSVtoRGB(h, s, v) {
     b: b
   };
 }
+
+// export function rainbow(t) {
+//   // TODO Test
+//   let r = t * 2.1 - 1.8;
+//   let g = t * 2.1 - 1.14;
+//   let b = t * 2.1 - 0.3;
+
+//   return [1.0 - r * r, 1.0 - g * g, 1.0 - b * b];
+// }
+
+// vec3 Geoffrey(float t)
+// {
+//     vec3 r = t * 2.1 - vec3(1.8, 1.14, 0.3);
+//     return 1.0 - r * r;
+// }

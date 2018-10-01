@@ -1,19 +1,26 @@
 import { vec3 } from "gl-matrix";
 
+import Material from "./Material";
+
 import { getRandominUnitSphere, reflect } from "../Util/util";
 
-export default class MaterialMetal {
+export default class MaterialMetal extends Material {
   constructor(albedo, rough) {
+    super();
+
     this.ALBEDO = albedo;
     this.ROUGH = rough;
   }
+
+  // ___________________________________________________________________ Scatter
 
   scatter(rayIn, hitRecord, attenuation, scattered) {
     const ALBEDO = this.ALBEDO;
     const ROUGH = this.ROUGH;
 
     // Reflected
-    let reflected = reflect(rayIn.getDirectionNormalized(), hitRecord.normal);
+    //let reflected = reflect(rayIn.getDirectionNormalized(), hitRecord.normal); // ?
+    let reflected = reflect(rayIn.getDirection(), hitRecord.normal); // ?
 
     // Rough
     let roughness = getRandominUnitSphere();

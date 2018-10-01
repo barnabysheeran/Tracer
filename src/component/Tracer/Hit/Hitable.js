@@ -1,5 +1,9 @@
 export default class Hitable {
-  constructor() {}
+  constructor() {
+    this.boundingBox = null;
+  }
+
+  // _______________________________________________________________________ Hit
 
   didHit(ray, tMin, tMax, hitRecord) {
     ray;
@@ -7,4 +11,12 @@ export default class Hitable {
     tMax;
     hitRecord;
   }
+
+  // ______________________________________________________________________ AABB
+
+  createBoundingBox() {}
+
+  // ____________________________________________________________________ Access
+
+  getPositionCenter() {}
 }

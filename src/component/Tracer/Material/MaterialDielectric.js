@@ -1,17 +1,24 @@
 import { vec3 } from "gl-matrix";
 
+import Material from "./Material";
+
 import { reflect, refract, schlick } from "../Util/util";
 
-export default class MaterialDielectric {
+export default class MaterialDielectric extends Material {
   constructor(indexRefraction) {
+    super();
+
     this.INDEX_REFRACTION = indexRefraction;
   }
+
+  // ___________________________________________________________________ Scatter
 
   scatter(rayIn, hitRecord, attenuation, scattered) {
     const INDEX_REFRACTION = this.INDEX_REFRACTION;
 
     let outwardNormal = vec3.create();
-    let reflected = reflect(rayIn.getDirectionNormalized(), hitRecord.normal);
+    //let reflected = reflect(rayIn.getDirectionNormalized(), hitRecord.normal);
+    let reflected = reflect(rayIn.getDirection(), hitRecord.normal);
     let refracted = vec3.create();
 
     let niOverNt;
@@ -31,8 +38,7 @@ export default class MaterialDielectric {
       niOverNt = INDEX_REFRACTION;
 
       cosine =
-        (INDEX_REFRACTION *
-          vec3.dot(rayIn.getDirectionNormalized(), hitRecord.normal)) /
+        (INDEX_REFRACTION * vec3.dot(rayIn.getDirection(), hitRecord.normal)) /
         vec3.length(rayIn.getDirection());
     } else {
       outwardNormal[0] = hitRecord.normal[0];
@@ -42,7 +48,7 @@ export default class MaterialDielectric {
       niOverNt = 1.0 - INDEX_REFRACTION;
 
       cosine =
-        -vec3.dot(rayIn.getDirectionNormalized(), hitRecord.normal) /
+        -vec3.dot(rayIn.getDirection(), hitRecord.normal) /
         vec3.length(rayIn.getDirection());
     }
 

@@ -1,19 +1,17 @@
-import HitRecord from "../Hit/HitRecord";
-
-import SceneTest from "./SceneTest";
-import SceneAnimationTest from "./SceneAnimationTest";
-import SceneMarbleTest from "./SceneMarbleTest";
-import SceneImageTest from "./SceneImageTest";
+import SceneExampleA from "./Scenes/ExampleA";
+import SceneExampleB from "./Scenes/ExampleB";
+import SceneLightTest from "./Scenes/LightTest";
+import SceneLightTest2 from "./Scenes/LightTest2";
 
 export default class World {
   constructor(cameraController) {
     this.CAMERA_CONTROLLER = cameraController;
 
     this.SCENES = [
-      new SceneTest(cameraController),
-      new SceneAnimationTest(cameraController),
-      new SceneMarbleTest(cameraController),
-      new SceneImageTest(cameraController)
+      new SceneExampleA(cameraController),
+      new SceneExampleB(cameraController),
+      new SceneLightTest(cameraController),
+      new SceneLightTest2(cameraController)
     ];
 
     // Default
@@ -28,6 +26,16 @@ export default class World {
     this.scene.init();
   }
 
+  initScene() {
+    this.scene.init();
+  }
+
+  // _______________________________________________________________________ BVH
+
+  buildBVH() {
+    this.scene.buildBVH();
+  }
+
   // ________________________________________________________________ Background
 
   getBackground(rayDirectionNormalized) {
@@ -37,23 +45,7 @@ export default class World {
   // _______________________________________________________________________ Hit
 
   didHitAnything(ray, tMin, tMax, hitRecord) {
-    const HITABLES = this.scene.HITABLES;
-
-    let hitRecordTemp = new HitRecord();
-
-    let hit = false;
-    let closest = tMax;
-    let i;
-
-    for (i = 0; i < HITABLES.length; i++) {
-      if (HITABLES[i].didHit(ray, tMin, closest, hitRecordTemp) == true) {
-        hit = true;
-        closest = hitRecordTemp.t;
-        hitRecordTemp.cloneThisInto(hitRecord);
-      }
-    }
-
-    return hit;
+    return this.scene.bvhRoot.didHit(ray, tMin, tMax, hitRecord);
   }
 
   // _________________________________________________________________ Animation
@@ -86,5 +78,25 @@ export default class World {
     for (i = 0; i < SCENES.length; i++) {
       SCENES[i].setTextureImageData(data);
     }
+  }
+
+  // ____________________________________________________________________ Meshes
+
+  setMeshes(positions, normals, cells) {
+    const SCENES = this.SCENES;
+
+    let i;
+
+    for (i = 0; i < SCENES.length; i++) {
+      SCENES[i].setMeshes(positions, normals, cells);
+    }
+  }
+
+  // ____________________________________________________________________ Access
+
+  getSceneAnimationFrameMax(sceneId) {
+    const SCENES = this.SCENES;
+
+    return SCENES[sceneId].getAnimationFrameMax();
   }
 }

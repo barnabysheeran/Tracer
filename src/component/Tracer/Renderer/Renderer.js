@@ -1,38 +1,22 @@
-import RenderWorker from "./Render.worker.js";
-
-import ImageLibrary from "../Image/ImageLibrary.js";
+import ImageLibrary from "../Library/ImageLibrary.js";
+import MeshLibrary from "../Library/MeshLibrary.js";
 import World from "../World/World.js";
 import CameraController from "../Camera/CameraController.js";
 import Recorder from "../Recorder/Recorder.js";
 
+import Workers from "./Workers";
+
 export default class Renderer {
-  constructor(canvas, setStatus) {
+  constructor(canvas, setStatus, setStatistics) {
     this.setStatus = setStatus;
+    this.setStatistics = setStatistics;
 
     // Context
     this.CONTEXT = canvas.getContext("2d");
+    this.CONTEXT.imageSmoothingEnabled = false;
 
     // Workers
-    this.WORKER_TOTAL = navigator.hardwareConcurrency || 4;
-
-    this.WORKER_POOL = [];
-
-    this.workersActive;
-
-    let renderWorker;
-
-    for (let i = 0; i < this.WORKER_TOTAL; i++) {
-      renderWorker = new RenderWorker();
-
-      // Init
-      renderWorker.postMessage({ messageType: "init", threadId: i });
-
-      // Receive
-      renderWorker.onmessage = this.onRenderWorkerMessage.bind(this);
-
-      // Store
-      this.WORKER_POOL[i] = renderWorker;
-    }
+    this.WORKERS = new Workers(this);
 
     // Dimensions
     this.PIXEL_WIDTH = -1;
@@ -41,134 +25,69 @@ export default class Renderer {
     // Time
     this.timeRenderStart = 0;
 
+    // Rows
+    this.rowsComplete = 0;
+
     // Frames
     this.frame = 0;
     this.frameMax = 0;
 
     // Time
-    this.timeFrameStart = 0.0;
     this.timeFrameInterval = 1.0;
-
-    // Reuseable imagedata
-    this.IMAGEDATA = this.CONTEXT.createImageData(1, 1);
-    this.IMAGEDATA_DATA = this.IMAGEDATA.data;
-    this.IMAGEDATA_DATA[3] = 255; // Full alpha
-
-    // Var
-    this.row = 0;
-    this.column = 0;
-    this.isRendering = false;
 
     // Recorder
     this.saveOutput = false;
     this.RECORDER = new Recorder(canvas);
 
-    // Camera Controller
-    this.CAMERA_CONTROLLER = new CameraController();
+    // Image Library - Load on main thread
+    this.libraryImageLoaded = false;
 
-    // Texture Library - Load images on main thread
     this.IMAGE_LIBRARY = new ImageLibrary(this);
+    this.MESH_LIBRARY = new MeshLibrary(this);
 
-    // Create World
-    this.WORLD = new World(this.CAMERA_CONTROLLER);
+    // Create local World
+    this.WORLD = new World(new CameraController());
 
-    // Start
-    this.setStatus("Created " + this.WORKER_TOTAL + " threads");
+    // Status
+    this.setStatusReady();
   }
 
-  // _____________________________________________________________________ Start
+  // ____________________________________________________________________ Render
 
   startAnimation() {
-    // Record Time
+    // Render Time
     let d = new Date();
     this.timeRenderStart = d.getTime();
 
-    // Start
+    // Frame
     this.frame = 0;
-    this.isRendering = true;
+
+    // Start
     this.startFrame();
   }
 
   startFrame() {
-    const WORKER_TOTAL = this.WORKER_TOTAL;
+    // Status
+    this.setStatusRendering();
 
-    // XY
-    this.row = 0;
-    this.column = 0;
+    // Rows
+    this.rowsComplete = 0;
 
     // Workers
-    this.workersActive = this.WORKER_TOTAL;
-
-    // Time
-    this.timeFrameStart = this.frame * this.timeFrameInterval;
-    //this.timeFrameEnd = (this.frame + 1) * this.timeFrameInterval;
-
-    this.setStatus("Render frame " + this.frame);
-
-    // Start
-    let i;
-
-    for (i = 0; i < WORKER_TOTAL - 1; i++) {
-      this.startWorker(i, this.column, this.row);
-      this.nextPixel();
-    }
-
-    this.startWorker(WORKER_TOTAL - 1, this.column, this.row);
+    this.WORKERS.startFrame(this.frame * this.timeFrameInterval);
   }
 
-  startWorker(workerId, column, row) {
-    this.WORKER_POOL[workerId].postMessage({
-      messageType: "render",
-      timeFrameStart: this.timeFrameStart,
-      column: column,
-      row: row
-    });
-  }
+  drawPixels(row, imageDataData) {
+    // Count
+    this.rowsComplete++;
+    this.setStatusRendering();
 
-  nextPixel() {
-    // Next column
-    this.column++;
-
-    if (this.column >= this.PIXEL_WIDTH) {
-      // Next row
-      this.column = 0;
-      this.row++;
-    }
-  }
-
-  onRenderWorkerMessage(e) {
-    let data = e.data;
-
-    if (data.message == "complete") {
-      if (this.isRendering == true) {
-        this.drawPixel(data.column, data.row, data.colour);
-
-        // Next
-        if (this.row < this.PIXEL_HEIGHT) {
-          this.nextPixel();
-
-          this.startWorker(data.threadId, this.column, this.row);
-        } else {
-          this.workersActive--;
-
-          if (this.workersActive == 0) {
-            this.onFrameComplete();
-          }
-        }
-      }
-    }
-  }
-
-  drawPixel(column, row, colour) {
-    const IMAGEDATA = this.IMAGEDATA;
-    const IMAGEDATA_DATA = this.IMAGEDATA_DATA;
-    const CONTEXT = this.CONTEXT;
-
-    IMAGEDATA_DATA[0] = colour[0] * 255.99;
-    IMAGEDATA_DATA[1] = colour[1] * 255.99;
-    IMAGEDATA_DATA[2] = colour[2] * 255.99;
-
-    CONTEXT.putImageData(IMAGEDATA, column, row);
+    // Draw
+    this.CONTEXT.putImageData(
+      new ImageData(imageDataData, this.PIXEL_WIDTH, 1),
+      0,
+      row
+    );
   }
 
   onFrameComplete() {
@@ -180,10 +99,6 @@ export default class Renderer {
     // Frame
     this.frame++;
 
-    // Time
-    this.timeFrameStart = this.frame * this.timeFrameInterval;
-    //this.timeFrameEnd = (this.frame + 1) * this.timeFrameInterval;
-
     if (this.frame >= this.frameMax) {
       this.onRenderComplete();
     } else {
@@ -192,168 +107,141 @@ export default class Renderer {
   }
 
   onRenderComplete() {
-    // Status
-    let d = new Date();
-    let timeTaken = d.getTime() - this.timeRenderStart;
-    this.setStatus("Complete in " + (timeTaken / 1000).toFixed(2) + "s");
-
-    // Done
-    this.isRendering = false;
+    this.setStatusComplete();
   }
 
   // _____________________________________________________________________ Clear
 
   clear() {
     const CONTEXT = this.CONTEXT;
-
     CONTEXT.fillStyle = "#000000";
     CONTEXT.fillRect(0, 0, this.PIXEL_WIDTH, this.PIXEL_HEIGHT);
 
-    this.setStatus("Cleared");
-    this.isRendering = false;
+    // Workers
+    this.WORKERS.clear();
+
+    // Status
+    this.setStatusReady();
   }
 
-  // ______________________________________________________________ Set Threaded
-
-  shape(w, h) {
-    this.PIXEL_WIDTH = w;
-    this.PIXEL_HEIGHT = h;
-
-    this.CAMERA_CONTROLLER.shape(w, h);
-
-    // Scene
-    const WORKER_TOTAL = this.WORKER_TOTAL;
-    const WORKER_POOL = this.WORKER_POOL;
-
-    for (let i = 0; i < WORKER_TOTAL; i++) {
-      WORKER_POOL[i].postMessage({
-        messageType: "shape",
-        pixelWidth: w,
-        pixelHeight: h
-      });
-    }
-  }
+  // _____________________________________________________________________ Scene
 
   setScene(sceneId) {
-    const WORLD = this.WORLD;
+    // World TODO Remove duplicate WORLD from renderer, communicate first worker
+    this.WORLD.setScene(sceneId);
 
-    WORLD.setScene(sceneId);
-
-    // Frame
-    this.frameMax = WORLD.getAnimationFrameMax();
+    // Animation Frames
+    this.frameMax = this.WORLD.getSceneAnimationFrameMax(sceneId);
 
     // Time
     this.timeFrameInterval = 1.0 / this.frameMax;
 
     // Workers
-    const WORKER_TOTAL = this.WORKER_TOTAL;
-    const WORKER_POOL = this.WORKER_POOL;
+    this.WORKERS.setScene(sceneId, this.timeFrameInterval);
 
-    let i;
-
-    for (i = 0; i < WORKER_TOTAL; i++) {
-      WORKER_POOL[i].postMessage({
-        messageType: "setScene",
-        sceneId: sceneId,
-        timeFrameInterval: this.timeFrameInterval
-      });
-    }
+    // Status
+    this.setStatusStatistics();
   }
 
+  // _____________________________________________________________________ Shape
+
+  shape(w, h) {
+    this.PIXEL_WIDTH = w;
+    this.PIXEL_HEIGHT = h;
+
+    this.WORKERS.shape(w, h);
+  }
+
+  // __________________________________________________________________ Settings
+
   setAASamples(samples) {
-    const WORKER_TOTAL = this.WORKER_TOTAL;
-    const WORKER_POOL = this.WORKER_POOL;
-
-    let i;
-
-    for (i = 0; i < WORKER_TOTAL; i++) {
-      WORKER_POOL[i].postMessage({
-        messageType: "setSamplesAA",
-        samples: samples
-      });
-    }
+    this.WORKERS.setAASamples(samples);
   }
 
   setBounceMax(bounceMax) {
-    const WORKER_TOTAL = this.WORKER_TOTAL;
-    const WORKER_POOL = this.WORKER_POOL;
-
-    let i;
-
-    for (i = 0; i < WORKER_TOTAL; i++) {
-      WORKER_POOL[i].postMessage({
-        messageType: "setBounceMax",
-        bounceMax: bounceMax
-      });
-    }
+    this.WORKERS.setBounceMax(bounceMax);
   }
 
   setAperture(aperture) {
-    const WORKER_TOTAL = this.WORKER_TOTAL;
-    const WORKER_POOL = this.WORKER_POOL;
-
-    let i;
-
-    for (i = 0; i < WORKER_TOTAL; i++) {
-      WORKER_POOL[i].postMessage({
-        messageType: "setAperture",
-        aperture: aperture
-      });
-    }
+    this.WORKERS.setAperture(aperture);
   }
 
   setFov(fov) {
-    const WORKER_TOTAL = this.WORKER_TOTAL;
-    const WORKER_POOL = this.WORKER_POOL;
-
-    let i;
-
-    for (i = 0; i < WORKER_TOTAL; i++) {
-      WORKER_POOL[i].postMessage({
-        messageType: "setFov",
-        fov: fov
-      });
-    }
+    this.WORKERS.setFov(fov);
   }
-
-  setCameraPositionById(positionId) {
-    const WORKER_TOTAL = this.WORKER_TOTAL;
-    const WORKER_POOL = this.WORKER_POOL;
-
-    let i;
-
-    for (i = 0; i < WORKER_TOTAL; i++) {
-      WORKER_POOL[i].postMessage({
-        messageType: "setCameraPositionById",
-        positionId: positionId
-      });
-    }
-  }
-
-  onImageLibraryLoaded() {
-    const WORKER_TOTAL = this.WORKER_TOTAL;
-    const WORKER_POOL = this.WORKER_POOL;
-
-    const IMAGE_LIBRARY = this.IMAGE_LIBRARY;
-    const IMAGE_DIMENSIONS = IMAGE_LIBRARY.getImageDimensions();
-    const IMAGE_DATA = IMAGE_LIBRARY.getImageData();
-
-    let i;
-
-    for (i = 0; i < WORKER_TOTAL; i++) {
-      WORKER_POOL[i].postMessage({
-        messageType: "setTextureImageData",
-        imageDimensions: IMAGE_DIMENSIONS,
-        imageData: IMAGE_DATA
-      });
-    }
-
-    this.setStatus("Ready. Using " + this.WORKER_TOTAL + " threads");
-  }
-
-  // _______________________________________________________________________ Set
 
   setSaveOutput(save) {
     this.saveOutput = save;
+  }
+
+  // ____________________________________________________________________ Assets
+
+  onImageLibraryLoaded() {
+    const IMAGE_LIBRARY = this.IMAGE_LIBRARY;
+
+    // TODO Remove with World removal
+    this.WORLD.setTextureImageDimensions(IMAGE_LIBRARY.getImageDimensions());
+    this.WORLD.setTextureImageData(IMAGE_LIBRARY.getImageData());
+
+    // Workers
+    this.WORKERS.onImageLibraryLoaded(
+      IMAGE_LIBRARY.getImageDimensions(),
+      IMAGE_LIBRARY.getImageData()
+    );
+
+    this.WORKERS.init();
+
+    this.libraryImageLoaded = true;
+    this.setStatusReady();
+    this.setStatusStatistics();
+  }
+
+  // ____________________________________________________________________ Status
+
+  setStatusReady() {
+    if (this.libraryImageLoaded == true) {
+      this.setStatus("Ready. " + this.WORKERS.getWorkerTotal() + " workers");
+    } else {
+      this.setStatus("Loading ...");
+    }
+  }
+
+  setStatusRendering() {
+    let complete =
+      ((this.rowsComplete / this.PIXEL_HEIGHT) * 100.0).toFixed(2) + "%";
+
+    if (this.frameMax > 0) {
+      this.setStatus(
+        "Render. Frame " +
+          (this.frame + 1) +
+          " of " +
+          this.frameMax +
+          ". " +
+          complete
+      );
+    } else {
+      this.setStatus("Render. " + complete);
+    }
+  }
+
+  setStatusComplete() {
+    let d = new Date();
+    let timeTaken = d.getTime() - this.timeRenderStart;
+
+    this.setStatus("Render. Complete " + (timeTaken / 1000).toFixed(2) + "s");
+  }
+
+  // ________________________________________________________________ Statistics
+
+  setStatusStatistics() {
+    // World TODO Remove duplicate WORLD from renderer, communicate first worker
+    this.setStatistics(
+      this.WORLD.scene.countTriangles +
+        " Triangles. " +
+        this.WORLD.scene.countSpheres +
+        " Spheres. " +
+        this.WORLD.scene.countVolumeSpheres +
+        " Volumes"
+    );
   }
 }

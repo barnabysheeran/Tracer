@@ -1,5 +1,14 @@
-import HitableSphere from "../Hit/HitableSphere";
 import { vec3 } from "gl-matrix";
+
+import HitableSphere from "../Hit/HitableSphere";
+import HitableTriangle from "../Hit/HitableTriangle";
+import HitablePlaneHolder from "../Hit/HitablePlaneHolder";
+
+import HitableNode from "../Hit/HitableNode";
+import HitableBox from "../Hit/HitableBox";
+import HitableConstantMedium from "../Hit/HitableConstantMedium";
+
+import SceneHelper from "./Helper/SceneHelper";
 
 export default class Scene {
   constructor(cameraController) {
@@ -8,23 +17,106 @@ export default class Scene {
     this.animationFrameMax = 0;
 
     this.HITABLES = [];
+    this.bvhRoot = null;
 
     this.textureImageDimensions = [];
     this.textureImageData = [];
+
+    this.meshPositions = [];
+    this.meshNormals = [];
+    this.meshCells = [];
+
+    this.countTriangles = 0;
+    this.countSpheres = 0;
+    this.countVolumeSpheres = 0;
   }
 
   // ______________________________________________________________________ Init
 
   init() {}
 
+  // _____________________________________________________________________ Reset
+
+  reset() {
+    this.HITABLES = [];
+    this.BVH_ROOT = null;
+
+    this.countTriangles = 0;
+    this.countSpheres = 0;
+    this.countVolumeSpheres = 0;
+  }
+
   // ____________________________________________________________________ Sphere
 
   addSphere(position, radius, material) {
-    let sphere = new HitableSphere(position, radius, material);
+    // TODO Move position to seperate method to match other primitives
+    const SPHERE = new HitableSphere(position, radius, material);
 
-    this.HITABLES.push(sphere);
+    this.HITABLES.push(SPHERE);
 
-    return sphere;
+    this.countSpheres++;
+
+    return SPHERE;
+  }
+
+  // __________________________________________________________________ Triangle
+
+  addTriangle(p0, p1, p2, material) {
+    const TRIANGLE = new HitableTriangle(p0, p1, p2, material);
+
+    this.HITABLES.push(TRIANGLE);
+
+    this.countTriangles++;
+
+    return TRIANGLE;
+  }
+
+  // _____________________________________________________________________ Plane
+
+  addPlane(width, height, material) {
+    this.countTriangles += 2;
+
+    return new HitablePlaneHolder(this, width, height, material);
+  }
+
+  // ____________________________________________________________________ Volume
+
+  addVolumeSphere(position, radius, texture, density) {
+    const MEDIUM = new HitableConstantMedium(
+      new HitableSphere(position, radius),
+      density,
+      texture
+    );
+
+    this.HITABLES.push(MEDIUM);
+
+    this.countVolumeSpheres++;
+
+    return MEDIUM;
+  }
+
+  // _______________________________________________________________________ Box
+
+  addBox(width, height, depth, material) {
+    this.countTriangles += 12;
+
+    return new HitableBox(this, width, height, depth, material);
+  }
+
+  // ______________________________________________________________ Scene helper
+
+  addSceneHelper(sizeAxis = 10, sizeSphere = 1) {
+    this.countSpheres += 6;
+
+    return new SceneHelper(this, sizeAxis, sizeSphere);
+  }
+
+  // _______________________________________________________________________ BVH
+
+  buildBVH() {
+    this.bvhRoot = new HitableNode(this.HITABLES, 0);
+
+    this.bvhRoot.createBoundingBox();
   }
 
   // _________________________________________________________________ Animation
@@ -61,5 +153,25 @@ export default class Scene {
 
   getTextureImageData(textureId) {
     return this.textureImageData[textureId];
+  }
+
+  // _________________________________________________________________ Mesh Data
+
+  setMeshes(positions, normals, cells) {
+    this.meshPositions = positions;
+    this.meshNormals = normals;
+    this.meshCells = cells;
+  }
+
+  getMeshPositions(assetId) {
+    return this.meshPositions[assetId];
+  }
+
+  getMeshNormals(assetId) {
+    return this.meshNormals[assetId];
+  }
+
+  getMeshCells(assetId) {
+    return this.meshCells[assetId];
   }
 }

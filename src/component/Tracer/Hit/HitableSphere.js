@@ -1,34 +1,48 @@
 import { vec3 } from "gl-matrix";
 
+import AABB from "./AABB";
 import Hitable from "./Hitable";
 
 export default class HitableSphere extends Hitable {
   constructor(positionCenter, radius, material) {
     super();
 
-    this.POSITION_CENTER = positionCenter;
-    this.RADIUS = radius;
+    this.positionCenter = positionCenter;
+    this.radius = radius;
     this.MATERIAL = material;
+
+    this.createBoundingBox();
   }
 
   // _______________________________________________________________________ Set
 
-  setPositionCenter(x, y, z) {
-    const POSITION_CENTER = this.POSITION_CENTER;
+  setPosition(x, y, z) {
+    const POSITION_CENTER = this.positionCenter;
     POSITION_CENTER[0] = x;
     POSITION_CENTER[1] = y;
     POSITION_CENTER[2] = z;
+
+    this.createBoundingBox();
   }
 
   setRadius(radius) {
-    this.RADIUS = radius;
+    this.radius = radius;
+
+    this.createBoundingBox();
   }
 
-  // ____________________________________________________________________ didHit
+  // _______________________________________________________________________ Hit
 
   didHit(ray, tMin, tMax, hitRecord) {
-    const POSITION_CENTER = this.POSITION_CENTER;
-    const RADIUS = this.RADIUS;
+    // Bounding box hit
+    if (this.boundingBox.didHit(ray, tMin, tMax) == false) {
+      return false;
+    }
+
+    // Hit
+    const POSITION_CENTER = this.positionCenter;
+    const RADIUS = this.radius;
+
     const RAY_ORIGIN = ray.getPositionOrigin();
     const RAY_DIRECTION = ray.getDirection();
 
@@ -51,7 +65,7 @@ export default class HitableSphere extends Hitable {
       if (temp < tMax && temp > tMin) {
         hitRecord.t = temp;
 
-        hitRecord.position = ray.getPointAtParameter(hitRecord.t);
+        hitRecord.position = ray.getPointAtParameter(temp);
 
         hitRecord.normal = vec3.fromValues(
           (hitRecord.position[0] - POSITION_CENTER[0]) / RADIUS,
@@ -73,7 +87,7 @@ export default class HitableSphere extends Hitable {
       if (temp < tMax && temp > tMin) {
         hitRecord.t = temp;
 
-        hitRecord.position = ray.getPointAtParameter(hitRecord.t);
+        hitRecord.position = ray.getPointAtParameter(temp);
 
         hitRecord.normal = vec3.fromValues(
           (hitRecord.position[0] - POSITION_CENTER[0]) / RADIUS,
@@ -106,5 +120,32 @@ export default class HitableSphere extends Hitable {
     const V = (THETA + PI / 2.0) / PI;
 
     return [U, V];
+  }
+
+  // ______________________________________________________________________ AABB
+
+  createBoundingBox() {
+    const POSITION_CENTER = this.positionCenter;
+    const RADIUS = this.radius;
+
+    let p0 = vec3.fromValues(
+      POSITION_CENTER[0] - RADIUS,
+      POSITION_CENTER[1] - RADIUS,
+      POSITION_CENTER[2] - RADIUS
+    );
+
+    let p1 = vec3.fromValues(
+      POSITION_CENTER[0] + RADIUS,
+      POSITION_CENTER[1] + RADIUS,
+      POSITION_CENTER[2] + RADIUS
+    );
+
+    this.boundingBox = new AABB(p0, p1);
+  }
+
+  // ____________________________________________________________________ Access
+
+  getPositionCenter() {
+    return this.positionCenter;
   }
 }

@@ -34,11 +34,6 @@ module.exports = {
         ]
       },
       {
-        test: /\.glsl$/,
-        loader: "shader-loader",
-        options: { glsl: { chunkPath: "./src/glsl" } }
-      },
-      {
         test: /\.worker\.js$/,
         use: {
           loader: "worker-loader",

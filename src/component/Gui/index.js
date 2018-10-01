@@ -19,64 +19,64 @@ export default class Gui extends React.Component {
       <div className={style.gui}>
         <div className={style.menu}>
           <Group
-            title="Output"
-            narrow={false}
-            initialIndex={0}
-            options={[
-              { label: "800*400", value: [800, 400] },
-              { label: "500*500", value: [500, 500] },
-              { label: "1024*512", value: [1024, 512] },
-              { label: "200*200", value: [200, 200] },
-              { label: "200*100", value: [200, 100] },
-              { label: "400*200", value: [400, 200] }
-            ]}
-            onClick={this.props.onClickSetDimensions}
-          />
-          <Group
             title="Scene"
-            narrow={false}
+            classWidth={style.buttonWide}
             initialIndex={0}
             options={[
-              { label: "Test", value: 0 },
-              { label: "AnimTest", value: 1 },
-              { label: "MarbleTest", value: 2 },
-              { label: "ImageTest", value: 3 }
+              { label: "Example A", value: 0 },
+              { label: "Example B", value: 1 },
+              { label: "Light Test", value: 2 },
+              { label: "Light Test 2", value: 3 }
             ]}
             onClick={this.props.onClickSetScene}
           />
+
+          <Group
+            title="Output"
+            classWidth={style.buttonStandard}
+            initialIndex={1}
+            options={[
+              { label: "400*200", value: [400, 200] },
+              { label: "800*400", value: [800, 400] },
+              { label: "1600*800", value: [1600, 800] }
+            ]}
+            onClick={this.props.onClickSetDimensions}
+          />
+
           <Group
             title="AA Samples"
-            narrow={true}
-            initialIndex={0}
-            options={[
-              { label: "1", value: 1 },
-              { label: "50", value: 50 },
-              { label: "100", value: 100 },
-              { label: "200", value: 200 },
-              { label: "300", value: 300 },
-              { label: "500", value: 500 },
-              { label: "1k", value: 1000 }
-            ]}
-            onClick={this.props.onClickSetAASamples}
-          />
-          <Group
-            title="Max Bounce"
-            narrow={true}
-            initialIndex={6}
+            classWidth={style.buttonNarrow}
+            initialIndex={1}
             options={[
               { label: "1", value: 1 },
               { label: "10", value: 10 },
-              { label: "50", value: 50 },
               { label: "100", value: 100 },
               { label: "500", value: 500 },
               { label: "1k", value: 1000 },
-              { label: "5k", value: 5000 }
+              { label: "5k", value: 5000 },
+              { label: "10k", value: 10000 }
+            ]}
+            onClick={this.props.onClickSetAASamples}
+          />
+
+          <Group
+            title="Max Bounce"
+            classWidth={style.buttonNarrow}
+            initialIndex={5}
+            options={[
+              { label: "1", value: 1 },
+              { label: "2", value: 2 },
+              { label: "3", value: 3 },
+              { label: "4", value: 4 },
+              { label: "5", value: 5 },
+              { label: "50", value: 50 }
             ]}
             onClick={this.props.onClickSetBounceMax}
           />
+
           <Group
             title="Save Output"
-            narrow={false}
+            classWidth={style.buttonStandard}
             initialIndex={0}
             options={[
               { label: "Off", value: false },
@@ -91,14 +91,22 @@ export default class Gui extends React.Component {
             <Button
               text="Clear"
               className={
-                style.button + " " + style.buttonWide + " " + style.buttonOff
+                style.button +
+                " " +
+                style.buttonStandard +
+                " " +
+                style.buttonOff
               }
               onClick={this.props.onClickClear}
             />
             <Button
               text="Start"
               className={
-                style.button + " " + style.buttonWide + " " + style.buttonOff
+                style.button +
+                " " +
+                style.buttonStandard +
+                " " +
+                style.buttonOff
               }
               onClick={this.props.onClickStart}
             />
@@ -106,6 +114,9 @@ export default class Gui extends React.Component {
           <div className={style.row} />
           <div className={style.row}>
             <StatusBar status={this.props.status} />
+          </div>
+          <div className={style.row}>
+            <StatusBar status={this.props.statistics} />
           </div>
         </div>
       </div>

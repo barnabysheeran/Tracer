@@ -1,20 +1,27 @@
 {
-  "name": "exercisetwo",
+  "name": "tracer",
   "version": "1.0.0",
   "main": "src/index.js",
-  "repository": "https://github.com/barnabysheeran/ExerciseTwo.git",
-  "author": "Barnaby Sheeran <barnabysheeran@googlemail.com>",
+  "repository": "https://github.com/barnabysheeran/Tracer.git",
+  "author": "Barnaby Sheeran <barnabysheeran@gmail.com>",
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --open --mode development",
     "build": "webpack --mode production",
     "lint:js": "eslint .",
-    "lint:css": "stylelint \"**/*.css\" --allow-empty-input",
+    "lint:css": "stylelint \"**/*.css\"",
     "lint": "run-s lint:*",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --watch",
+    "testcoverage": "jest --coverage"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ]
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
+    "babel-jest": "^23.4.2",
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
@@ -25,10 +32,11 @@
     "file-saver": "^1.3.8",
     "gl-matrix": "^2.6.1",
     "html-webpack-plugin": "^3.2.0",
+    "jest": "^23.5.0",
     "npm-run-all": "^4.1.3",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
-    "seedrandom": "^2.4.4",
+    "react-test-renderer": "^16.4.2",
     "simplex-noise": "^2.4.0",
     "style-loader": "^0.21.0",
     "stylelint": "^9.2.1",

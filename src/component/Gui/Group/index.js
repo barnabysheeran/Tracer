@@ -20,30 +20,34 @@ export default class Group extends React.Component {
     return (
       <div className={style.row}>
         <Title text={this.props.title} />
-        <React.Fragment>
-          {this.props.options.map((option, index) => (
-            <Button
-              className={
-                style.button +
-                " " +
-                (this.props.narrow === true
-                  ? style.buttonNarrow
-                  : style.buttonWide) +
-                " " +
-                (index === this.state.selectedIndex
-                  ? style.buttonOn
-                  : style.buttonOff)
-              }
-              key={index}
-              text={option.label}
-              value={option.value}
-              onClick={() => {
-                this.props.onClick(option.value);
-                this.setState({ selectedIndex: index });
-              }}
-            />
-          ))}
-        </React.Fragment>
+
+        <div className={style.buttonBlock}>
+          <React.Fragment>
+            {this.props.options.map((option, index) => (
+              <Button
+                className={
+                  style.button +
+                  " " +
+                  style.noSelect +
+                  " " +
+                  this.props.classWidth +
+                  " " +
+                  (index === this.state.selectedIndex
+                    ? style.buttonOn
+                    : style.buttonOff)
+                }
+                key={index}
+                text={option.label}
+                value={option.value}
+                onClick={() => {
+                  this.props.onClick(option.value);
+                  this.setState({ selectedIndex: index });
+                }}
+              />
+            ))}
+          </React.Fragment>
+        </div>
+
         <br />
         <br />
       </div>
