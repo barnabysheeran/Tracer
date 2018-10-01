@@ -9,7 +9,7 @@
     "start": "webpack-dev-server --open --mode development",
     "build": "webpack --mode production",
     "lint:js": "eslint .",
-    "lint:css": "stylelint \"**/*.css\" --allow-empty-input",
+    "lint:css": "stylelint \"**/*.css\"",
     "lint": "run-s lint:*",
     "test": "jest --watch",
     "testcoverage": "jest --coverage"
