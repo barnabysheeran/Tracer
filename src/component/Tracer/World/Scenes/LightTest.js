@@ -30,7 +30,7 @@ export default class SceneLightTest extends Scene {
     // this.addSphere(vec3.fromValues(0.0, 0.5, 0.0), -48, MATERIAL_DIELECTRIC);
 
     // Marble
-    const TEXTURE_SIMPLEX = new TextureSimplex(0.1);
+    const TEXTURE_SIMPLEX = new TextureSimplex(0.5);
     const MATERIAL_SIMPLEX = new MaterialLambertian(TEXTURE_SIMPLEX);
 
     this.addSphere(vec3.fromValues(0.0, -500.0, 0.0), 500.0, MATERIAL_SIMPLEX);
