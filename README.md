@@ -8,6 +8,8 @@ Online: [http://steppinrazor.net/tracer/](http://steppinrazor.net/tracer/)
 
 ![Example B](https://github.com/barnabysheeran/Tracer/output/example_a.jpg "Example B")
 
+Original [Mesh](https://www.thingiverse.com/thing:151081)
+
 Thank you - '[Ray Tracing in One Weekend](https://www.amazon.co.uk/Ray-Tracing-Weekend-Minibooks-Book-ebook/dp/B01B5AODD8)', '[Ray Tracing The Next Week](https://www.amazon.co.uk/gp/product/B01CO7PQ8C)', '[Scratchapixel](https://www.scratchapixel.com)'.
 
 `yarn install` - Installs required dependencies

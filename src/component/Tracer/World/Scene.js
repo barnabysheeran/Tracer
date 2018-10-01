@@ -1,5 +1,7 @@
 import { vec3 } from "gl-matrix";
 
+import MeshLibrary from "../Library/MeshLibrary";
+
 import HitableSphere from "../Hit/HitableSphere";
 import HitableTriangle from "../Hit/HitableTriangle";
 import HitablePlaneHolder from "../Hit/HitablePlaneHolder";
@@ -22,9 +24,7 @@ export default class Scene {
     this.textureImageDimensions = [];
     this.textureImageData = [];
 
-    this.meshPositions = [];
-    this.meshNormals = [];
-    this.meshCells = [];
+    this.meshLibrary = new MeshLibrary();
 
     this.countTriangles = 0;
     this.countSpheres = 0;
@@ -157,21 +157,15 @@ export default class Scene {
 
   // _________________________________________________________________ Mesh Data
 
-  setMeshes(positions, normals, cells) {
-    this.meshPositions = positions;
-    this.meshNormals = normals;
-    this.meshCells = cells;
-  }
-
   getMeshPositions(assetId) {
-    return this.meshPositions[assetId];
+    return this.meshLibrary.POSITIONS[assetId];
   }
 
   getMeshNormals(assetId) {
-    return this.meshNormals[assetId];
+    return this.meshLibrary.NORMALS[assetId];
   }
 
   getMeshCells(assetId) {
-    return this.meshCells[assetId];
+    return this.meshLibrary.CELLS[assetId];
   }
 }

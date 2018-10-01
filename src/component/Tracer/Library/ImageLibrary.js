@@ -2,21 +2,16 @@ import grid from "./../../../asset/texture/grid.png";
 import devSquare from "./../../../asset/texture/devSquare.png";
 
 import lounge from "./../../../asset/texture/lounge.png";
+import forestbeach from "./../../../asset/texture/forestbeach.jpg";
 
 import textHello from "./../../../asset/texture/textHello.png";
 import textWorld from "./../../../asset/texture/textWorld.png";
-
-// import skymap from "./../../../asset/texture/skymap.jpg";
-// import testSquare from "./../../../asset/texture/testSquare.png";
-// import baseSquare from "./../../../asset/texture/baseSquare.png";
-// import storageRoom from "./../../../asset/texture/storageroom.jpg";
-// import tech from "./../../../asset/texture/tech.png";
 
 export default class ImageLibrary {
   constructor(renderer) {
     this.RENDERER = renderer;
 
-    this.URLS = [grid, devSquare, lounge, textHello, textWorld];
+    this.URLS = [grid, devSquare, lounge, forestbeach, textHello, textWorld];
 
     this.IMAGE_TOTAL = this.URLS.length;
     this.imageCurrent = 0;
