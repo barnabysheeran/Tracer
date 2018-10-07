@@ -125,39 +125,9 @@ export default class SceneExampleA extends Scene {
       );
     }
 
-    // this.addSphere(
-    //   vec3.fromValues(-4.5, 5.0, -10.0),
-    //   1.0,
-    //   new MaterialLightDiffuse(
-    //     new TextureConstant(
-    //       vec3.fromValues(SCALAR_LIGHT, SCALAR_LIGHT, SCALAR_LIGHT)
-    //     )
-    //   )
-    // );
-
-    // this.addSphere(
-    //   vec3.fromValues(0.0, 5.0, -10.0),
-    //   1.0,
-    //   new MaterialLightDiffuse(
-    //     new TextureConstant(
-    //       vec3.fromValues(SCALAR_LIGHT, SCALAR_LIGHT, SCALAR_LIGHT)
-    //     )
-    //   )
-    // );
-
-    // this.addSphere(
-    //   vec3.fromValues(4.5, 5.0, -10.0),
-    //   1.0,
-    //   new MaterialLightDiffuse(
-    //     new TextureConstant(
-    //       vec3.fromValues(SCALAR_LIGHT, SCALAR_LIGHT, SCALAR_LIGHT)
-    //     )
-    //   )
-    // );
-
     // Floor and walls
     const TEXTURE_FLOOR = new TextureConstant(vec3.fromValues(0.8, 0.8, 0.8));
-    const MATERIAL_FLOOR = new MaterialMetal(TEXTURE_FLOOR, 0.1);
+    const MATERIAL_FLOOR = new MaterialMetal(TEXTURE_FLOOR, 0.02);
 
     const BOX_SIZE = 4;
     const BOX_SIZE_HALF = BOX_SIZE * 0.5;

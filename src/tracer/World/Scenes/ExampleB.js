@@ -22,10 +22,8 @@ export default class SceneExampleB extends Scene {
 
     // Materials
     const TEXTURE_METAL = new TextureConstant(vec3.fromValues(0.9, 0.9, 0.9));
-    const MATERIAL_METAL = new MaterialMetal(TEXTURE_METAL, 0.1);
-
-    const TEXTURE_FLOOR = new TextureConstant(vec3.fromValues(0.9, 0.9, 0.9));
-    const MATERIAL_FLOOR = new MaterialMetal(TEXTURE_FLOOR, 0.4);
+    const MATERIAL_METAL = new MaterialMetal(TEXTURE_METAL, 0.001);
+    const MATERIAL_FLOOR = new MaterialMetal(TEXTURE_METAL, 0.02);
 
     const MATERIAL_DIELECTRIC = new MaterialDielectric(1.5);
 
@@ -65,6 +63,16 @@ export default class SceneExampleB extends Scene {
           Math.cos(progressIntervalTau * i) * radius
         ),
         10,
+        MATERIAL_DIELECTRIC
+      );
+
+      this.addSphere(
+        vec3.fromValues(
+          Math.sin(progressIntervalTau * i) * radius,
+          10.01,
+          Math.cos(progressIntervalTau * i) * radius
+        ),
+        -8,
         MATERIAL_DIELECTRIC
       );
     }

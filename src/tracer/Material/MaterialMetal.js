@@ -19,8 +19,7 @@ export default class MaterialMetal extends Material {
     const ROUGH = this.ROUGH;
 
     // Reflected
-    //let reflected = reflect(rayIn.getDirectionNormalized(), hitRecord.normal); // ?
-    let reflected = reflect(rayIn.getDirection(), hitRecord.normal); // ?
+    let reflected = reflect(rayIn.getDirectionNormalized(), hitRecord.normal);
 
     // Rough
     let roughness = getRandominUnitSphere();

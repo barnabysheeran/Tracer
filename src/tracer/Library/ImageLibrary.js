@@ -1,11 +1,11 @@
-import grid from "./../../../asset/texture/grid.png";
-import devSquare from "./../../../asset/texture/devSquare.png";
+import grid from "./../../asset/texture/grid.png";
+import devSquare from "./../../asset/texture/devSquare.png";
 
-import lounge from "./../../../asset/texture/lounge.png";
-import forestbeach from "./../../../asset/texture/forestbeach.jpg";
+import lounge from "./../../asset/texture/lounge.png";
+import forestbeach from "./../../asset/texture/forestbeach.jpg";
 
-import textHello from "./../../../asset/texture/textHello.png";
-import textWorld from "./../../../asset/texture/textWorld.png";
+import textHello from "./../../asset/texture/textHello.png";
+import textWorld from "./../../asset/texture/textWorld.png";
 
 export default class ImageLibrary {
   constructor(renderer) {
