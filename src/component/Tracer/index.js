@@ -1,6 +1,6 @@
 import React from "react";
 
-import Renderer from "./Renderer/Renderer";
+import Renderer from "./../../tracer/Renderer/Renderer";
 
 import style from "./../../index.css";
 
