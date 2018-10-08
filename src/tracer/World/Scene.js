@@ -74,8 +74,6 @@ export default class Scene {
   // _____________________________________________________________________ Plane
 
   addPlane(width, height, material) {
-    this.countTriangles += 2;
-
     return new HitablePlaneHolder(this, width, height, material);
   }
 
@@ -106,8 +104,6 @@ export default class Scene {
   // ______________________________________________________________ Scene helper
 
   addSceneHelper(sizeAxis = 10, sizeSphere = 1) {
-    this.countSpheres += 6;
-
     return new SceneHelper(this, sizeAxis, sizeSphere);
   }
 

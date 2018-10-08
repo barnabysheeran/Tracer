@@ -1,5 +1,6 @@
 import SceneExampleA from "./Scenes/ExampleA";
 import SceneExampleB from "./Scenes/ExampleB";
+import SceneCornell from "./Scenes/Cornell";
 
 export default class World {
   constructor(cameraController) {
@@ -7,7 +8,8 @@ export default class World {
 
     this.SCENES = [
       new SceneExampleA(cameraController),
-      new SceneExampleB(cameraController)
+      new SceneExampleB(cameraController),
+      new SceneCornell(cameraController)
     ];
 
     // Default

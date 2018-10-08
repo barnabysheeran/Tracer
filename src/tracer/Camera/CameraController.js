@@ -15,9 +15,6 @@ export default class CameraController {
     // Positions
     this.position = vec3.create();
     this.positionTarget = vec3.create();
-
-    // Set positions and create camera
-    //this.setPositionsById(0);
   }
 
   calculateDistanceFocus() {
@@ -41,16 +38,19 @@ export default class CameraController {
 
   shape(w, h) {
     this.aspectRatio = w / h;
+
     this.update();
   }
 
   setAperture(aperture) {
     this.aperture = aperture;
+
     this.update();
   }
 
   setFov(fov) {
     this.fov = fov;
+
     this.update();
   }
 
