@@ -18,7 +18,7 @@ export default class SceneExampleB extends Scene {
   init() {
     this.reset();
 
-    // Materials
+    // Walls
     const MATERIAL_RED = new MaterialLambertian(
       new TextureConstant(vec3.fromValues(0.65, 0.05, 0.05))
     );
@@ -31,14 +31,6 @@ export default class SceneExampleB extends Scene {
       new TextureConstant(vec3.fromValues(0.12, 0.45, 0.15))
     );
 
-    // Light
-    const L = 10.0;
-
-    const MATERIAL_LIGHT = new MaterialLightDiffuse(
-      new TextureConstant(vec3.fromValues(L, L, L))
-    );
-
-    // Walls
     const BOX_SIZE = 100.0;
     const OFFSET = BOX_SIZE * 0.5;
 
@@ -61,16 +53,27 @@ export default class SceneExampleB extends Scene {
     ROOF.setPosition(0.0, OFFSET, 0.0);
     ROOF.setRotationEuler(90.0, 0.0, 0.0);
 
-    const LIGHT = this.addPlane(BOX_SIZE * 0.3, BOX_SIZE * 0.5, MATERIAL_LIGHT);
-    LIGHT.setPosition(0.0, OFFSET - 0.01, 0.0);
-    LIGHT.setRotationEuler(90.0, 0.0, 0.0);
+    // Light
+    const L = 60.0;
+    const LIGHT_WIDTH = 2;
+    const LIGHT_LENGTH = 23;
+    const LIGHT_SPACING = 13.0;
 
-    // Spheres
-    const SPHERE_SIZE = 20.0;
-    const SPHERE_Y = -OFFSET + SPHERE_SIZE + 0.01;
-    const RADIUS = 25.0;
-    const ROTATION_INCREMENT = Math.PI;
-    const ROTATION_OFFSET = Math.PI * 0.25;
+    const MATERIAL_LIGHT = new MaterialLightDiffuse(
+      new TextureConstant(vec3.fromValues(L, L, L))
+    );
+
+    const LIGHT_A = this.addPlane(LIGHT_WIDTH, LIGHT_LENGTH, MATERIAL_LIGHT);
+    LIGHT_A.setPosition(0.0, OFFSET - 0.01, -LIGHT_SPACING);
+    LIGHT_A.setRotationEuler(90.0, 90.0, 0.0);
+
+    const LIGHT_B = this.addPlane(LIGHT_WIDTH, LIGHT_LENGTH, MATERIAL_LIGHT);
+    LIGHT_B.setPosition(0.0, OFFSET - 0.01, 0.0);
+    LIGHT_B.setRotationEuler(90.0, 90.0, 0.0);
+
+    const LIGHT_C = this.addPlane(LIGHT_WIDTH, LIGHT_LENGTH, MATERIAL_LIGHT);
+    LIGHT_C.setPosition(0.0, OFFSET - 0.01, LIGHT_SPACING);
+    LIGHT_C.setRotationEuler(90.0, 90.0, 0.0);
 
     // Metal
     const MATERIAL_METAL = new MaterialMetal(
@@ -79,12 +82,8 @@ export default class SceneExampleB extends Scene {
     );
 
     this.addSphere(
-      vec3.fromValues(
-        Math.sin(ROTATION_OFFSET + ROTATION_INCREMENT) * RADIUS,
-        SPHERE_Y,
-        Math.cos(ROTATION_OFFSET + ROTATION_INCREMENT) * RADIUS
-      ),
-      SPHERE_SIZE,
+      vec3.fromValues(-18.0, -OFFSET + 25.01, -18.0),
+      25.0,
       MATERIAL_METAL
     );
 
@@ -92,22 +91,8 @@ export default class SceneExampleB extends Scene {
     const MATERIAL_GLASS = new MaterialDielectric(1.5);
 
     this.addSphere(
-      vec3.fromValues(
-        Math.sin(ROTATION_OFFSET + ROTATION_INCREMENT * 2.0) * RADIUS,
-        SPHERE_Y,
-        Math.cos(ROTATION_OFFSET + ROTATION_INCREMENT * 2.0) * RADIUS
-      ),
-      SPHERE_SIZE,
-      MATERIAL_GLASS
-    );
-
-    this.addSphere(
-      vec3.fromValues(
-        Math.sin(ROTATION_OFFSET + ROTATION_INCREMENT * 2.0) * RADIUS,
-        SPHERE_Y,
-        Math.cos(ROTATION_OFFSET + ROTATION_INCREMENT * 2.0) * RADIUS
-      ),
-      SPHERE_SIZE * 0.9,
+      vec3.fromValues(20.5, -OFFSET + 14.01, 19.0),
+      14.0,
       MATERIAL_GLASS
     );
   }
