@@ -33,7 +33,11 @@ export default class MaterialLambertian extends Material {
       hitRecord.position[2]
     );
 
-    scattered.setDirection(target[0], target[1], target[2]);
+    scattered.setDirection(
+      target[0] - hitRecord.position[0],
+      target[1] - hitRecord.position[1],
+      target[2] - hitRecord.position[2]
+    );
 
     // Attenuation
     const VALUE = this.ALBEDO.getValue(

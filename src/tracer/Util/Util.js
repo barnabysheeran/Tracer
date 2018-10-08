@@ -23,9 +23,9 @@ export function getRandomInUnitDisc() {
   let p = vec3.fromValues(Infinity, Infinity, Infinity);
 
   while (vec3.dot(p, p) >= 1.0) {
-    p[0] = 2.0 * (Math.random() - 1.0);
-    p[1] = 2.0 * (Math.random() - 1.0);
-    p[2] = 0.0;
+    p[0] = 2.0 * Math.random() - 1.0;
+    p[1] = 2.0 * Math.random() - 1.0;
+    p[2] = 2.0 * Math.random();
   }
 
   return p;

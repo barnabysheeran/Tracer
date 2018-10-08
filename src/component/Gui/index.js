@@ -24,7 +24,8 @@ export default class Gui extends React.Component {
             initialIndex={0}
             options={[
               { label: "Example A", value: 0 },
-              { label: "Example B", value: 1 }
+              { label: "Example B", value: 1 },
+              { label: "Cornell Box", value: 2 }
             ]}
             onClick={this.props.onClickSetScene}
           />
