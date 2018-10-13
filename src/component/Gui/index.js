@@ -53,7 +53,8 @@ export default class Gui extends React.Component {
               { label: "500", value: 500 },
               { label: "1k", value: 1000 },
               { label: "5k", value: 5000 },
-              { label: "10k", value: 10000 }
+              { label: "10k", value: 10000 },
+              { label: "20k", value: 20000 }
             ]}
             onClick={this.props.onClickSetAASamples}
           />
