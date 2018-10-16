@@ -54,7 +54,7 @@ export default class SceneExampleB extends Scene {
     ROOF.setRotationEuler(90.0, 0.0, 0.0);
 
     // Light
-    const L = 60.0;
+    const L = 80.0;
     const LIGHT_WIDTH = 2;
     const LIGHT_LENGTH = 23;
     const LIGHT_SPACING = 13.0;
