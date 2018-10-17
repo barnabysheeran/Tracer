@@ -11,6 +11,8 @@ export default class HitableSphere extends Hitable {
     this.radius = radius;
     this.MATERIAL = material;
 
+    this.inverted = false;
+
     this.createBoundingBox();
   }
 
@@ -73,6 +75,12 @@ export default class HitableSphere extends Hitable {
           (hitRecord.position[2] - POSITION_CENTER[2]) / RADIUS
         );
 
+        if (this.inverted == true) {
+          hitRecord.normal[0] = -hitRecord.normal[0];
+          hitRecord.normal[1] = -hitRecord.normal[1];
+          hitRecord.normal[2] = -hitRecord.normal[2];
+        }
+
         hitRecord.material = this.MATERIAL;
 
         uv = this.generateUV(hitRecord.normal);
@@ -94,6 +102,12 @@ export default class HitableSphere extends Hitable {
           (hitRecord.position[1] - POSITION_CENTER[1]) / RADIUS,
           (hitRecord.position[2] - POSITION_CENTER[2]) / RADIUS
         );
+
+        if (this.inverted == true) {
+          hitRecord.normal[0] = -hitRecord.normal[0];
+          hitRecord.normal[1] = -hitRecord.normal[1];
+          hitRecord.normal[2] = -hitRecord.normal[2];
+        }
 
         hitRecord.material = this.MATERIAL;
 
@@ -141,6 +155,12 @@ export default class HitableSphere extends Hitable {
     );
 
     this.boundingBox = new AABB(p0, p1);
+  }
+
+  // ____________________________________________________________________ Normal
+
+  invertNormals() {
+    this.inverted = true;
   }
 
   // ____________________________________________________________________ Access
