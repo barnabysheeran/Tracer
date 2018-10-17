@@ -37,39 +37,48 @@ export default class SceneExampleA extends Scene {
       vec3.fromValues(1.0, 0.0, 1.0)
     );
 
+    let inner;
+
     // A
     this.addSphere(vec3.fromValues(0.0, 0.5, 0.0), 0.5, MATERIAL_DIELECTRIC);
-    this.addSphere(vec3.fromValues(0.0, 0.5, 0.0), -0.45, MATERIAL_DIELECTRIC);
 
     this.addVolumeSphere(
       vec3.fromValues(0.0, 0.5, 0.0),
-      0.25,
+      0.45,
       TEXTURE_VOLUME_A,
       0.2
     );
 
     // B
     this.addSphere(vec3.fromValues(-1.05, 0.5, 0.0), 0.5, MATERIAL_DIELECTRIC);
-    this.addSphere(
+
+    inner = this.addSphere(
       vec3.fromValues(-1.05, 0.5, 0.0),
-      -0.45,
+      0.48,
       MATERIAL_DIELECTRIC
     );
+    inner.invertNormals();
 
     this.addVolumeSphere(
       vec3.fromValues(-1.05, 0.5, 0.0),
-      0.25,
+      0.35,
       TEXTURE_VOLUME_B,
       0.2
     );
 
     // C
     this.addSphere(vec3.fromValues(0.0, 0.5, 1.05), 0.5, MATERIAL_DIELECTRIC);
-    this.addSphere(vec3.fromValues(0.0, 0.5, 1.05), -0.45, MATERIAL_DIELECTRIC);
+
+    inner = this.addSphere(
+      vec3.fromValues(0.0, 0.5, 1.05),
+      0.48,
+      MATERIAL_DIELECTRIC
+    );
+    inner.invertNormals();
 
     this.addVolumeSphere(
       vec3.fromValues(0.0, 0.5, 1.05),
-      0.25,
+      0.35,
       TEXTURE_VOLUME_C,
       0.2
     );
