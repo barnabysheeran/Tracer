@@ -1,7 +1,5 @@
 JavaScript multi-threaded CPU Path Ray Tracer
 
-Online: [http://barnabysheeran.com/tracer/](http://barnabysheeran.com/tracer/)
-
 ![Example A](/output/example_a.png "Example A")
 
 ![Example B](/output/example_b.png "Example B")
